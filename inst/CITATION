@@ -1,0 +1,20 @@
+citHeader("To cite R package SimCorMultRes in publications, please use:")
+ 
+citEntry(entry="Article",
+         title = "Simulating Correlated Binary and Multinomial Responses under 
+         Marginal Model Specification: The SimCorMultRes Package",
+         author = person("Anestis","Touloumis"),
+         year = "2016",
+         journal="The R Journal",
+         volume="8",
+         number="2",
+         pages={"79-91"},
+         url = "https://journal.r-project.org/archive/2016/RJ-2016-034/index.html",
+         textVersion = paste("Touloumis, A. (2016).",
+               "Simulating Correlated Binary and Multinomial Responses under Marginal Model Specification: The SimCorMultRes Package.",
+               "The R Journal 8:2, 79-91.")
+         )
+
+
+
+

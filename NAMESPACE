@@ -1,0 +1,4 @@
+export(rbin, rmult.bcl, rmult.clm, rmult.crm, rnorta, rsmvnorm)
+importFrom("evd","qgumbel")
+importFrom("methods", "formalArgs")
+importFrom("stats", "as.formula", "formula", "model.frame","model.matrix", "pnorm", "qcauchy", "qlogis", "rnorm",  "terms", "toeplitz", "update")

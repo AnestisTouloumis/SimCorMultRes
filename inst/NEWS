@@ -1,0 +1,54 @@
+Version 1.4.3 [2017-06-13]
+ * Updated CITATION file to add full citation info.
+ * Updated documentation to fix typos and add links to vignette and pdf manual.
+ * Created a github repo.
+ * Improved vignette in R using bookdown.
+ * Minor improvements to the output of the core functions.
+ 
+Version 1.4.2 [2016-09-15]
+ * Updated CITATION file.
+ * Updated documentation.
+ 
+Version 1.4.1 [2016-07-19]
+ * Replaced the lin.pred argument in the core functions with three easier to handle arguments (betas, xformula and xdata).
+ * Increased the flexibility of the implementation of the NORTA method in the function rnorta.
+ * Introduced the rlatent argument in the core functions to allow user-defined simulated values for the latent variables.   
+ * Updated R code.
+ * Updated CITATION file.
+ * Updated vignette.
+ * Updated documentation.
+
+Version 1.4.0 [2015-12-15]
+ * Added the rbin function to simulate correlated binary responses.
+ * Updated CITATION file.
+ * Updated DECRIPTION file.
+ * Updated vignette.
+ * Updated documentation.
+ * Change the name of the argument cuts to intercepts.
+ * Allowed the intercepts of the marginal models to vary for the correlated responses.
+
+Version 1.3.1 [2015-09-08]
+ * Updated email address of the maintainer.
+ * The package now imports functions from the R package stats.
+ * Removed evd dependency.
+
+Version 1.3.0 [2015-01-08]
+ * Introduced a x.y.z version system.
+ * Updated documentation.
+ * Minor changes in vignette.
+ * Minor change in the R code.
+ * Added CITATION file.
+
+Version 1.2 [2014-03-01]
+ * Added a vignette file.
+ * Updated the email address of the maintainer.
+ * Updated documentation.
+
+Version 1.1 [2013-05-30]
+ * Removed the R package mvtnorm dependency.
+ * Added the function rmult.crm to simulate correlated ordinal multinomial responses under a marginal continuation ratio model.
+ * Updated documentation.
+ * Minor changes in the R code.
+
+Version 1.0 [2012-11-12]
+ * The first version of the R package SimCorMultRes is released on CRAN.
