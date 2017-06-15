@@ -1,3 +1,7 @@
+Version 1.4.4 [2017-06-15]
+ * Added README.Rmd.
+ * Fixed minor typo to rnorta.Rd.
+
 Version 1.4.3 [2017-06-13]
  * Updated CITATION file to add full citation info.
  * Updated documentation to fix typos and add links to vignette and pdf manual.

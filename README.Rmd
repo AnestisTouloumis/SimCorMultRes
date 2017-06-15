@@ -1,0 +1,120 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+references:
+- id: Touloumis2016
+  title: "Simulating Correlated Binary and Multinomial Responses under Marginal Model Specification: The SimCorMultRes Package"
+  author:
+  - family: Touloumis
+    given: Anestis
+  container-title: The R Journal
+  volume: 8
+  URL: 'https://journal.r-project.org/archive/2016/RJ-2016-034/index.html'
+  issue: 2
+  page: 79-91
+  type: article-journal
+  issued:
+    year: 2016
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include=FALSE}
+library("badger")
+knitr::opts_chunk$set(
+  tidy= TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# SimCorMultRes: GEE Solver for Correlated Nominal or Ordinal Multinomial Responses
+
+
+[![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
+`r badge_devel("AnestisTouloumis/SimCorMultRes", "brightgreen")`
+[![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) 
+[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-brightgreen.svg)](/commits/master)
+
+
+[![CRAN Version](http://www.r-pkg.org/badges/version/SimCorMultRes?color=blue)](https://cran.r-project.org/package=SimCorMultRes)
+[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes)
+[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/SimCorMultRes)](http://cran.rstudio.com/web/packages/SimCorMultRes/index.html)
+
+
+## Author
+
+Anestis Touloumis <https://brighton.academia.edu/AnestisTouloumis>
+
+School of Computing, Engineering and Mathematics, University of Brighton. 
+
+
+## Installation
+
+You can install the release version of the **SimCorMultRes** package from CRAN:
+
+```{r eval=FALSE}
+install.packages("SimCorMultRes")
+```
+
+or the development version from github:
+
+```{r eval=FALSE}
+install.packages("devtools") # if you have not installed "devtools" package
+devtools::install_github("AnestisTouloumis/SimCorMultRes")
+```
+
+The source code for the **SimCorMultRes** package is available on github at
+
+- https://github.com/AnestisTouloumis/SimCorMultRes.
+
+To use **SimCorMultRes**, you should load the package as follows:
+
+```{r}
+library(SimCorMultRes)
+```
+
+## Usage and functions
+
+The **SimCorMultRes** package provides functions to simulate correlated binary or multinomial responses. These responses are drawn as realizations of a latent regression model for continuous random vectors with the correlation structure expressed in terms of the latent correlation [@Touloumis2016].
+
+
+The package contains four core functions:
+
+- `rbin` to simulate correlated binary responses,
+- `rmult.bcl` to simulate correlated nominal multinomial responses,
+- `rmult.clm` to simulate correlated ordinal responses under a marginal cumulative link model,
+- `rmult.clm` to simulate correlated ordinal responses under a marginal continuation-ratio link model.
+
+
+The **SimCorMultRes** package also offers two utility functions:
+
+- `rnorta` for simulating random vectors using the NORTA method,
+- `rsmvnorm` for simulating continuous random vectors from a multivariate normal distribution.
+
+
+## Example
+
+The following R code illustrates how to use the core functions of **SimCorMultRes**.
+
+```{r}
+x <- 5
+```
+
+## Getting help
+A detailed description of **SimCorMultRes** can be found in @Touloumis2016. The vignette of **SimCorMultRes** contains additional examples and it be accessed by executing the following R commands: 
+
+```{r, eval=FALSE}
+browseVignettes("SimCorMultRes")
+```
+
+
+## How to cite
+
+```{r}
+citation("SimCorMultRes")
+```
+
+# References
