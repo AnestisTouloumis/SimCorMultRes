@@ -1,7 +1,7 @@
 \name{rnorta}
 \alias{rnorta}
 \title{
-Simulating  Random Vectors using the NORTA Method  
+Simulating Random Vectors using the NORTA Method  
 }
 \description{
 Utility function to simulate random vectors with predefined marginal distributions via the NORTA method.  
