@@ -2,7 +2,7 @@
 SimCorMultRes: GEE Solver for Correlated Nominal or Ordinal Multinomial Responses
 =================================================================================
 
-[![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes) [![develVersion](https://img.shields.io/badge/devel%20version-1.4.3-brightgreen.svg?style=flat)](https://github.com/AnestisTouloumis/SimCorMultRes) [![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![Last-changedate](https://img.shields.io/badge/last%20change-2017--06--15-brightgreen.svg)](/commits/master)
+[![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes) [![develVersion](https://img.shields.io/badge/devel%20version-1.4.4-brightgreen.svg?style=flat)](https://github.com/AnestisTouloumis/SimCorMultRes) [![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![Last-changedate](https://img.shields.io/badge/last%20change-2017--06--15-brightgreen.svg)](/commits/master)
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/SimCorMultRes?color=blue)](https://cran.r-project.org/package=SimCorMultRes) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes) [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/SimCorMultRes)](http://cran.rstudio.com/web/packages/SimCorMultRes/index.html)
 
@@ -59,11 +59,32 @@ The **SimCorMultRes** package also offers two utility functions:
 Example
 -------
 
-The following R code illustrates how to use the core functions of **SimCorMultRes**.
+The following R code illustrates how to use the core function `rbin`:
 
 ``` r
-x <- 5
+## See Example 3.4 in the Vignette.
+set.seed(123)
+N <- 5000
+clsize <- 4
+intercepts <- 0
+betas <- 0.2
+cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
+x <- rep(rnorm(N), each = clsize)
+CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, xformula = ~x, 
+    cor.matrix = cor.matrix, link = "probit")
+library(gee)
+binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$simdata)
+#> Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
+#> running glm to get initial regression estimate
+#> (Intercept)           x 
+#> 0.002636705 0.204827031
+summary(binGEEmod)$coefficients
+#>                Estimate  Naive S.E.    Naive z Robust S.E.   Robust z
+#> (Intercept) 0.002636705 0.008929290  0.2952872  0.01572132  0.1677153
+#> x           0.204827031 0.009114596 22.4724192  0.01610695 12.7166857
 ```
+
+Additional example can be found in Touloumis (2016) and in the vignette of **SimCorMultRes**.
 
 Getting help
 ------------

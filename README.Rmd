@@ -97,11 +97,25 @@ The **SimCorMultRes** package also offers two utility functions:
 
 ## Example
 
-The following R code illustrates how to use the core functions of **SimCorMultRes**.
+The following R code illustrates how to use the core function `rbin`:
 
 ```{r}
-x <- 5
+## See Example 3.4 in the Vignette.
+set.seed(123)
+N <- 5000
+clsize <- 4
+intercepts <- 0
+betas <- 0.2
+cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
+x <- rep(rnorm(N), each = clsize)
+CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, 
+    xformula = ~x, cor.matrix = cor.matrix, link = "probit")
+library(gee)
+binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$simdata)
+summary(binGEEmod)$coefficients
 ```
+
+Additional example can be found in @Touloumis2016 and in the vignette of **SimCorMultRes**.
 
 ## Getting help
 A detailed description of **SimCorMultRes** can be found in @Touloumis2016. The vignette of **SimCorMultRes** contains additional examples and it be accessed by executing the following R commands: 
