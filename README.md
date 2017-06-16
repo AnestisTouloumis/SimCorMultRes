@@ -88,7 +88,7 @@ summary(binGEEmod)$coefficients
 #> x           0.204827031 0.009114596 22.4724192  0.01610695 12.7166857
 ```
 
-Additional example can be found in Touloumis (2016) and in the vignette of **SimCorMultRes**.
+Additional examples can be found in Touloumis (2016) and in the vignette of **SimCorMultRes**.
 
 Getting help
 ------------

@@ -118,7 +118,7 @@ binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$s
 summary(binGEEmod)$coefficients
 ```
 
-Additional example can be found in @Touloumis2016 and in the vignette of **SimCorMultRes**.
+Additional examples can be found in @Touloumis2016 and in the vignette of **SimCorMultRes**.
 
 ## Getting help
 A detailed description of **SimCorMultRes** can be found in @Touloumis2016. The vignette of **SimCorMultRes** contains additional examples and it can be accessed by executing the following R commands: 
