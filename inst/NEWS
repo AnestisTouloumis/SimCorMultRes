@@ -1,10 +1,13 @@
+Version 1.4.5 [2017-06-16]
+ * Updated documentation - presentation.
+
 Version 1.4.4 [2017-06-15]
  * Added README.Rmd.
- * Fixed minor typo to rnorta.Rd.
+ * Updated documentation - fixed typos.
 
 Version 1.4.3 [2017-06-13]
- * Updated CITATION file to add full citation info.
- * Updated documentation to fix typos and add links to vignette and pdf manual.
+ * Updated CITATION - added full citation info.
+ * Updated documentation - fixed typos and added links to vignette and pdf manual.
  * Created a github repo.
  * Improved vignette in R using bookdown.
  * Minor improvements to the output of the core functions.

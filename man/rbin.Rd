@@ -36,7 +36,7 @@ matrix with \code{clsize} columns containing realizations of the latent random v
 }
 }
 \details{
-The formulae are easier to read from either the Vignette or the Reference Manual both available \href{https://CRAN.R-project.org/package=SimCorMultRes}{here}.
+The formulae are easier to read from either the Vignette or the Reference Manual (both available \href{https://CRAN.R-project.org/package=SimCorMultRes}{here}).
 
 The assumed marginal model is  
 \deqn{Pr(Y_{it} = 1 |x_{it})=F(\beta_{t0} +\beta^{'}_{t} x_{it})}
