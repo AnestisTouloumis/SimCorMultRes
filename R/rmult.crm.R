@@ -1,13 +1,12 @@
-rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas, 
-    xformula = formula(xdata), xdata = parent.frame(), link = "logit", 
-    cor.matrix = cor.matrix, rlatent = NULL) {
+rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformula = formula(xdata), 
+    xdata = parent.frame(), link = "logit", cor.matrix = cor.matrix, rlatent = NULL) {
     if (all.equal(clsize, as.integer(clsize)) != TRUE | clsize < 2) 
         stop("'clsize' must be a positive integer greater than or equal to two")
-    if (!is.vector(betas) & !is.matrix(betas)) 
+    if (!(is.atomic(betas) || is.list(betas)) & !is.matrix(betas)) 
         stop("'betas' must be a vector or a matrix")
     if (!is.numeric(betas)) 
         stop("'betas' must be numeric")
-    if (is.vector(betas)) {
+    if ((is.atomic(betas) || is.list(betas))) {
         betas <- rep(betas, clsize)
     } else {
         if (nrow(betas) != clsize) 
@@ -35,20 +34,18 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     lin.pred <- matrix(rowSums(lin.pred), ncol = clsize, byrow = TRUE)
     lin.pred <- as.matrix(lin.pred)
     R <- nrow(lin.pred)
-    if (!is.vector(intercepts) & !is.matrix(intercepts)) 
+    if (!(is.vector(intercepts) & !is.list(intercepts)) & !is.matrix(intercepts)) 
         stop("'intercepts' must be a vector or a matrix")
     if (!is.numeric(intercepts)) 
         stop("'intercepts' must be numeric")
-    if (is.vector(intercepts)) {
+    if (is.vector(intercepts) & !is.list(intercepts)) {
         if (length(intercepts) == 1) 
             stop("'intercepts' must have at least 2 elements")
         ncategories <- length(intercepts) + 1
-        intercepts <- matrix(intercepts, R, clsize * (ncategories - 1), 
-            byrow = TRUE)
+        intercepts <- matrix(intercepts, R, clsize * (ncategories - 1), byrow = TRUE)
     } else {
         ncategories <- ncol(intercepts) + 1
-        intercepts <- matrix(t(intercepts), R, clsize * (ncategories - 
-            1), byrow = TRUE)
+        intercepts <- matrix(t(intercepts), R, clsize * (ncategories - 1), byrow = TRUE)
     }
     lin.pred.extended <- t(apply(lin.pred, 1, function(x) rep(x, each = ncategories - 
         1)))
@@ -73,10 +70,8 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
         if (!isSymmetric(cor.matrix)) 
             stop("'cor.matrix' must be symmetric")
         for (i in 1:clsize) {
-            diag.index <- 1:(ncategories - 1) + (i - 1) * (ncategories - 
-                1)
-            cor.matrix[diag.index, diag.index] <- diag(1, ncategories - 
-                1)
+            diag.index <- 1:(ncategories - 1) + (i - 1) * (ncategories - 1)
+            cor.matrix[diag.index, diag.index] <- diag(1, ncategories - 1)
         }
         if (any(cor.matrix > 1) | any(cor.matrix < -1)) 
             stop("all the elements of 'cor.matrix' must be on [-1,1]")
@@ -92,18 +87,14 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
             stop("'rlatent' must be a matrix")
         if (!is.numeric(rlatent)) 
             stop("'rlatent' must be numeric")
-        if (ncol(rlatent) != ncol(lin.pred.extended) | nrow(rlatent) != 
-            R) 
-            stop("'rlatent' must be a ", R, "x", ncol(lin.pred.extended), 
-                " matrix")
+        if (ncol(rlatent) != ncol(lin.pred.extended) | nrow(rlatent) != R) 
+            stop("'rlatent' must be a ", R, "x", ncol(lin.pred.extended), " matrix")
         cor.matrix <- NULL
         err <- rlatent
     }
     U <- err - lin.pred.extended
-    Ysim <- matrix(as.numeric(t(U <= intercepts)), R * clsize, ncategories - 
-        1, TRUE)
-    for (i in 1:(ncategories - 1)) Ysim[, i] <- ifelse(Ysim[, i] == 1, 
-        i, ncategories)
+    Ysim <- matrix(as.numeric(t(U <= intercepts)), R * clsize, ncategories - 1, TRUE)
+    for (i in 1:(ncategories - 1)) Ysim[, i] <- ifelse(Ysim[, i] == 1, i, ncategories)
     Ysim <- apply(Ysim, 1, min)
     Ysim <- matrix(Ysim, R, clsize, byrow = TRUE)
     id <- rep(1:R, each = clsize)
@@ -111,9 +102,9 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     y <- c(t(Ysim))
     rownames(Ysim) <- rownames(err) <- paste("i", 1:R, sep = "=")
     colnames(Ysim) <- paste("t", 1:clsize, sep = "=")
-    colnames(err) <- paste("t=", rep(1:clsize, each = ncategories - 1), 
-        " & j=", rep(1:(ncategories - 1), clsize), sep = "")
-    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), 
-        id, time)
+    colnames(err) <- paste("t=", rep(1:clsize, each = ncategories - 1), " & j=", 
+        rep(1:(ncategories - 1), clsize), sep = "")
+    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), id, 
+        time)
     list(Ysim = Ysim, simdata = simdata, rlatent = err)
 }

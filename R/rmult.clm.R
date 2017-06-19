@@ -1,13 +1,12 @@
-rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, 
-    xformula = formula(xdata), xdata = parent.frame(), link = "logit", 
-    cor.matrix = cor.matrix, rlatent = NULL) {
+rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformula = formula(xdata), 
+    xdata = parent.frame(), link = "logit", cor.matrix = cor.matrix, rlatent = NULL) {
     if (all.equal(clsize, as.integer(clsize)) != TRUE | clsize < 2) 
         stop("'clsize' must be a positive integer greater than or equal to two")
-    if (!is.vector(intercepts) & !is.matrix(intercepts)) 
+    if (!(is.vector(intercepts) & !is.list(intercepts)) & !is.matrix(intercepts)) 
         stop("'intercepts' must be a vector or a matrix")
     if (!is.numeric(intercepts)) 
         stop("'intercepts' must be numeric")
-    if (is.vector(intercepts)) {
+    if (is.vector(intercepts) & !is.list(intercepts)) {
         if (length(intercepts) == 1) 
             stop("'intercepts' must have at least 2 elements")
         if (any(diff(intercepts) <= 0)) 
@@ -23,11 +22,11 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
                 stop("'intercepts' must be increasing at each row")
         }
     }
-    if (!is.vector(betas) & !is.matrix(betas)) 
+    if (!(is.vector(betas) & !is.list(betas)) & !is.matrix(betas)) 
         stop("'betas' must be a vector or a matrix")
     if (!is.numeric(betas)) 
         stop("'betas' must be numeric")
-    if (is.vector(betas)) {
+    if (is.vector(betas) & !is.list(betas)) {
         betas <- rep(betas, clsize)
     } else {
         if (nrow(betas) != clsize) 
@@ -94,7 +93,7 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     y <- c(t(Ysim))
     rownames(Ysim) <- rownames(err) <- paste("i", 1:R, sep = "=")
     colnames(Ysim) <- colnames(err) <- paste("t", 1:clsize, sep = "=")
-    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), 
-        id, time)
+    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), id, 
+        time)
     list(Ysim = Ysim, simdata = simdata, rlatent = err)
 }

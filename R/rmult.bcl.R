@@ -1,19 +1,17 @@
 rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas, 
-    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, 
-    rlatent = NULL) {
+    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, rlatent = NULL) {
     if (all.equal(clsize, as.integer(clsize)) != TRUE | clsize < 2) 
         stop("'clsize' must be a positive integer greater than or equal to two")
     if (!is.numeric(ncategories) | ncategories < 3) 
         stop("'ncategories' must be greater than or equal to three")
     ncategories <- as.integer(ncategories)
-    if (all.equal(ncategories, as.integer(ncategories)) != TRUE | ncategories < 
-        3) 
+    if (all.equal(ncategories, as.integer(ncategories)) != TRUE | ncategories < 3) 
         stop("'ncategories' must be a positive integer greater than or equal to three")
-    if (!is.vector(betas) & !is.matrix(betas)) 
+    if (!(is.vector(betas) & !is.list(betas)) & !is.matrix(betas)) 
         stop("'betas' must be a vector or a matrix")
     if (!is.numeric(betas)) 
         stop("'betas' must be numeric")
-    if (is.vector(betas)) {
+    if (is.vector(betas) & !is.list(betas)) {
         betas <- rep(betas, clsize)
     } else {
         if (nrow(betas) != clsize) 
@@ -29,8 +27,7 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
         stop("The length of 'betas' does not match with the provided covariates")
     lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat), byrow = TRUE) * 
         Xmat
-    lin.pred <- matrix(rowSums(lin.pred), ncol = ncategories * clsize, 
-        byrow = TRUE)
+    lin.pred <- matrix(rowSums(lin.pred), ncol = ncategories * clsize, byrow = TRUE)
     ncol.lp <- clsize * ncategories
     R <- nrow(lin.pred)
     if (is.null(rlatent)) {
@@ -63,8 +60,7 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
         err <- rlatent
     }
     U <- lin.pred + err
-    U <- matrix(as.vector(t(U)), nrow = clsize * R, ncol = ncategories, 
-        TRUE)
+    U <- matrix(as.vector(t(U)), nrow = clsize * R, ncol = ncategories, TRUE)
     Ysim <- apply(U, 1, which.max)
     Ysim <- matrix(Ysim, ncol = clsize, byrow = TRUE)
     id <- rep(1:R, each = clsize)
@@ -73,9 +69,9 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
     lpformula <- update(lpformula, ~. - 1)
     rownames(Ysim) <- rownames(err) <- paste("i", 1:R, sep = "=")
     colnames(Ysim) <- paste("t", 1:clsize, sep = "=")
-    colnames(err) <- paste("t=", rep(1:clsize, each = ncategories), " & j=", 
-        rep(1:ncategories, clsize), sep = "")
-    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), 
-        id, time)
+    colnames(err) <- paste("t=", rep(1:clsize, each = ncategories), " & j=", rep(1:ncategories, 
+        clsize), sep = "")
+    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), id, 
+        time)
     list(Ysim = Ysim, simdata = simdata, rlatent = err)
 }
