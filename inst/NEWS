@@ -1,5 +1,6 @@
-Version 1.4.5 [2017-06-16]
+Version 1.4.6 [2017-06-19]
  * Updated R code - avoided long R code.
+ * Updated R code - now checking if an object is a vector.
 
 Version 1.4.5 [2017-06-16]
  * Updated documentation - presentation.
