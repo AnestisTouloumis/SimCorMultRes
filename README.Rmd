@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# SimCorMultRes: GEE Solver for Correlated Nominal or Ordinal Multinomial Responses
+# SimCorMultRes: Simulates Correlated Multinomial Responses
 
 
 [![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)

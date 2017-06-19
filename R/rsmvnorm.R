@@ -10,7 +10,8 @@ rsmvnorm <- function(R = R, cor.matrix = cor.matrix) {
         stop("the diagonal elements of 'cor.matrix' must be equal to one")
     if (any(cor.matrix > 1) | any(cor.matrix < -1)) 
         stop("all the elements of 'cor.matrix' must be on [-1,1]")
-    if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 0)) 
+    if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 
+        0)) 
         stop("'cor.matrix' must be a positive definite matrix")
     p <- ncol(cor.matrix)
     ans <- matrix(rnorm(R * p), R, p) %*% chol(cor.matrix)

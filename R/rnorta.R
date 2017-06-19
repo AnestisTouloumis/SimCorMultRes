@@ -8,10 +8,11 @@ rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, qparameters = 
     if (!is.null(qparameters)) {
         qparameters <- as.list(qparameters)
         if (length(qparameters) != ncol(cor.matrix)) 
-            stop("'qparameters' must be provided as a list of length ", ncol(cor.matrix))
+            stop("'qparameters' must be provided as a list of length ", 
+                ncol(cor.matrix))
     }
     ans <- pnorm(ans)
-    for (i in 1:ncol(cor.matrix)) {
+    for (i in seq_len(ncol(cor.matrix))) {
         QuantileFunction <- get(QuantileFunctions[i], mode = "function")
         if (!is.function(QuantileFunction)) 
             stop("Character string ", i, " in `distr' does not correspond to a valid function")

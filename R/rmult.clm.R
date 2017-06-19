@@ -1,4 +1,5 @@
-rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformula = formula(xdata), xdata = parent.frame(), link = "logit", 
+rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, 
+    xformula = formula(xdata), xdata = parent.frame(), link = "logit", 
     cor.matrix = cor.matrix, rlatent = NULL) {
     if (all.equal(clsize, as.integer(clsize)) != TRUE | clsize < 2) 
         stop("'clsize' must be a positive integer greater than or equal to two")
@@ -43,7 +44,8 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, x
     Xmat <- matrix(Xmat[, -1], ncol = ncol(Xmat) - 1)
     if (length(betas) != (clsize) * ncol(Xmat)) 
         stop("The length of 'betas' does not match with the number of covariates")
-    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat), byrow = TRUE) * Xmat
+    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat), byrow = TRUE) * 
+        Xmat
     lin.pred <- matrix(rowSums(lin.pred), ncol = clsize, byrow = TRUE)
     lin.pred <- as.matrix(lin.pred)
     R <- nrow(lin.pred)
@@ -53,7 +55,8 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, x
         links <- c("probit", "logit", "cloglog", "cauchit")
         if (!is.element(link, links)) 
             stop("'link' must be 'probit','logit','cloglog' and/or 'cauchit'")
-        distr <- switch(link, probit = "qnorm", logit = "qlogis", cloglog = "qgumbel", cauchit = "qcauchy")
+        distr <- switch(link, probit = "qnorm", logit = "qlogis", cloglog = "qgumbel", 
+            cauchit = "qcauchy")
         if (!is.numeric(cor.matrix)) 
             stop("'cor.matrix' must be numeric")
         if (!is.matrix(cor.matrix)) 
@@ -66,7 +69,8 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, x
             stop("the diagonal elements of 'cor.matrix' must be one")
         if (any(cor.matrix > 1) | any(cor.matrix < -1)) 
             stop("all the elements of 'cor.matrix' must be on [-1,1]")
-        if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 0)) 
+        if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 
+            0)) 
             stop("'cor.matrix' must be positive definite")
         if (length(distr) == 1) 
             err <- rnorta(R, cor.matrix, rep(distr, clsize))
@@ -90,6 +94,7 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, x
     y <- c(t(Ysim))
     rownames(Ysim) <- rownames(err) <- paste("i", 1:R, sep = "=")
     colnames(Ysim) <- colnames(err) <- paste("t", 1:clsize, sep = "=")
-    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), id, time)
+    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), 
+        id, time)
     list(Ysim = Ysim, simdata = simdata, rlatent = err)
 }
