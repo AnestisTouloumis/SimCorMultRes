@@ -74,9 +74,9 @@ ncategories <- 4
 # cluster size
 clsize <- 3 
 set.seed(1) 
-# time-stationary covariate x1
+# time-stationary covariate x_{i1}
 x1 <- rep(rnorm(N), each = clsize)
-# time-varying covariate xit2
+# time-varying covariate x_{it2}
 x2 <- rnorm(N * clsize) 
 # create covariates dataframe 
 xdata <- data.frame(x1, x2) 
@@ -270,7 +270,7 @@ Consider now simulation of correlated binary responses from the marginal logit m
 \begin{equation*}
 \Pr(Y_{it}=1 |\mathbf{x}_{it})=F(0.2x_i)
 \end{equation*}
-where $F$ is the cdf of the standard logistic distribution (mean $=0$ and variance $=\pi^2/3$), $N=5000$, $T=4$ and $\mathbf{x}_{it}=x_i\overset{iid}{\sim} N(0,1)$ for all $i$ and $t$. This is similar to the marginal model configuration in Example \@ref(ex:BinaryProbit) except from the link function. For the dependence structure, assume that the correlation matrix of $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) is equal to the correlation matrix $\mathbf{R}$ defined in \@ref(eq:CMB). To simulate $\mathbf{e}_i^{B}$ without utilizing the NORTA method, one can employ the tetra-variate extreme value distribution [@Gumbel1958]. In particular, this is accomplished by setting $\mathbf{e}_i^{B}=\mathbf{U}_i-\mathbf{V}_i$ for all $i$, where $\mathbf{U}_i$ and $\mathbf{V}_i$ are independent random vectors from the tetra-variate extreme value distribution with dependence parameter equal to $0.9$, that is
+where $F$ is the cdf of the standard logistic distribution (mean $=0$ and variance $=\pi^2/3$), $N=100$, $T=4$ and $\mathbf{x}_{it}=x_i\overset{iid}{\sim} N(0,1)$ for all $i$ and $t$. This is similar to the marginal model configuration in Example \@ref(ex:BinaryProbit) except from the link function. For the dependence structure, assume that the correlation matrix of $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) is equal to the correlation matrix $\mathbf{R}$ defined in \@ref(eq:CMB). To simulate $\mathbf{e}_i^{B}$ without utilizing the NORTA method, one can employ the tetra-variate extreme value distribution [@Gumbel1958]. In particular, this is accomplished by setting $\mathbf{e}_i^{B}=\mathbf{U}_i-\mathbf{V}_i$ for all $i$, where $\mathbf{U}_i$ and $\mathbf{V}_i$ are independent random vectors from the tetra-variate extreme value distribution with dependence parameter equal to $0.9$, that is
 $$\Pr\left(U_{i1}\leq u_{i1},U_{i2}\leq u_{i2},U_{i3}\leq u_{i3},U_{i4}\leq u_{i4}\right)=\exp\left\{-\left[\sum_{t=1}^4 \exp{\left(-\frac{u_{it}}{0.9}\right)}\right]^{0.9}\right\}$$
 and 
 $$\Pr\left(V_{i1}\leq v_{i1},V_{i2}\leq v_{i2},V_{i3}\leq v_{i3},V_{i4}\leq v_{i4}\right)=\exp\left\{-\left[\sum_{t=1}^4 \exp{\left(-\frac{v_{it}}{0.9}\right)}\right]^{0.9}\right\}.$$
@@ -293,28 +293,28 @@ binGEEmod <- gee(y ~ x, family = binomial("logit"), id = id, data = CorBinRes$si
 summary(binGEEmod)$coefficients
 ```
 
-## No covariates in the linear predictor of the marginal model
-Simulation of clustered binary, ordinal and nominal responses in the absence of covariates in the linear predictor of the desired marginal model can be achieved by performing the following four steps:
+## No covariates in the marginal model
+Simulation of clustered binary, ordinal and nominal responses in the case where the marginal probabilities are not defined by a marginal model can be achieved by performing the following four steps:
 
-1. Create a pseudo-covariate say `x` of length equal to the number of cluster size (`clsize`) times the desired number of clusters of simulated responses (say `R`), that is `x = clsize * R`. Definition of a zero valued covariate `x` is required in order to define the desired number of clustered responses.  
+1. Create a pseudo-covariate say `x` of length equal to the number of cluster size (`clsize`) times the desired number of clusters of simulated responses (say `R`), that is `x = clsize * R`. Definition of a zero valued covariate `x` is required to identify the desired number of clustered responses.  
 1. Set `betas = 0` in the core functions `rbin`, `rmult.clm` and `rmult.crm` (see Example \@ref(ex:no-covariate)), or set 0 all values of the `beta` argument that correspond to the category-specific parameters in the core function `rmult.bcl` (see Example \@ref(ex:Example2NoCovariates)).
 1. set `xformula = ~ x`.
 1. Run the core function to obtain realizations of the simulated clustered responses.
 
+See also the third example in @Touloumis2016 in order to connect a marginal model with the desired marginal probabilities.
+
 ```{example, label=no-covariate, name="Simulation of clustered binary responses without covariates"}
-Suppose the goal is to simulate clustered binary responses from the marginal probit model 
-$$\Pr(Y_{it}=1 |\mathbf{x}_{it})=\Phi(0.2)$$
-where $N=5000$, $T=4$. For the association structure, assume that the random variables $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) are iid random vectors from the tetra-variate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix $\mathbf{R}$ is given in Example \@ref(ex:BinaryProbit).
+Suppose the goal is to simulate $N=5000$ clustered binary responses with $\Pr(Y_{it}=1)=0.8$ for all $t=1,\ldots,4$. For the association structure, assume that the random variables $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) are iid random vectors from the tetra-variate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix $\mathbf{R}$ is given in Example \@ref(ex:BinaryProbit).
 ```
 
 ```{r}
-set.seed(123)
+#set.seed(123)
 # sample size
 N <- 5000
 # cluster size
 clsize <- 4
 # intercept
-intercepts <- 0.2
+intercepts <- qnorm(0.8)
 # pseudo-covariate
 x <- rep(0, each = clsize * N)
 # regression parameter associated with the covariate
@@ -325,10 +325,8 @@ cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
 CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, 
     xformula = ~x, cor.matrix = cor.matrix, link = "probit")
 library(gee)
-# fitting a gee model
-binGEEmod <- gee(y ~ 1, family = binomial("probit"), id = id, data = CorBinRes$simdata)
-# checking the estimated coefficients
-summary(binGEEmod)$coefficients
+# simulated marginal probabilities
+colMeans(CorBinRes$Ysim)
 ```
 
 \textbf{ }
@@ -352,21 +350,17 @@ betas <-  c(1, 0, 1.25, 0, 0.75, 0, 0, 0)
 # number of nominal response categories
 ncategories <- 4  
 set.seed(1) 
-library(SimCorMultRes)
 # correlation matrix for the NORTA method
 cor.matrix <- kronecker(toeplitz(c(1,rep(0.95,clsize-1))),diag(ncategories)) 
 # simulation of clustered nominal responses
 CorNorRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, xformula = ~x, cor.matrix = cor.matrix)
-suppressPackageStartupMessages(library("multgee"))
 # fitting a gee model
 fit <- nomLORgee(y~1,data=CorNorRes$simdata,id=id,repeated=time,LORstr="time.exch")
 # checking regression coefficients
 round(coef(fit),2)
 ```
 # How to Cite
-
-A considerable effort has been put into developing this package. Please use the function `citation` in order to cite **SimCorMultRes** in publications: 
-```{r}
+```{r, comment=""}
 citation("SimCorMultRes")
 ```
 
