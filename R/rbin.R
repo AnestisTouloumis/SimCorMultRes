@@ -1,5 +1,6 @@
-rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformula = formula(xdata), 
-    xdata = parent.frame(), link = "logit", cor.matrix = cor.matrix, rlatent = NULL) {
+rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas, 
+    xformula = formula(xdata), xdata = parent.frame(), link = "logit", 
+    cor.matrix = cor.matrix, rlatent = NULL) {
     if (all.equal(clsize, as.integer(clsize)) != TRUE | clsize < 2) 
         stop("'clsize' must be a positive integer greater than or equal to two")
     if (!(is.vector(intercepts) & !is.list(intercepts))) 
@@ -32,8 +33,8 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformu
     Xmat <- matrix(Xmat[, -1], ncol = ncol(Xmat) - 1)
     if (length(betas) != (clsize) * ncol(Xmat)) 
         stop("The length of 'betas' does not match with the number of covariates")
-    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat), byrow = TRUE) * 
-        Xmat
+    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat),
+                       byrow = TRUE) * Xmat
     lin.pred <- matrix(rowSums(lin.pred), ncol = clsize, byrow = TRUE)
     lin.pred <- as.matrix(lin.pred)
     R <- nrow(lin.pred)
@@ -43,7 +44,8 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformu
         links <- c("probit", "logit", "cloglog", "cauchit")
         if (!is.element(link, links)) 
             stop("'link' must be 'probit','logit','cloglog' and/or 'cauchit'")
-        distr <- switch(link, probit = "qnorm", logit = "qlogis", cloglog = "qgumbel", 
+        distr <- switch(link, probit = "qnorm", logit = "qlogis",
+                        cloglog = "qgumbel", 
             cauchit = "qcauchy")
         if (!is.numeric(cor.matrix)) 
             stop("'cor.matrix' must be numeric")
@@ -57,8 +59,8 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformu
             stop("the diagonal elements of 'cor.matrix' must be one")
         if (any(cor.matrix > 1) | any(cor.matrix < -1)) 
             stop("all the elements of 'cor.matrix' must be on [-1,1]")
-        if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 
-            0)) 
+        if (any(
+          eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 0)) 
             stop("'cor.matrix' must be positive definite")
         err <- rnorta(R, cor.matrix, rep(distr, clsize))
         if (distr == "qgumbel") 
@@ -75,15 +77,15 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas, xformu
     }
     U <- lin.pred + err
     Ysim <- matrix(0, R, clsize)
-    for (i in 1:clsize) Ysim[, i] <- cut(U[, i] - 2 * lin.pred[, i], intercepts[i, 
-        ], labels = FALSE)
+    for (i in 1:clsize) Ysim[, i] <- 
+      cut(U[, i] - 2 * lin.pred[, i], intercepts[i, ], labels = FALSE)
     Ysim <- 2 - Ysim
     id <- rep(1:R, each = clsize)
     time <- rep(1:clsize, R)
     y <- c(t(Ysim))
     rownames(Ysim) <- rownames(err) <- paste("i", 1:R, sep = "=")
     colnames(Ysim) <- colnames(err) <- paste("t", 1:clsize, sep = "=")
-    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), id, 
-        time)
+    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata), 
+        id, time)
     list(Ysim = Ysim, simdata = simdata, rlatent = err)
 }
