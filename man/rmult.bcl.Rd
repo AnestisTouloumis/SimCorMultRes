@@ -82,7 +82,6 @@ set.seed(1)
 x1 <- rep(rnorm(N), each = clsize)
 x2 <- rnorm(N * clsize)
 xdata <- data.frame(x1, x2)
-library(SimCorMultRes)
 cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(ncategories))
 CorNorRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, 
     xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
