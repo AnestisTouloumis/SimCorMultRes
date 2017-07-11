@@ -1,3 +1,6 @@
+Version 1.5.0 [2017-07-11]
+ * Released on CRAN.
+
 Version 1.4.8 [2017-07-10]
  * Updated README - presentation.
  * Updated vignette - presentation.
@@ -70,3 +73,4 @@ Version 1.1 [2013-05-30]
 
 Version 1.0 [2012-11-12]
  * The first version of the R package SimCorMultRes is released on CRAN.
+ 

@@ -81,10 +81,10 @@ library(SimCorMultRes)
 
 ## Usage and functions
 
-This package provides functions to simulate correlated binary or multinomial responses. These responses are drawn as realizations of a latent regression model for continuous random vectors with the correlation structure expressed in terms of the latent correlation [@Touloumis2016].
+This package provides functions to simulate correlated binary, ordinal and nominal responses, which are drawn as realizations of a latent regression model for continuous random vectors as proposed by @Touloumis2016.
 
 
-The package contains four core functions:
+There are four core functions:
 
 - `rbin` to simulate correlated binary responses,
 - `rmult.bcl` to simulate correlated nominal multinomial responses,

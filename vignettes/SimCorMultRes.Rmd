@@ -24,13 +24,15 @@ knitr::opts_chunk$set(
 # Introduction 
 The __R__ package __SimCorMultRes__ is suitable for simulation of correlated binary responses (exactly two response categories) and of correlated nominal or ordinal multinomial responses (three or more response categories) conditional on a regression model specification for the marginal probabilities of the response categories. This vignette briefly describes the simulation methods proposed by @Touloumis2016 and illustrates the use of the core functions of __SimCorMultRes__. A more detailed description of __SimCorMultRes__ can be found in @Touloumis2016. 
 
-# Motivation
-The package __SimCorMultRes__ facilitates the task of carrying out simulation studies to evaluate the performance of statistical method(s) for estimating the regression parameters in a marginal model with clustered (correlated) binary and multinomial responses. Examples of such statistical methods include maximum likelihood methods, copula approaches, quasi-least squares approaches, generalized quasi-likelihood methods and generalized estimating equations (GEE) approaches among others [see references in @Touloumis2016]. However, it is worth mentioning that __SimCorMultRes__ can also be used to generate correlated binary and multinomial random variables conditional on a desired dependence structure and known marginal probabilities that are not determined by a regression model [see the third example in @Touloumis2016].
+# Areas of Applications
+This package was created to facilitate the task of carrying out simulation studies and evaluating the performance of statistical method(s) for estimating the regression parameters in a marginal model with clustered binary and multinomial responses. Examples of such statistical methods include maximum likelihood methods, copula approaches, quasi-least squares approaches, generalized quasi-likelihood methods and generalized estimating equations (GEE) approaches among others [see references in @Touloumis2016]. 
+
+In addition, __SimCorMultRes__ can be used to generate correlated binary and multinomial random variables conditional on a desired dependence structure and known marginal probabilities even if these are not determined by a regression model [see third example in @Touloumis2016] or to explore approximations of association measures for discrete variables that arise as realizations of an underlying continuum [see second example in @Touloumis2016].
 
 # Simulation Methods
 Let $Y_{it}$ be the binary or multinomial response for subject $i$ ($i=1,\ldots,N$) at measurement occasion $t$ ($t=1,\ldots,T$), and let $\mathbf {x}_{it}$ be the associated covariates vector. We assume that $Y_{it} \in \{0,1\}$ for binary responses and $Y_{it} \in \{1,2,\ldots,J\geq 3\}$ for multinomial responses. 
 
-## Correlated Nominal Responses 
+## Correlated nominal responses 
 The function `rmult.bcl` simulates nominal responses under the marginal baseline-category logit model
 \begin{equation}
 \log \left[\frac{\Pr(Y_{it}=j |\mathbf {x}_{it})}{\Pr(Y_{it}=J |\mathbf {x}_{it})}\right]=(\beta_{tj0}-\beta_{tJ0})+(\boldsymbol {\beta}_{tj}-\boldsymbol{\beta}_{tJ})^{\prime} \mathbf {x}_{it}=\beta^{\ast}_{tj0}+\boldsymbol{\beta}^{\ast\prime}_{tj}\mathbf {x}_{it},
@@ -49,7 +51,7 @@ and where the random variables $\{e^{NO}_{itj}:i=1,\ldots,N \text{,  } t=1,\ldot
 For each subject $i$, the association structure among the clustered nominal responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the joint distribution and correlation matrix of $\{e^{NO}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$. If the random variables $\{e^{N}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$.
 \newline{}
 
-```{example, Example1, name="Simulation of clustered nominal responses conditional on a marginal baseline-category logit model using the NORTA method"}
+```{example, Example1, name="Simulation of clustered nominal responses using the NORTA method"}
 Suppose the aim is to simulate nominal responses from the marginal baseline-category logit model
 \begin{equation*}
 \log \left[\frac{\Pr(Y_{it}=j |\mathbf {x}_{it})}{\Pr(Y_{it}=4 |\mathbf {x}_{it})}\right]=\beta_{j0}+ \beta_{j1} {x}_{i1}+ \beta_{j2} {x}_{it2} \end{equation*}
@@ -57,7 +59,7 @@ where $N=500$, $T=3$, $(\beta_{10},\beta_{11},\beta_{12},\beta_{20},\beta_{21},\
 \[
 \mathbf{R}_{t_1j_1,t_2j_2}=\begin{cases}
 1 & \text{if } t_1=t_2 \text{ and } j_1=j_2\\
-0.95 & \text{if } t_1=t_2 \text{ and } j_1=j_2\\
+0.95 & \text{if } t_1 \neq t_2 \text{ and } j_1=j_2\\
 0 & \text{otherwise }\\
 \end{cases}
 \]
@@ -87,12 +89,12 @@ cor.matrix <- kronecker(toeplitz(c(1,rep(0.95,clsize-1))),diag(ncategories))
 # simulation of clustered nominal responses
 CorNorRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
 suppressPackageStartupMessages(library("multgee"))
-# fitting a gee model
+# fitting a GEE model
 fit <- nomLORgee(y~x1+x2,data=CorNorRes$simdata,id=id,repeated=time,LORstr="time.exch")
 # checking regression coefficients
 round(coef(fit),2)
 ```
-## Correlated Ordinal Responses
+## Correlated ordinal responses
 Simulation of clustered ordinal responses is feasible under either a marginal cumulative link model or a marginal continuation-ratio model.
 
 ### Marginal cumulative link model
@@ -172,7 +174,7 @@ Suppose simulation of clustered ordinal responses under the marginal continuatio
 \begin{equation*}
 \Pr(Y_{it}=j |Y_{it} \ge j,\mathbf{x}_{it})=\Phi(\beta_{j0} + \beta {x}_{it})
 \end{equation*}
-with $N=500$, $T=4$, $(\beta_{10},\beta_{20},\beta_{30},\beta_{40},\beta)=(-1.5,-0.5,0.5,1.5,1)$ and $\mathbf{x}_{it}=x_{it}\overset{iid}{\sim} N(0,1)$ for all $i$ and $t$ is desired. For the dependence structure, assume that $\{\mathbf{e}_i^{O2}=\left(e^{O2}_{i11},\ldots,e^{O1}_{i44}\right)^{\prime}:i=1,\ldots,N\}$ are iid random vectors from a multivariate normal distribution with mean vector the zero vector and covariance matrix the $16 \times 16$ correlation matrix with elements\[
+with $N=500$, $T=4$, $(\beta_{10},\beta_{20},\beta_{30},\beta_{40},\beta)=(-1.5,-0.5,0.5,1.5,1)$ and $\mathbf{x}_{it}=x_{it}\overset{iid}{\sim} N(0,1)$ for all $i$ and $t$ is desired. For the dependence structure, assume that $\left\{\mathbf{e}_i^{O2}=\left(e^{O2}_{i11},\ldots,e^{O1}_{i44}\right)^{\prime}:i=1,\ldots,N\right\}$ are iid random vectors from a multivariate normal distribution with mean vector the zero vector and covariance matrix the $16 \times 16$ correlation matrix with elements\[
     \text{corr}(e^{O2}_{it_1j_1},e^{O2}_{it_2j_2}) = \begin{cases}
         1  & \text{for } j_1 = j_2 \text{ and } t_1 = t_2\\
         0.24  & \text{for } t_1 \neq t_2\\
@@ -205,7 +207,7 @@ CorOrdRes <- rmult.crm(clsize = clsize, intercepts = intercepts, betas = betas,
 head(CorOrdRes$Ysim)
 ```
 
-## Correlated Binary Responses
+## Correlated binary responses
 The function `rbin` simulates binary responses under the marginal model specification
 \begin{equation}
 \Pr(Y_{it}=1 |\mathbf {x}_{it})=F(\beta_{t0} +\boldsymbol {\beta}^{\prime}_{t} \mathbf {x}_{it})
@@ -259,7 +261,7 @@ x <- rep(rnorm(N), each = clsize)
 CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, 
     xformula = ~x, cor.matrix = cor.matrix, link = "probit")
 library(gee)
-# fitting a gee model
+# fitting a GEE model
 binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$simdata)
 # checking the estimated coefficients
 summary(binGEEmod)$coefficients
@@ -287,28 +289,33 @@ rlatent <- rlatent1 - rlatent2
 # simulation of clustered binary responses
 CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, 
     xformula = ~x, rlatent = rlatent)
-# fitting a gee model
+# fitting a GEE model
 binGEEmod <- gee(y ~ x, family = binomial("logit"), id = id, data = CorBinRes$simdata)
 # checking the estimated coefficients
 summary(binGEEmod)$coefficients
 ```
 
-## No covariates in the marginal model
-Simulation of clustered binary, ordinal and nominal responses in the case where the marginal probabilities are not defined by a marginal model can be achieved by performing the following four steps:
+## No marginal model specification
+To achieve simulation of clustered binary, ordinal and nominal responses under no marginal model specification, perform the following intercepts:
 
-1. Create a pseudo-covariate say `x` of length equal to the number of cluster size (`clsize`) times the desired number of clusters of simulated responses (say `R`), that is `x = clsize * R`. Definition of a zero valued covariate `x` is required to identify the desired number of clustered responses.  
-1. Set `betas = 0` in the core functions `rbin`, `rmult.clm` and `rmult.crm` (see Example \@ref(ex:no-covariate)), or set 0 all values of the `beta` argument that correspond to the category-specific parameters in the core function `rmult.bcl` (see Example \@ref(ex:Example2NoCovariates)).
-1. set `xformula = ~ x`.
-1. Run the core function to obtain realizations of the simulated clustered responses.
+1. Based on the marginal probabilities calculate the intercept of a marginal probit model for binary responses (see Example \@ref(ex:no-covariate)) or the category-specific intercepts of a cumulative probit model [see third example in @Touloumis2016] or of a baseline-category logit model for multinomial responses (see Example \@ref(ex:Example2NoCovariates)).
 
-See also the third example in @Touloumis2016 in order to connect a marginal model with the desired marginal probabilities.
+2. Create a pseudo-covariate say `x` of length equal to the number of cluster size (`clsize`) times the desired number of clusters of simulated responses (say `R`), that is `x = clsize * R`. This step is required in order to identify the desired number of clustered responses.  
+
+3. Set `betas = 0` in the core functions `rbin` (see Example \@ref(ex:no-covariate)) or `rmult.clm`, or set 0 all values of the `beta` argument that correspond to the category-specific parameters in the core function `rmult.bcl` (see Example \@ref(ex:Example2NoCovariates)).
+
+4. set `xformula = ~ x`.
+
+5. Run the core function to obtain realizations of the simulated clustered responses.
+
+\textbf{ }
 
 ```{example, label=no-covariate, name="Simulation of clustered binary responses without covariates"}
-Suppose the goal is to simulate $N=5000$ clustered binary responses with $\Pr(Y_{it}=1)=0.8$ for all $t=1,\ldots,4$. For the association structure, assume that the random variables $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) are iid random vectors from the tetra-variate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix $\mathbf{R}$ is given in Example \@ref(ex:BinaryProbit).
+Suppose the goal is to simulate $5000$ clustered binary responses with $\Pr(Y_{t}=1)=0.8$ for all $t=1,\ldots,4$. For simplicity, assume that the clustered binary responses are independent.
 ```
 
 ```{r}
-#set.seed(123)
+set.seed(123)
 # sample size
 N <- 5000
 # cluster size
@@ -320,7 +327,7 @@ x <- rep(0, each = clsize * N)
 # regression parameter associated with the covariate
 betas <- 0
 # correlation matrix for the NORTA method
-cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
+cor.matrix <- diag(clsize)
 # simulation of clustered binary responses
 CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, 
     xformula = ~x, cor.matrix = cor.matrix, link = "probit")
@@ -331,33 +338,28 @@ colMeans(CorBinRes$Ysim)
 
 \textbf{ }
 ```{example, Example2NoCovariates, name="Simulation of clustered nominal responses without covariates"}
-Suppose the aim is to simulate nominal responses from the marginal baseline-category logit model
-\begin{equation*}
-\log \left[\frac{\Pr(Y_{it}=j |\mathbf {x}_{it})}{\Pr(Y_{it}=4 |\mathbf {x}_{it})}\right]=\beta_{j0}
-\end{equation*}
-where $N=500$, $T=3$, $(\beta_{10},\beta_{20},\beta_{30})=(1, 1.25, 0.75)$. For the dependence structure, suppose that the correlation matrix $\mathbf{R}$ in the NORTA method is the same as in Example \@ref(ex:Example1). 
+Suppose the aim is to simulate $N=5000$ clustered nominal responses with
+$\Pr(Y_{t}=1)=0.1$, $\Pr(Y_{t}=2)=0.2$, $\Pr(Y_{t}=3)=0.3$ and $\Pr(Y_{t}=4)=0.4$, for all $i$ and $t=1,\ldots,3$. For the sake of simplicity, we assume that the clustered responses are independent. 
 ```
 
 ```{r, tidy=TRUE}
 # sample size
-N <- 500
+N <- 5000
 # cluster size
 clsize <- 3 
 # pseudo-covariate 
 x <- rep(0, each = clsize * N)
 # parameter vector
-betas <-  c(1, 0, 1.25, 0, 0.75, 0, 0, 0)
+betas <-  c(log(0.1/0.4), 0, log(0.2/0.4), 0, log(0.3/0.4), 0, 0, 0)
 # number of nominal response categories
 ncategories <- 4  
 set.seed(1) 
 # correlation matrix for the NORTA method
-cor.matrix <- kronecker(toeplitz(c(1,rep(0.95,clsize-1))),diag(ncategories)) 
+cor.matrix <- kronecker(toeplitz(c(1,rep(0,clsize-1))),diag(ncategories)) 
 # simulation of clustered nominal responses
 CorNorRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, xformula = ~x, cor.matrix = cor.matrix)
-# fitting a gee model
-fit <- nomLORgee(y~1,data=CorNorRes$simdata,id=id,repeated=time,LORstr="time.exch")
-# checking regression coefficients
-round(coef(fit),2)
+# simulated marginal probabilities
+apply(CorNorRes$Ysim,2,table)/N
 ```
 # How to Cite
 ```{r, comment=""}
