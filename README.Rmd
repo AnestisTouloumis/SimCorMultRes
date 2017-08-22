@@ -1,7 +1,5 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 references:
 - id: Touloumis2016
   title: "Simulating Correlated Binary and Multinomial Responses under Marginal Model Specification: The SimCorMultRes Package"
@@ -21,7 +19,6 @@ references:
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include=FALSE}
-library("badger")
 knitr::opts_chunk$set(
   tidy= TRUE,
   collapse = TRUE,
@@ -32,11 +29,8 @@ knitr::opts_chunk$set(
 
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
-
 [![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
-`r badge_devel("AnestisTouloumis/SimCorMultRes", "brightgreen")`
 [![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) 
-[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-brightgreen.svg)](/commits/master)
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/SimCorMultRes?color=blue)](https://cran.r-project.org/package=SimCorMultRes)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes)
@@ -45,7 +39,7 @@ knitr::opts_chunk$set(
 
 ## Author
 
-Anestis Touloumis: <https://brighton.academia.edu/AnestisTouloumis>
+Anestis Touloumis: <https://sites.google.com/view/atouloumis>
 
 School of Computing, Engineering and Mathematics, University of Brighton. 
 
