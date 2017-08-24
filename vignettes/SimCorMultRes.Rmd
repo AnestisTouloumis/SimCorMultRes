@@ -1,7 +1,7 @@
 ---
 title: "Simulating Correlated Binary and Multinomial Responses with SimCorMultRes"
 author: "Anestis Touloumis"
-date: "`r Sys.Date()`"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
   bookdown::html_document2:
     toc: yes
@@ -274,7 +274,7 @@ Consider now simulation of correlated binary responses from the marginal logit m
 \begin{equation*}
 \Pr(Y_{it}=1 |\mathbf{x}_{it})=F(0.2x_i)
 \end{equation*}
-where $F$ is the cdf of the standard logistic distribution (mean $=0$ and variance $=\pi^2/3$), $N=100$, $T=4$ and $\mathbf{x}_{it}=x_i\overset{iid}{\sim} N(0,1)$ for all $i$ and $t$. This is similar to the marginal model configuration in Example \@ref(exm:BinaryProbit) except from the link function. For the dependence structure, assume that the correlation matrix of $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) is equal to the correlation matrix $\mathbf{R}$ defined in \@ref(eq:CMB). To simulate $\mathbf{e}_i^{B}$ without utilizing the NORTA method, one can employ the tetra-variate extreme value distribution [@Gumbel1958]. In particular, this is accomplished by setting $\mathbf{e}_i^{B}=\mathbf{U}_i-\mathbf{V}_i$ for all $i$, where $\mathbf{U}_i$ and $\mathbf{V}_i$ are independent random vectors from the tetra-variate extreme value distribution with dependence parameter equal to $0.9$, that is
+where $F$ is the cdf of the standard logistic distribution (mean $=0$ and variance $=\pi^2/3$), $N=100$, $T=4$ and $\mathbf{x}_{it}=x_i\overset{iid}{\sim} N(0,1)$ for all $i$ and $t$. This is similar to the marginal model configuration in Example \@ref(ex:BinaryProbit) except from the link function. For the dependence structure, assume that the correlation matrix of $\mathbf{e}_i^{B}=(e^{B}_{i1},e^{B}_{i2},e^{B}_{i3},e^{B}_{i4})^{\prime}$ in \@ref(eq:TMB) is equal to the correlation matrix $\mathbf{R}$ defined in \@ref(eq:CMB). To simulate $\mathbf{e}_i^{B}$ without utilizing the NORTA method, one can employ the tetra-variate extreme value distribution [@Gumbel1958]. In particular, this is accomplished by setting $\mathbf{e}_i^{B}=\mathbf{U}_i-\mathbf{V}_i$ for all $i$, where $\mathbf{U}_i$ and $\mathbf{V}_i$ are independent random vectors from the tetra-variate extreme value distribution with dependence parameter equal to $0.9$, that is
 $$\Pr\left(U_{i1}\leq u_{i1},U_{i2}\leq u_{i2},U_{i3}\leq u_{i3},U_{i4}\leq u_{i4}\right)=\exp\left\{-\left[\sum_{t=1}^4 \exp{\left(-\frac{u_{it}}{0.9}\right)}\right]^{0.9}\right\}$$
 and 
 $$\Pr\left(V_{i1}\leq v_{i1},V_{i2}\leq v_{i2},V_{i3}\leq v_{i3},V_{i4}\leq v_{i4}\right)=\exp\left\{-\left[\sum_{t=1}^4 \exp{\left(-\frac{v_{it}}{0.9}\right)}\right]^{0.9}\right\}.$$
@@ -300,11 +300,11 @@ summary(binGEEmod)$coefficients
 ## No marginal model specification
 To achieve simulation of clustered binary, ordinal and nominal responses under no marginal model specification, perform the following intercepts:
 
-1. Based on the marginal probabilities calculate the intercept of a marginal probit model for binary responses (see Example \@ref(exm:no-covariate)) or the category-specific intercepts of a cumulative probit model [see third example in @Touloumis2016] or of a baseline-category logit model for multinomial responses (see Example \@ref(exm:Example2NoCovariates)).
+1. Based on the marginal probabilities calculate the intercept of a marginal probit model for binary responses (see Example \@ref(ex:no-covariate)) or the category-specific intercepts of a cumulative probit model [see third example in @Touloumis2016] or of a baseline-category logit model for multinomial responses (see Example \@ref(ex:Example2NoCovariates)).
 
 2. Create a pseudo-covariate say `x` of length equal to the number of cluster size (`clsize`) times the desired number of clusters of simulated responses (say `R`), that is `x = clsize * R`. This step is required in order to identify the desired number of clustered responses.  
 
-3. Set `betas = 0` in the core functions `rbin` (see Example \@ref(exm:no-covariate)) or `rmult.clm`, or set 0 all values of the `beta` argument that correspond to the category-specific parameters in the core function `rmult.bcl` (see Example \@ref(exm:Example2NoCovariates)).
+3. Set `betas = 0` in the core functions `rbin` (see Example \@ref(ex:no-covariate)) or `rmult.clm`, or set 0 all values of the `beta` argument that correspond to the category-specific parameters in the core function `rmult.bcl` (see Example \@ref(ex:Example2NoCovariates)).
 
 4. set `xformula = ~ x`.
 
