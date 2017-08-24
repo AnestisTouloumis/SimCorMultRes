@@ -17,28 +17,28 @@ School of Computing, Engineering and Mathematics, University of Brighton.
 Installation
 ------------
 
-You can install the release version of **SimCorMultRes**:
+You can install the release version of `SimCorMultRes`:
 
 ``` r
 install.packages("SimCorMultRes")
 ```
 
-The source code for the release version of **SimCorMultRes** is available on CRAN at:
+The source code for the release version of `SimCorMultRes` is available on CRAN at:
 
 -   <https://CRAN.R-project.org/package=SimCorMultRes>
 
-Or you can install the development version of **SimCorMultRes**:
+Or you can install the development version of `SimCorMultRes`:
 
 ``` r
 # install.packages('devtools')
 devtools::install_github("AnestisTouloumis/SimCorMultRes")
 ```
 
-The source code for the development version of **SimCorMultRes** is available on github at:
+The source code for the development version of `SimCorMultRes` is available on github at:
 
 -   <https://github.com/AnestisTouloumis/SimCorMultRes>
 
-To use **SimCorMultRes**, you should load the package as follows:
+To use `SimCorMultRes`, you should load the package as follows:
 
 ``` r
 library(SimCorMultRes)
@@ -89,7 +89,7 @@ summary(binGEEmod)$coefficients
 #> x           0.204827031 0.009114596 22.4724192  0.01610695 12.7166857
 ```
 
-Additional examples can be found in Touloumis (2016) and in the vignette of **SimCorMultRes**.
+Additional examples can be found in Touloumis (2016) and in the vignette of `SimCorMultRes`.
 
 ``` r
 browseVignettes("SimCorMultRes")
