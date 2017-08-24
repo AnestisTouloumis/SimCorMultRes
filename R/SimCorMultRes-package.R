@@ -66,5 +66,4 @@
 #' @importFrom methods formalArgs
 #' @importFrom stats as.formula formula model.frame model.matrix pnorm qcauchy qlogis rnorm terms toeplitz update
 #' @keywords package
-"_PACKAGE"
-#> [1] "_PACKAGE"
+NULL
