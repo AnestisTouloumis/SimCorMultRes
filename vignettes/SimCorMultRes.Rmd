@@ -1,5 +1,5 @@
 ---
-title: "Simulating Correlated Binary and Multinomial Responses with `SimCorMultRes`"
+title: "Simulating Correlated Binary and Multinomial Responses with SimCorMultRes"
 author: "Anestis Touloumis"
 date: "`r Sys.Date()`"
 output: 
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction 
-The __R__ package `SimCorMultRes` is suitable for simulation of correlated binary responses (exactly two response categories) and of correlated nominal or ordinal multinomial responses (three or more response categories) conditional on a regression model specification for the marginal probabilities of the response categories. This vignette briefly describes the simulation methods proposed by @Touloumis2016 and illustrates the use of the core functions of `SimCorMultRes`. A more detailed description of `SimCorMultRes` can be found in @Touloumis2016. 
+The R package `SimCorMultRes` is suitable for simulation of correlated binary responses (exactly two response categories) and of correlated nominal or ordinal multinomial responses (three or more response categories) conditional on a regression model specification for the marginal probabilities of the response categories. This vignette briefly describes the simulation methods proposed by @Touloumis2016 and illustrates the use of the core functions of `SimCorMultRes`. A more detailed description of `SimCorMultRes` can be found in @Touloumis2016. 
 
 # Areas of Applications
 This package was created to facilitate the task of carrying out simulation studies and evaluating the performance of statistical method(s) for estimating the regression parameters in a marginal model with clustered binary and multinomial responses. Examples of such statistical methods include maximum likelihood methods, copula approaches, quasi-least squares approaches, generalized quasi-likelihood methods and generalized estimating equations (GEE) approaches among others [see references in @Touloumis2016]. 
