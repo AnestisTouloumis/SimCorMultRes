@@ -7,13 +7,6 @@ SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/SimCorMultRes?color=blue)](https://cran.r-project.org/package=SimCorMultRes) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/SimCorMultRes)](https://cran.r-project.org/package=SimCorMultRes)
 
-Author
-------
-
-Anestis Touloumis: <https://sites.google.com/view/atouloumis>
-
-School of Computing, Engineering and Mathematics, University of Brighton.
-
 Installation
 ------------
 

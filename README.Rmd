@@ -38,13 +38,6 @@ knitr::opts_chunk$set(
 
 
 
-## Author
-
-Anestis Touloumis: <https://sites.google.com/view/atouloumis>
-
-School of Computing, Engineering and Mathematics, University of Brighton. 
-
-
 ## Installation
 
 You can install the release version of `SimCorMultRes`:
