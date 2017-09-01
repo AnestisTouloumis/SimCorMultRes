@@ -115,4 +115,4 @@ How to cite
 References
 ==========
 
-Touloumis, Anestis. 2016. “Simulating Correlated Binary and Multinomial Responses Under Marginal Model Specification: The SimCorMultRes Package.” *The R Journal* 8 (2): 79–91. <https://journal.r-project.org/archive/2016/RJ-2016-034/index.html>.
+Touloumis, A. (2016) Simulating Correlated Binary and Multinomial Responses under Marginal Model Specification: The SimCorMultRes Package. *The R Journal*, **8**, 79–91.
