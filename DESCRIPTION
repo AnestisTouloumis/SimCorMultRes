@@ -14,8 +14,9 @@ Suggests:
     knitr,
     markdown,
     multgee(>= 1.2)
-Authors@R: c(person("Anestis", "Touloumis", role = c("aut", "cre"), 
-                       email = "A.Touloumis@brighton.ac.uk"))
+Authors@R: person("Anestis", "Touloumis", role = c("aut", "cre"),
+                      email = "A.Touloumis@brighton.ac.uk",
+                      comment = c(ORCHID = "0000-0002-5965-1639"))
 URL: http://github.com/AnestisTouloumis/SimCorMultRes
 BugReports: http://github.com/AnestisTouloumis/SimCorMultRes/issues
 License: GPL-3
