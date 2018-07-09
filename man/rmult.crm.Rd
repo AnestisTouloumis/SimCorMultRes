@@ -26,8 +26,8 @@ but without including a response variable.}
 \code{xformula}.}
 
 \item{link}{character string indicating the link function of the marginal
-continuation-ratio model. Options include \code{"probit"}, \code{"logit"},
-\code{"cloglog"} or \code{"cauchit"}. Required when \code{rlatent = NULL}.}
+continuation-ratio model. Options include \code{'probit'}, \code{'logit'},
+\code{'cloglog'} or \code{'cauchit'}. Required when \code{rlatent = NULL}.}
 
 \item{cor.matrix}{matrix indicating the correlation matrix of the
 multivariate normal distribution when the NORTA method is employed
@@ -109,7 +109,7 @@ ncategories <- 5
 cor.matrix <- diag(1, (ncategories - 1) * clsize) + kronecker(toeplitz(c(0,
     rep(0.24, ncategories - 2))), matrix(1, clsize, clsize))
 CorOrdRes <- rmult.crm(clsize = clsize, intercepts = intercepts, betas = betas,
-    xformula = ~x, cor.matrix = cor.matrix, link = "probit")
+    xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 head(CorOrdRes$Ysim)
 
 }

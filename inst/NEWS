@@ -1,14 +1,18 @@
+Version 1.6.0 [2018-07-09]
+ * Released on CRAN.
+ * Simplified the R code.
+
 Version 1.5.1 [2017-08-22]
  * Updated documention - introduced roxygen2.
- * Updated vignette - from pdf to html. 
- 
+ * Updated vignette - from pdf to html.
+
 Version 1.5.0 [2017-07-11]
  * Released on CRAN.
 
 Version 1.4.8 [2017-07-10]
  * Updated README - presentation.
  * Updated vignette - presentation.
- 
+
 Version 1.4.7 [2017-06-20]
  * Updated vignette - added more examples.
 
@@ -29,15 +33,15 @@ Version 1.4.3 [2017-06-13]
  * Created a github repo.
  * Improved vignette in R using bookdown.
  * Minor improvements to the output of the core functions.
- 
+
 Version 1.4.2 [2016-09-15]
  * Updated CITATION file.
  * Updated documentation.
- 
+
 Version 1.4.1 [2016-07-19]
  * Replaced the lin.pred argument in the core functions with three easier to handle arguments (betas, xformula and xdata).
  * Increased the flexibility of the implementation of the NORTA method in the function rnorta.
- * Introduced the rlatent argument in the core functions to allow user-defined simulated values for the latent variables.   
+ * Introduced the rlatent argument in the core functions to allow user-defined simulated values for the latent variables.
  * Updated R code.
  * Updated CITATION file.
  * Updated vignette.
@@ -77,4 +81,4 @@ Version 1.1 [2013-05-30]
 
 Version 1.0 [2012-11-12]
  * The first version of the R package SimCorMultRes is released on CRAN.
- 
+

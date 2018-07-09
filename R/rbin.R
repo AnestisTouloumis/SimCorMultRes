@@ -54,8 +54,8 @@
 #' @param xdata optional data frame containing the variables provided in
 #' \code{xformula}.
 #' @param link character string indicating the link function in the marginal
-#' model. Options include \code{"probit"}, \code{"logit"}, \code{"cloglog"} or
-#' \code{"cauchit"}. Required when \code{rlatent = NULL}.
+#' model. Options include \code{'probit'}, \code{'logit'}, \code{'cloglog'} or
+#' \code{'cauchit'}. Required when \code{rlatent = NULL}.
 #' @param cor.matrix matrix indicating the correlation matrix of the
 #' multivariate normal distribution when the NORTA method is employed
 #' (\code{rlatent = NULL}).
@@ -102,111 +102,44 @@
 #' cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
 #' x <- rep(rnorm(N), each = clsize)
 #' CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
-#'     xformula = ~x, cor.matrix = cor.matrix, link = "probit")
+#'     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 #' library(gee)
-#' binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$simdata)
+#' binGEEmod <- gee(y ~ x, family = binomial('probit'), id = id, data = CorBinRes$simdata)
 #' summary(binGEEmod)$coefficients
 #'
 #' ## See Example 3.5 in the Vignette.
 #' set.seed(8)
 #' library(evd)
-#' rlatent1 <- rmvevd(N, dep = sqrt(1 - 0.9), model = "log", d = clsize)
-#' rlatent2 <- rmvevd(N, dep = sqrt(1 - 0.9), model = "log", d = clsize)
+#' rlatent1 <- rmvevd(N, dep = sqrt(1 - 0.9), model = 'log', d = clsize)
+#' rlatent2 <- rmvevd(N, dep = sqrt(1 - 0.9), model = 'log', d = clsize)
 #' rlatent <- rlatent1 - rlatent2
 #' CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
 #'     xformula = ~x, rlatent = rlatent)
-#' binGEEmod <- gee(y ~ x, family = binomial("logit"), id = id, data = CorBinRes$simdata)
+#' binGEEmod <- gee(y ~ x, family = binomial('logit'), id = id, data = CorBinRes$simdata)
 #' summary(binGEEmod)$coefficients
 #'
 #' @export
 rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
     cor.matrix = cor.matrix, rlatent = NULL) {
-    if (all.equal(clsize, as.integer(clsize)) != TRUE | clsize < 2)
-        stop("'clsize' must be a positive integer greater than or equal to two")
-    if (!(is.vector(intercepts) & !is.list(intercepts)))
-        stop("'intercepts' must be a vector")
-    if (!is.numeric(intercepts))
-        stop("'intercepts' must be numeric")
-    if (length(intercepts) == 1)
-        intercepts <- rep(intercepts, clsize)
-    if (length(intercepts) != clsize)
-        stop("'intercepts' must have either one or ", clsize, " elements")
-    intercepts <- cbind(-Inf, intercepts, Inf)
-    if (!(is.vector(betas) & !is.list(betas)) & !is.matrix(betas))
-        stop("'betas' must be a vector or a matrix")
-    if (!is.numeric(betas))
-        stop("'betas' must be numeric")
-    if (is.vector(betas) & !is.list(betas)) {
-        betas <- rep(betas, clsize)
-    } else {
-        if (nrow(betas) != clsize)
-            stop("The number of rows in 'betas' should be equal to 'clsize'")
-        betas <- c(t(betas))
-    }
-    lpformula <- stats::as.formula(xformula)
-    if (length(paste0(attr(terms(lpformula), "variables"))) == 1)
-        stop("No covariates were found in 'formula' ")
-    if (attr(terms(lpformula), "intercept") == 0) {
-      lpformula <- update(lpformula, ~. + 1)
-    }
-    Xmat <- stats::model.matrix(lpformula, data = xdata)
-    Xmat <- matrix(Xmat[, -1], ncol = ncol(Xmat) - 1)
-    if (length(betas) != (clsize) * ncol(Xmat))
-        stop("The length of 'betas' does not match with the number of covariates")
-    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat),
-                       byrow = TRUE) * Xmat
-    lin.pred <- matrix(rowSums(lin.pred), ncol = clsize, byrow = TRUE)
-    lin.pred <- as.matrix(lin.pred)
+    check_cluster_size(clsize)
+    intercepts <- check_intercepts(intercepts, clsize, clsize, "rbin")
+    betas <- check_betas(betas, clsize)
+    lpformula <- check_xformula(xformula)
+    lin.pred <- create_linear_predictor(betas, clsize, lpformula, xdata)
     R <- nrow(lin.pred)
-    if (is.null(rlatent)) {
-        if (length(link) != 1)
-            stop("The length of 'link' must be one")
-        links <- c("probit", "logit", "cloglog", "cauchit")
-        if (!is.element(link, links))
-            stop("'link' must be 'probit','logit','cloglog' and/or 'cauchit'")
-        distr <- switch(link, probit = "qnorm", logit = "qlogis",
-                        cloglog = "qgumbel",
-            cauchit = "qcauchy")
-        if (!is.numeric(cor.matrix))
-            stop("'cor.matrix' must be numeric")
-        if (!is.matrix(cor.matrix))
-            stop("'cor.matrix' must be a matrix")
-        if (ncol(cor.matrix) != clsize | nrow(cor.matrix) != clsize)
-            stop("'cor.matrix' must be a ", clsize, "x", clsize, " matrix")
-        if (!isSymmetric(cor.matrix))
-            stop("'cor.matrix' must be a symmetric matrix")
-        if (any(diag(cor.matrix) != 1))
-            stop("the diagonal elements of 'cor.matrix' must be one")
-        if (any(cor.matrix > 1) | any(cor.matrix < -1))
-            stop("all the elements of 'cor.matrix' must be on [-1,1]")
-        if (any(
-          eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <= 0))
-            stop("'cor.matrix' must be positive definite")
-        err <- rnorta(R, cor.matrix, rep(distr, clsize))
-        if (distr == "qgumbel")
-            err <- -err
-    } else {
-        if (!is.matrix(rlatent))
-            stop("'rlatent' must be a matrix")
-        if (!is.numeric(rlatent))
-            stop("'rlatent' must be numeric")
-        if (nrow(rlatent) != R | ncol(rlatent) != clsize)
-            stop("'rlatent' must be a ", R, "x", clsize, " matrix")
-        cor.matrix <- NULL
-        err <- rlatent
-    }
-    U <- lin.pred + err
+    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix)
+    U <- lin.pred + rlatent
     Ysim <- matrix(0, R, clsize)
-    for (i in 1:clsize) Ysim[, i] <-
-      cut(U[, i] - 2 * lin.pred[, i], intercepts[i, ], labels = FALSE)
+    for (i in 1:clsize) Ysim[, i] <- cut(U[, i] - 2 * lin.pred[, i],
+                                         intercepts[i, ], labels = FALSE)
     Ysim <- 2 - Ysim
+    y <- c(t(Ysim))
     id <- rep(1:R, each = clsize)
     time <- rep(1:clsize, R)
-    y <- c(t(Ysim))
-    rownames(Ysim) <- rownames(err) <- paste("i", 1:R, sep = "=")
-    colnames(Ysim) <- colnames(err) <- paste("t", 1:clsize, sep = "=")
-    simdata <- data.frame(y, stats::model.frame(formula = lpformula, data = xdata),
+    rownames(Ysim) <- rownames(rlatent) <- paste("i", 1:R, sep = "=")
+    colnames(Ysim) <- colnames(rlatent) <- paste("t", 1:clsize, sep = "=")
+    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata),
         id, time)
-    list(Ysim = Ysim, simdata = simdata, rlatent = err)
+    list(Ysim = Ysim, simdata = simdata, rlatent = rlatent)
 }
