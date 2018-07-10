@@ -117,31 +117,19 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
   check_cluster_size(clsize)
   betas <- check_betas(betas, clsize)
   lpformula <- check_xformula(xformula)
-  lin.pred <- create_linear_predictor(betas, clsize, lpformula, xdata, 3,
+  if (!is.environment(xdata))
+    xdata <- data.frame(na.omit(xdata))
+  lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
                                       "rmult.clm")
-  R <- nrow(lin.pred)
-  intercepts <- check_intercepts(intercepts, clsize, R, "rmult.crm")
+  R <- nrow(lin_pred)
+  intercepts <- check_intercepts(intercepts, clsize, "rmult.crm", R)
   ncategories <- ncol(intercepts) / clsize + 1
-  lin_pred_extended <- t(apply(lin.pred, 1,
+  lin_pred_extended <- t(apply(lin_pred, 1,
                                function(x) rep(x, each = ncategories - 1)))
-  rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, ncategories,
-                            "rmult.crm")
-  U <- rlatent - lin_pred_extended
-  Ysim <- matrix(as.numeric(t(U <= intercepts)), R * clsize, ncategories - 1,
-                 TRUE)
-  for (i in 1:(ncategories - 1)) Ysim[, i] <- ifelse(Ysim[, i] == 1, i,
-                                                     ncategories)
-  Ysim <- apply(Ysim, 1, min)
-  Ysim <- matrix(Ysim, R, clsize, byrow = TRUE)
-  id <- rep(1:R, each = clsize)
-  time <- rep(1:clsize, R)
-  y <- c(t(Ysim))
-  rownames(Ysim) <- rownames(rlatent) <- paste("i", 1:R, sep = "=")
-  colnames(Ysim) <- paste("t", 1:clsize, sep = "=")
-  colnames(rlatent) <- paste("t=", rep(1:clsize, each = ncategories - 1),
-                             " & j=", rep(1:(ncategories - 1), clsize),
-                             sep = "")
-  simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata),
-                        id, time)
-  list(Ysim = Ysim, simdata = simdata, rlatent = rlatent)
+  rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.crm",
+                            ncategories)
+  Ysim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm",
+                          intercepts, ncategories)
+  create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.crm",
+                ncategories)
 }

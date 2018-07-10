@@ -64,6 +64,6 @@
 #' \emph{Computational Statistics & Data Analysis} \bold{11}, 275--295.
 #' @importFrom evd qgumbel
 #' @importFrom methods formalArgs
-#' @importFrom stats as.formula formula model.frame model.matrix pnorm qcauchy qlogis rnorm terms toeplitz update
+#' @importFrom stats as.formula formula model.frame model.matrix na.omit pnorm qcauchy qlogis rnorm terms toeplitz update
 #' @keywords package
 NULL

@@ -123,23 +123,14 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
     cor.matrix = cor.matrix, rlatent = NULL) {
     check_cluster_size(clsize)
-    intercepts <- check_intercepts(intercepts, clsize, clsize, "rbin")
+    intercepts <- check_intercepts(intercepts, clsize, "rbin")
     betas <- check_betas(betas, clsize)
     lpformula <- check_xformula(xformula)
-    lin.pred <- create_linear_predictor(betas, clsize, lpformula, xdata)
-    R <- nrow(lin.pred)
-    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix)
-    U <- lin.pred + rlatent
-    Ysim <- matrix(0, R, clsize)
-    for (i in 1:clsize) Ysim[, i] <- cut(U[, i] - 2 * lin.pred[, i],
-                                         intercepts[i, ], labels = FALSE)
-    Ysim <- 2 - Ysim
-    y <- c(t(Ysim))
-    id <- rep(1:R, each = clsize)
-    time <- rep(1:clsize, R)
-    rownames(Ysim) <- rownames(rlatent) <- paste("i", 1:R, sep = "=")
-    colnames(Ysim) <- colnames(rlatent) <- paste("t", 1:clsize, sep = "=")
-    simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata),
-        id, time)
-    list(Ysim = Ysim, simdata = simdata, rlatent = rlatent)
+    if (!is.environment(xdata))
+      xdata <- data.frame(na.omit(xdata))
+    lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata, "rbin")
+    R <- nrow(lin_pred)
+    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rbin")
+    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rbin", intercepts)
+    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rbin")
 }

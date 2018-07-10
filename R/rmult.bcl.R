@@ -117,24 +117,16 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
   ncategories <- check_ncategories(ncategories)
   betas <- check_betas(betas, clsize)
   lpformula <- check_xformula(xformula)
-  lin.pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
-                                      ncategories, "rmult.bcl")
-  R <- nrow(lin.pred)
+  if (!is.environment(xdata))
+    xdata <- data.frame(na.omit(xdata))
+  lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
+                                      "rmult.bcl", ncategories = ncategories)
+  R <- nrow(lin_pred)
   rlatent <- create_rlatent(rlatent, R, "cloglog", clsize, cor.matrix,
-                            ncategories, "rmult.bcl")
-  U <- lin.pred + rlatent
-  U <- matrix(as.vector(t(U)), nrow = clsize * R, ncol = ncategories, TRUE)
-  Ysim <- apply(U, 1, which.max)
-  Ysim <- matrix(Ysim, ncol = clsize, byrow = TRUE)
-  id <- rep(1:R, each = clsize)
-  time <- rep(1:clsize, R)
-  y <- c(t(Ysim))
+                            "rmult.bcl", ncategories = ncategories)
+  Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl",
+                          ncategories = ncategories)
   lpformula <- update(lpformula, ~. - 1)
-  rownames(Ysim) <- rownames(rlatent) <- paste("i", 1:R, sep = "=")
-  colnames(Ysim) <- paste("t", 1:clsize, sep = "=")
-  colnames(rlatent) <- paste("t=", rep(1:clsize, each = ncategories), " & j=",
-                             rep(1:ncategories, clsize), sep = "")
-  simdata <- data.frame(y, model.frame(formula = lpformula, data = xdata),
-                        id, time)
-  list(Ysim = Ysim, simdata = simdata, rlatent = rlatent)
+  create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.bcl",
+                ncategories = ncategories)
 }

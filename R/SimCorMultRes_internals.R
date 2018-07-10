@@ -5,16 +5,14 @@ check_cluster_size <- function(clsize) {
 
 check_ncategories <- function(ncategories) {
     if (!is.numeric(ncategories) | ncategories < 3)
-        stop("'ncategories' must be greater than or equal to three")
-    ncategories <- as.integer(ncategories)
-    if (all.equal(ncategories, as.integer(ncategories)) != TRUE | ncategories <
-        3)
-        stop("'ncategories' must be a positive integer greater than or equal to three")
+        stop("'ncategories' must be numeric greater or equal to three")
+    if (all.equal(ncategories, as.integer(ncategories)) != TRUE)
+        stop("'ncategories' must be a positive integer")
     ncategories
 }
 
-check_correlation_matrix <- function(cor.matrix, clsize, ncategories = 3,
-                                     rfctn = "rbin") {
+check_correlation_matrix <- function(cor.matrix, clsize, rfctn,
+                                     ncategories = NULL) {
     if (!is.numeric(cor.matrix))
         stop("'cor.matrix' must be numeric")
     if (!is.matrix(cor.matrix))
@@ -41,15 +39,6 @@ check_correlation_matrix <- function(cor.matrix, clsize, ncategories = 3,
     if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <=
         0))
         stop("'cor.matrix' must be positive definite")
-    if (rfctn == "rbin" | rfctn == "rmult.clm") {
-        if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values
-                <= 0))
-          stop("'cor.matrix' must be positive definite")
-    } else {
-        if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values
-                <= 0))
-          stop("'cor.matrix' must respect the local independence of the alternatives and must be positive definite")
-    }
     cor.matrix
 }
 
@@ -63,7 +52,7 @@ check_xformula <- function(xformula) {
     lpformula
 }
 
-check_intercepts <- function(intercepts, clsize, R = clsize, rfctn = "rbin") {
+check_intercepts <- function(intercepts, clsize, rfctn, R = NULL) {
     if (!is.numeric(intercepts))
         stop("'intercepts' must be numeric")
     if (any(is.infinite(intercepts)))
@@ -125,9 +114,8 @@ check_betas <- function(betas, clsize) {
     betas
 }
 
-
-create_linear_predictor <- function(betas, clsize, lpformula, xdata,
-                                    ncategories = 3, rfctn = "rbin") {
+create_linear_predictor <- function(betas, clsize, lpformula, xdata, rfctn,
+                                    ncategories = NULL) {
     Xmat <- model.matrix(lpformula, data = xdata)
     if (rfctn == "rmult.bcl") {
         Xmat <- apply(Xmat, 2, function(x) rep(x, each = ncategories))
@@ -149,18 +137,23 @@ create_linear_predictor <- function(betas, clsize, lpformula, xdata,
     as.matrix(lin.pred)
 }
 
-create_rlatent <- function(rlatent, R, link, clsize, cor.matrix,
-                           ncategories = 3, rfctn = "rbin") {
+create_distribution <- function(link){
+  if (length(link) != 1)
+    stop("The length of 'link' must be one")
+  links <- c("probit", "logit", "cloglog", "cauchit")
+  if (!is.element(link, links))
+    stop("'link' must be 'probit','logit','cloglog' and/or 'cauchit'")
+  distr <- switch(link, probit = "qnorm", logit = "qlogis",
+                  cloglog = "qgumbel", cauchit = "qcauchy")
+  distr
+}
+
+create_rlatent <- function(rlatent, R, link, clsize, cor.matrix, rfctn,
+                           ncategories = NULL) {
     if (is.null(rlatent)) {
-        if (length(link) != 1)
-            stop("The length of 'link' must be one")
-        links <- c("probit", "logit", "cloglog", "cauchit")
-        if (!is.element(link, links))
-            stop("'link' must be 'probit','logit','cloglog' and/or 'cauchit'")
-        distr <- switch(link, probit = "qnorm", logit = "qlogis",
-                        cloglog = "qgumbel", cauchit = "qcauchy")
-        cor.matrix <- check_correlation_matrix(cor.matrix, clsize, ncategories,
-            rfctn)
+        distr <- create_distribution(link)
+        cor.matrix <- check_correlation_matrix(cor.matrix, clsize, rfctn,
+                                               ncategories)
         rlatent <- rnorta(R, cor.matrix, rep(distr, nrow(cor.matrix)))
         if (distr == "qgumbel" & rfctn != "rmult.bcl")
             rlatent <- -rlatent
@@ -176,11 +169,65 @@ create_rlatent <- function(rlatent, R, link, clsize, cor.matrix,
         } else {
             ncol_rlatent <- clsize * (ncategories - 1)
         }
-        ncol_rlatent
         if (nrow(rlatent) != R | ncol(rlatent) != ncol_rlatent)
             stop("'rlatent' must be a ", R, "x", ncol_rlatent, " matrix")
         cor.matrix <- NULL
         rlatent <- rlatent
     }
     rlatent
+}
+
+create_output <- function(Ysim, R, clsize, rlatent, lpformula, xdata, rfctn,
+                          ncategories = NULL){
+  y <- c(t(Ysim))
+  id <- rep(1:R, each = clsize)
+  time <- rep(1:clsize, R)
+  rownames(Ysim) <- rownames(rlatent) <- paste("i", 1:R, sep = "=")
+  colnames(Ysim) <- paste("t", 1:clsize, sep = "=")
+  colnames(rlatent) <- if (rfctn == "rbin" | rfctn == "rmult.clm"){
+    paste("t", 1:clsize, sep = "=")
+    } else if (rfctn == "rmult.bcl") {
+      paste("t=", rep(1:clsize, each = ncategories),
+            " & j=", rep(1:ncategories, clsize), sep = "")
+      } else {
+        paste("t=", rep(1:clsize, each = ncategories - 1),
+              " & j=", rep(1:(ncategories - 1), clsize),
+              sep = "")
+      }
+  sim_model_frame <- model.frame(formula = lpformula, data = xdata)
+  simdata <- data.frame(y, sim_model_frame, id, time)
+  list(Ysim = Ysim, simdata = simdata, rlatent = rlatent)
+}
+
+
+apply_threshold <- function(lin_pred, rlatent, clsize, rfctn, intercepts = NULL,
+                            ncategories = NULL){
+  R <- nrow(lin_pred)
+  if (rfctn == "rmult.clm" | rfctn == "rmult.crm"){
+    U <- rlatent - lin_pred
+  } else {
+    U <- rlatent + lin_pred
+  }
+  if (rfctn == "rbin"){
+    Ysim <- matrix(0, R, clsize)
+    for (i in 1:clsize) Ysim[, i] <- cut(U[, i] - 2 * lin_pred[, i],
+                                         intercepts[i, ], labels = FALSE)
+    Ysim <- 2 - Ysim
+  } else if (rfctn == "rmult.bcl"){
+    U <- matrix(as.vector(t(U)), nrow = clsize * R, ncol = ncategories, TRUE)
+    Ysim <- apply(U, 1, which.max)
+    Ysim <- matrix(Ysim, ncol = clsize, byrow = TRUE)
+  } else if (rfctn == "rmult.clm"){
+    Ysim <- matrix(0, R, clsize)
+    for (i in 1:clsize) Ysim[, i] <- cut(U[, i], intercepts[i, ],
+                                         labels = FALSE)
+  } else {
+    Ysim <- matrix(as.numeric(t(U <= intercepts)), R * clsize, ncategories - 1,
+                   TRUE)
+    for (i in 1:(ncategories - 1)) Ysim[, i] <- ifelse(Ysim[, i] == 1, i,
+                                                       ncategories)
+    Ysim <- apply(Ysim, 1, min)
+    Ysim <- matrix(Ysim, R, clsize, byrow = TRUE)
+  }
+  Ysim
 }

@@ -105,8 +105,7 @@ CorOrdRes <- rmult.clm(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 head(CorOrdRes$simdata, n = 8)
 
-## Same sampling scheme except that the parameter vector is now
-#li# time-stationary.
+## Same sampling scheme except that the parameter vector is now time-stationary.
 set.seed(12345)
 x <- rep(rnorm(N), each = clsize)
 CorOrdRes <- rmult.clm(clsize = clsize, betas = 1, xformula = ~x, cor.matrix = toeplitz(c(1,
