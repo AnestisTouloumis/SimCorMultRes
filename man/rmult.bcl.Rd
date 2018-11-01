@@ -130,8 +130,8 @@ responses using a local odds ratios parameterization. \emph{Biometrics}
 }
 \seealso{
 \code{\link{rbin}} for simulating correlated binary responses,
-\code{\link{rmult.clm}} and \code{\link{rmult.crm}} for simulating
-correlated ordinal responses.
+\code{\link{rmult.clm}}, \code{\link{rmult.crm}} and
+\code{\link{rmult.acl}} for simulating correlated ordinal responses.
 }
 \author{
 Anestis Touloumis

@@ -78,8 +78,9 @@
 #' \eqn{e^{O2}_{it}} in \cite{Touloumis (2016)}.}
 #' @author Anestis Touloumis
 #' @seealso \code{\link{rmult.bcl}} for simulating correlated nominal
-#' responses, \code{\link{rmult.clm}} for simulating correlated ordinal
-#' responses and \code{\link{rbin}} for simulating correlated binary responses.
+#' responses, \code{\link{rmult.clm}} and \code{\link{rmult.acl}} for simulating
+#' correlated ordinal responses and \code{\link{rbin}} for simulating
+#' correlated binary responses.
 #' @references Cario, M. C. and Nelson, B. L. (1997) \emph{Modeling and
 #' generating random vectors with arbitrary marginal distributions and
 #' correlation matrix}. Technical Report, Department of Industrial Engineering

@@ -53,50 +53,55 @@ check_xformula <- function(xformula) {
 }
 
 check_intercepts <- function(intercepts, clsize, rfctn, R = NULL) {
-    if (!is.numeric(intercepts))
-        stop("'intercepts' must be numeric")
-    if (any(is.infinite(intercepts)))
-        stop("'intercepts' must not be Inf or -Inf")
-    if (rfctn == "rbin") {
-        if (!(is.vector(intercepts) & !is.list(intercepts)))
-            stop("'intercepts' must be a vector")
-        if (length(intercepts) == 1)
-            intercepts <- rep(intercepts, clsize)
-        if (length(intercepts) != clsize)
-            stop("'intercepts' must have either one or ", clsize, " elements")
+  if (!is.numeric(intercepts))
+    stop("'intercepts' must be numeric")
+  if (any(is.infinite(intercepts)))
+    stop("'intercepts' must not be Inf or -Inf")
+  if (rfctn == "rbin") {
+    if (!(is.vector(intercepts) & !is.list(intercepts)))
+      stop("'intercepts' must be a vector")
+    if (length(intercepts) == 1)
+      intercepts <- rep(intercepts, clsize)
+    if (length(intercepts) != clsize)
+      stop("'intercepts' must have either one or ", clsize, " elements")
+    intercepts <- cbind(-Inf, intercepts, Inf)
+  } else {
+    if (!(is.vector(intercepts) & !is.list(intercepts)) & !is.matrix(intercepts))
+      stop("'intercepts' must be a vector or a matrix")
+    if (is.vector(intercepts) & !is.list(intercepts)) {
+      if (length(intercepts) == 1)
+        stop("'intercepts' must have at least 2 elements")
+      if (rfctn == "rmult.clm" & any(diff(intercepts) <= 0))
+        stop("'intercepts' must be increasing")
+      ncategories <- length(intercepts) + 1
+      if (rfctn == "rmult.clm") {
+        intercepts <- matrix(intercepts, clsize, ncategories - 1, TRUE)
         intercepts <- cbind(-Inf, intercepts, Inf)
+      } else if (rfctn == "rmult.crm") {
+        intercepts <- matrix(intercepts, R, clsize * (ncategories - 1),
+                             byrow = TRUE)
+      } else {
+        intercepts <- matrix(intercepts, clsize, ncategories - 1, byrow = TRUE)
+      }
     } else {
-        if (!(is.vector(intercepts) & !is.list(intercepts)) & !is.matrix(intercepts))
-            stop("'intercepts' must be a vector or a matrix")
-        if (is.vector(intercepts) & !is.list(intercepts)) {
-            if (length(intercepts) == 1)
-                stop("'intercepts' must have at least 2 elements")
-            if (rfctn == "rmult.clm" & any(diff(intercepts) <= 0))
-                stop("'intercepts' must be increasing")
-            ncategories <- length(intercepts) + 1
-            if (rfctn == "rmult.clm") {
-                intercepts <- matrix(intercepts, clsize, ncategories - 1, TRUE)
-                intercepts <- cbind(-Inf, intercepts, Inf)
-            } else {
-                intercepts <- matrix(intercepts, R, clsize * (ncategories -
-                  1), byrow = TRUE)
-            }
-        } else {
-            ncategories <- ncol(intercepts) + 1
-            if (rfctn == "rmult.clm") {
-                intercepts <- cbind(-Inf, intercepts, Inf)
-                for (i in 1:clsize) {
-                  if (any(diff(intercepts[i, ]) <= 0))
-                    stop("'intercepts' must be increasing at each row")
-                }
-            } else {
-                ncategories <- ncol(intercepts) + 1
-                intercepts <- matrix(t(intercepts), R, clsize * (ncategories -
-                  1), byrow = TRUE)
-            }
+      ncategories <- ncol(intercepts) + 1
+      if (rfctn == "rmult.clm") {
+        intercepts <- cbind(-Inf, intercepts, Inf)
+        for (i in 1:clsize) {
+          if (any(diff(intercepts[i, ]) <= 0))
+            stop("'intercepts' must be increasing at each row")
         }
+      } else if (rfctn == "rmult.crm") {
+        ncategories <- ncol(intercepts) + 1
+        intercepts <- matrix(t(intercepts), R, clsize * (ncategories -
+                                                           1), byrow = TRUE)
+      } else {
+        ncategories <- ncol(intercepts) + 1
+        intercepts <- matrix(intercepts, clsize, ncategories - 1, byrow = TRUE)
+      }
     }
-    intercepts
+  }
+  intercepts
 }
 
 check_betas <- function(betas, clsize) {
@@ -230,4 +235,22 @@ apply_threshold <- function(lin_pred, rlatent, clsize, rfctn, intercepts = NULL,
     Ysim <- matrix(Ysim, R, clsize, byrow = TRUE)
   }
   Ysim
+}
+
+create_betas_acl2bcl <- function(intercepts = intercepts, ncategories = ncategories, betas = betas)
+{
+  intercepts_bcl <- t(apply(intercepts, 1, function(z) rev(cumsum(rev(z)))))
+  clsize <- nrow(intercepts)
+  dim_betas <- length(betas)/clsize
+  betas_matrix <- matrix(betas, clsize, dim_betas, TRUE)
+  betas_matrix_bcl <- t(apply(betas_matrix, 1,
+                              function(z) rep(ncategories - seq(ncategories - 1), each = length(z)) * z))
+  betas_bcl <- matrix(0, clsize, ncategories - 1 + ncol(betas_matrix_bcl))
+  for (i in seq(ncategories - 1)) {
+    betas_bcl[, ((i - 1) * (dim_betas + 1) + 1):(i * (dim_betas + 1))] <-
+      cbind(intercepts_bcl[, i],
+            betas_matrix_bcl[, ((i - 1) * (dim_betas) + 1):(i * (dim_betas))])
+  }
+  betas_bcl <- cbind(betas_bcl, matrix(0, clsize, dim_betas + 1))
+  betas_bcl
 }

@@ -9,9 +9,10 @@
 #' the correlation structure expressed in terms of the latent correlation.
 #'
 #' For an ordinal response scale, the multinomial variables are simulated
-#' conditional on either a marginal cumulative link model
-#' (\code{\link{rmult.clm}}) or a marginal continuation-ratio model
-#' (\code{\link{rmult.crm}}).
+#' conditional on a marginal cumulative link model
+#' (\code{\link{rmult.clm}}), a marginal continuation-ratio model
+#' (\code{\link{rmult.crm}}) or a marginal adjacent-category logit model
+#' \code{\link{rmult.acl}}.
 #'
 #' For a nominal response scale, the multinomial responses are simulated
 #' conditional on a marginal baseline-category logit model

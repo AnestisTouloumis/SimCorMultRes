@@ -70,8 +70,8 @@
 #' \eqn{e^{NO}_{it}} in \cite{Touloumis (2016)}.}
 #' @author Anestis Touloumis
 #' @seealso \code{\link{rbin}} for simulating correlated binary responses,
-#' \code{\link{rmult.clm}} and \code{\link{rmult.crm}} for simulating
-#' correlated ordinal responses.
+#' \code{\link{rmult.clm}}, \code{\link{rmult.crm}} and
+#' \code{\link{rmult.acl}} for simulating correlated ordinal responses.
 #' @references Cario, M. C. and Nelson, B. L. (1997) \emph{Modeling and
 #' generating random vectors with arbitrary marginal distributions and
 #' correlation matrix}. Technical Report, Department of Industrial Engineering

@@ -137,8 +137,8 @@ Journal} \bold{8}, 79--91.
 }
 \seealso{
 \code{\link{rmult.bcl}} for simulating correlated nominal
-responses, \code{\link{rmult.clm}} and \code{\link{rmult.crm}} for
-simulating correlated ordinal responses.
+responses, \code{\link{rmult.clm}}, \code{\link{rmult.crm}} and
+\code{\link{rmult.acl}} for simulating correlated ordinal responses.
 }
 \author{
 Anestis Touloumis

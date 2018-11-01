@@ -42,10 +42,11 @@ Usage and functions
 
 This package provides functions to simulate correlated binary, ordinal and nominal responses, which are drawn as realizations of a latent regression model for continuous random vectors as proposed by Touloumis (2016).
 
-There are four core functions:
+There are five core functions:
 
 -   `rbin` to simulate correlated binary responses,
 -   `rmult.bcl` to simulate correlated nominal multinomial responses,
+-   `rmult.acl` to simulate correlated ordinal responses under a marginal adjacent-category logit model,
 -   `rmult.clm` to simulate correlated ordinal responses under a marginal cumulative link model,
 -   `rmult.clm` to simulate correlated ordinal responses under a marginal continuation-ratio link model.
 
@@ -60,7 +61,7 @@ Example
 The following R code illustrates how to use the core function `rbin`:
 
 ``` r
-## See Example 3.4 in the Vignette.
+## See Example 3.5 in the Vignette.
 set.seed(123)
 N <- 5000
 clsize <- 4
