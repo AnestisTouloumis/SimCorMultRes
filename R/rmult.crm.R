@@ -115,22 +115,22 @@
 rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
     cor.matrix = cor.matrix, rlatent = NULL) {
-  check_cluster_size(clsize)
-  betas <- check_betas(betas, clsize)
-  lpformula <- check_xformula(xformula)
-  if (!is.environment(xdata))
-    xdata <- data.frame(na.omit(xdata))
-  lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
-                                      "rmult.clm")
-  R <- nrow(lin_pred)
-  intercepts <- check_intercepts(intercepts, clsize, "rmult.crm", R)
-  ncategories <- ncol(intercepts) / clsize + 1
-  lin_pred_extended <- t(apply(lin_pred, 1,
-                               function(x) rep(x, each = ncategories - 1)))
-  rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.crm",
-                            ncategories)
-  Ysim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm",
-                          intercepts, ncategories)
-  create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.crm",
-                ncategories)
+    check_cluster_size(clsize)
+    betas <- check_betas(betas, clsize)
+    lpformula <- check_xformula(xformula)
+    if (!is.environment(xdata))
+        xdata <- data.frame(na.omit(xdata))
+    lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
+        "rmult.clm")
+    R <- nrow(lin_pred)
+    intercepts <- check_intercepts(intercepts, clsize, "rmult.crm", R)
+    ncategories <- ncol(intercepts) / clsize + 1
+    lin_pred_extended <- t(apply(lin_pred, 1,
+        function(x) rep(x, each = ncategories - 1)))
+    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.crm",
+        ncategories)
+    Ysim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm",
+        intercepts, ncategories)
+    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.crm",
+        ncategories)
 }

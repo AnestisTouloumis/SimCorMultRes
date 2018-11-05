@@ -39,7 +39,7 @@ nominal responses. Element (\eqn{i},\eqn{t}) represents the realization of
 response variables (y), the covariates specified by \code{xformula},
 subjects' identities (id) and the corresponding measurement occasions
 (time).} \item{rlatent}{the latent random variables denoted by
-\eqn{e^{O3}_{itJ}} in the Vignette.}
+\eqn{e^{O3}_{itj}} in the Vignette.}
 }
 \description{
 Simulates correlated ordinal responses assuming an adjacent-category logit
@@ -59,9 +59,9 @@ is the \eqn{j}-th category-specific intercept at the \eqn{t}-th measurement
 occasion and \eqn{\beta_{t}} is the regression
 parameter vector at the \eqn{t}-th measurement occasion.
 
-The ordinal response \eqn{Y_{it}} is obtained by utilizing the connection between
-the baseline-category logit model and the adjacent-category logit model
-as indicated in the vignette.
+The ordinal response \eqn{Y_{it}} is obtained by utilizing the threshold
+approach described in the Vignette. This approach is based on the connection
+between baseline-category and adjacent-category logit models.
 
 When \eqn{\beta_{tj0}=\beta_{j0}} for all \eqn{t}, then \code{intercepts}
 should be provided as a numerical vector. Otherwise, \code{intercepts} must
@@ -81,7 +81,7 @@ regression models.
 
 The optional argument \code{xdata} should be provided in ``long'' format.
 
-#' The NORTA method is the default option for simulating the latent random
+The NORTA method is the default option for simulating the latent random
 vectors denoted by \eqn{e^{O3}_{itj}} in the Vignette. To import
 simulated values for the latent random vectors without utilizing the NORTA
 method, the user can employ the \code{rlatent} argument. In this case,
@@ -89,6 +89,25 @@ row \eqn{i} corresponds to subject \eqn{i} and columns
 \eqn{(t-1)*\code{ncategories}+1,...,t*\code{ncategories}} should contain the
 realization of \eqn{e^{O3}_{it1},...,e^{O3}_{itJ}}, respectively, for
 \eqn{t=1,\ldots,\code{clsize}}.
+}
+\examples{
+## See Example 3.4 in the Vignette.
+intercepts <- c(3, 1, 2)
+betas <- c(1, 1)
+N <- 500
+clsize <- 3
+set.seed(321)
+x1 <- rep(rnorm(N), each = clsize)
+x2 <- rnorm(N * clsize)
+xdata <- data.frame(x1, x2)
+cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(4))
+CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts, betas = betas,
+    xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+suppressPackageStartupMessages(library('multgee'))
+fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id, repeated = time,
+    LORstr = 'time.exch', link='acl')
+round(coef(fit), 2)
+
 }
 \references{
 Cario, M. C. and Nelson, B. L. (1997) \emph{Modeling and
@@ -107,24 +126,6 @@ Journal} \bold{8}, 79--91.
 Touloumis, A., Agresti, A. and Kateri, M. (2013) GEE for multinomial
 responses using a local odds ratios parameterization. \emph{Biometrics}
 \bold{69}, 633--640.
-
- @examples
-## See Example 3.4 in the Vignette.
-intercepts <- c(3, 1, 2)
-betas <- c(1, 1)
-N <- 500
-clsize <- 3
-set.seed(321)
-x1 <- rep(rnorm(N), each = clsize)
-x2 <- rnorm(N * clsize)
-xdata <- data.frame(x1, x2)
-cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(4))
-CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts, betas = betas,
-    xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
-suppressPackageStartupMessages(library('multgee'))
-fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id, repeated = time,
-    LORstr = 'time.exch', link='acl')
-round(coef(fit), 2)
 }
 \seealso{
 \code{\link{rbin}} for simulating correlated binary responses,

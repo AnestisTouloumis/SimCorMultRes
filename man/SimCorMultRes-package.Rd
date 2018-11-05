@@ -19,7 +19,7 @@ For an ordinal response scale, the multinomial variables are simulated
 conditional on a marginal cumulative link model
 (\code{\link{rmult.clm}}), a marginal continuation-ratio model
 (\code{\link{rmult.crm}}) or a marginal adjacent-category logit model
-\code{\link{rmult.acl}}.
+(\code{\link{rmult.acl}}).
 
 For a nominal response scale, the multinomial responses are simulated
 conditional on a marginal baseline-category logit model
@@ -29,7 +29,7 @@ Correlated binary responses are simulated using the function
 \code{\link{rbin}}.
 
 The threshold approaches that give rise to the implemented marginal models
-are fully described in \cite{Touloumis (2016)}.
+are fully described in \cite{Touloumis (2016)} and in the Vignette.
 
 The formulae are easier to read from either the Vignette or the Reference
 Manual (both available

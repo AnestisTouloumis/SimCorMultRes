@@ -113,20 +113,20 @@
 rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix,
     rlatent = NULL) {
-  check_cluster_size(clsize)
-  ncategories <- check_ncategories(ncategories)
-  betas <- check_betas(betas, clsize)
-  lpformula <- check_xformula(xformula)
-  if (!is.environment(xdata))
-    xdata <- data.frame(na.omit(xdata))
-  lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
-                                      "rmult.bcl", ncategories = ncategories)
-  R <- nrow(lin_pred)
-  rlatent <- create_rlatent(rlatent, R, "cloglog", clsize, cor.matrix,
-                            "rmult.bcl", ncategories = ncategories)
-  Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl",
-                          ncategories = ncategories)
-  lpformula <- update(lpformula, ~. - 1)
-  create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.bcl",
-                ncategories = ncategories)
+    check_cluster_size(clsize)
+    ncategories <- check_ncategories(ncategories)
+    betas <- check_betas(betas, clsize)
+    lpformula <- check_xformula(xformula)
+    if (!is.environment(xdata))
+        xdata <- data.frame(na.omit(xdata))
+    lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
+        "rmult.bcl", ncategories = ncategories)
+    R <- nrow(lin_pred)
+    rlatent <- create_rlatent(rlatent, R, "cloglog", clsize, cor.matrix,
+        "rmult.bcl", ncategories = ncategories)
+    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl",
+                            ncategories = ncategories)
+    lpformula <- update(lpformula, ~. - 1)
+    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.bcl",
+        ncategories = ncategories)
 }

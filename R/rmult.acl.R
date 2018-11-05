@@ -17,9 +17,9 @@
 #' occasion and \eqn{\beta_{t}} is the regression
 #' parameter vector at the \eqn{t}-th measurement occasion.
 #'
-#' The ordinal response \eqn{Y_{it}} is obtained by utilizing the connection between
-#' the baseline-category logit model and the adjacent-category logit model
-#' as indicated in the vignette.
+#' The ordinal response \eqn{Y_{it}} is obtained by utilizing the threshold
+#' approach described in the Vignette. This approach is based on the connection
+#' between baseline-category and adjacent-category logit models.
 #'
 #' When \eqn{\beta_{tj0}=\beta_{j0}} for all \eqn{t}, then \code{intercepts}
 #' should be provided as a numerical vector. Otherwise, \code{intercepts} must
@@ -39,7 +39,7 @@
 #'
 #' The optional argument \code{xdata} should be provided in ``long'' format.
 #'
-#'#' The NORTA method is the default option for simulating the latent random
+#' The NORTA method is the default option for simulating the latent random
 #' vectors denoted by \eqn{e^{O3}_{itj}} in the Vignette. To import
 #' simulated values for the latent random vectors without utilizing the NORTA
 #' method, the user can employ the \code{rlatent} argument. In this case,
@@ -70,7 +70,7 @@
 #' response variables (y), the covariates specified by \code{xformula},
 #' subjects' identities (id) and the corresponding measurement occasions
 #' (time).} \item{rlatent}{the latent random variables denoted by
-#' \eqn{e^{O3}_{itJ}} in the Vignette.}
+#' \eqn{e^{O3}_{itj}} in the Vignette.}
 #' @author Anestis Touloumis
 #' @seealso \code{\link{rbin}} for simulating correlated binary responses,
 #' \code{\link{rmult.clm}} and \code{\link{rmult.crm}} for simulating
@@ -93,7 +93,7 @@
 #' responses using a local odds ratios parameterization. \emph{Biometrics}
 #' \bold{69}, 633--640.
 #'
-#'  @examples
+#' @examples
 #' ## See Example 3.4 in the Vignette.
 #' intercepts <- c(3, 1, 2)
 #' betas <- c(1, 1)
@@ -113,12 +113,13 @@
 #'
 #' @export
 rmult.acl <- function(clsize = clsize, intercepts = intercepts, betas = betas,
-                      xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix,
-                      rlatent = NULL) {
-  check_cluster_size(clsize)
-  intercepts <- check_intercepts(intercepts, clsize, "rmult.acl")
-  ncategories <- ncol(intercepts) + 1
-  betas <- check_betas(betas, clsize)
-  betas_bcl <- create_betas_acl2bcl(intercepts, ncategories, betas)
-  rmult.bcl(clsize, ncategories, betas_bcl, xformula, xdata, cor.matrix, rlatent)
+    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix,
+    rlatent = NULL) {
+    check_cluster_size(clsize)
+    intercepts <- check_intercepts(intercepts, clsize, "rmult.acl")
+    ncategories <- ncol(intercepts) + 1
+    betas <- check_betas(betas, clsize)
+    betas_bcl <- create_betas_acl2bcl(intercepts, ncategories, betas)
+    rmult.bcl(clsize, ncategories, betas_bcl, xformula, xdata, cor.matrix,
+        rlatent)
 }

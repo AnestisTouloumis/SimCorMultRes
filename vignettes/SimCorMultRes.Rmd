@@ -230,7 +230,7 @@ and where the random variables $\{e^{O3}_{itj}:i=1,\ldots,N \text{,  } t=1,\ldot
 For each subject $i$, the association structure among the clustered ordinal responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the joint distribution and correlation matrix of $\{e^{O3}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$. If the random variables $\{e^{O3}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$.
 \newline{} 
 
-```{example, Example4, name="Simulation of clustered ordinal responses using the NORTA method"}
+```{example, Example4, name="Simulation of clustered ordinal responses conditional on a marginal adjacent-category logit model using the NORTA method"}
 Suppose the aim is to simulate ordinal responses from the marginal adjacent-category logit model
 \begin{equation*}
 \log \left[\frac{\Pr(Y_{it}=j |\mathbf {x}_{it})}{\Pr(Y_{it}=j+1 |\mathbf {x}_{it})}\right]=\beta_{j0}+ \beta_{1} {x}_{i1}+ \beta_{2} {x}_{it2} \end{equation*}

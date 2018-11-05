@@ -121,14 +121,15 @@
 #' @export
 rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-    cor.matrix = cor.matrix, rlatent = NULL) {
+    cor.matrix = cor.matrix, rlatent = NULL){
     check_cluster_size(clsize)
     intercepts <- check_intercepts(intercepts, clsize, "rbin")
     betas <- check_betas(betas, clsize)
     lpformula <- check_xformula(xformula)
     if (!is.environment(xdata))
-      xdata <- data.frame(na.omit(xdata))
-    lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata, "rbin")
+        xdata <- data.frame(na.omit(xdata))
+    lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
+        "rbin")
     R <- nrow(lin_pred)
     rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rbin")
     Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rbin", intercepts)
