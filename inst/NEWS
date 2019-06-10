@@ -1,6 +1,7 @@
-Version 1.6.1 [2018-11-05]
- * Released on CRAN.
- * Simplified the R code.
+Version 1.6.1 [2019-06-06]
+ * Added unit testing for utility functions.
+ * Added code coverage.
+ * Added a function to simulate from a marginal adjacent-categories logit model.
 
 Version 1.6.0 [2018-07-10]
  * Released on CRAN.

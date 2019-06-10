@@ -5,7 +5,9 @@ SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes) [![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
-[![CRAN Version](http://www.r-pkg.org/badges/version/SimCorMultRes)](https://cran.r-project.org/package=SimCorMultRes) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/SimCorMultRes)](https://cran.r-project.org/package=SimCorMultRes)
+[![CRAN Version](https://www.r-pkg.org/badges/version/SimCorMultRes?color=blue)](https://cran.r-project.org/package=SimCorMultRes) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/SimCorMultRes) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/SimCorMultRes)](https://cran.r-project.org/package=SimCorMultRes)
+
+[![Codecov test coverage](https://codecov.io/gh/AnestisTouloumis/SimCorMultRes/branch/master/graph/badge.svg)](https://codecov.io/gh/AnestisTouloumis/SimCorMultRes?branch=master)
 
 Installation
 ------------
