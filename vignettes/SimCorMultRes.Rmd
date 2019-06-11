@@ -89,10 +89,10 @@ library(SimCorMultRes)
 # correlation matrix for the NORTA method
 cor.matrix <- kronecker(toeplitz(c(1,rep(0.95,clsize-1))),diag(ncategories)) 
 # simulation of clustered nominal responses
-CorNorRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
 suppressPackageStartupMessages(library("multgee"))
 # fitting a GEE model
-fit <- nomLORgee(y~x1+x2,data=CorNorRes$simdata,id=id,repeated=time,LORstr="time.exch")
+fit <- nomLORgee(y~x1+x2,data=CorNomRes$simdata,id=id,repeated=time,LORstr="time.exch")
 # checking regression coefficients
 round(coef(fit),2)
 ```

@@ -1,4 +1,7 @@
-Version 1.6.1 [2019-06-06]
+Version 1.6.2 [2019-06-11]
+ * Added unit testing for core functions.
+
+Version 1.6.1 [2019-06-09]
  * Added unit testing for utility functions.
  * Added code coverage.
  * Added a function to simulate from a marginal adjacent-categories logit model.
