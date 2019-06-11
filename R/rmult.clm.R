@@ -110,9 +110,8 @@
 #'
 #' ## Same sampling scheme except that the parameter vector is now time-stationary.
 #' set.seed(12345)
-#' x <- rep(rnorm(N), each = clsize)
-#' CorOrdRes <- rmult.clm(clsize = clsize, betas = 1, xformula = ~x, cor.matrix = toeplitz(c(1,
-#'     0.85, 0.5, 0.15)), intercepts = c(-1.5, -0.5, 0.5, 1.5), link = 'probit')
+#' CorOrdRes <- rmult.clm(clsize = clsize, betas = 1, xformula = ~x,
+#'     cor.matrix = cor.matrix, intercepts = intercepts, link = 'probit')
 #' ## Fit a GEE model (Touloumis et al., 2013) to estimate the regression
 #' ## coefficients.
 #' library(multgee)

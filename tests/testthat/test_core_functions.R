@@ -75,3 +75,39 @@ test_that("rmult.bcl varying betas",{
   Ysim <- apply(lin_pred, 1, which.max)
   expect_equal(c(t(CorNomRes$Ysim)), Ysim)
 })
+
+
+
+test_that("rmult.clm varying betas",{
+  set.seed(1)
+  N <- 10
+  clsize <- 4
+  intercepts <- c(-1.5, -0.5, 0.5, 1.5)
+  betas <- matrix(c(1, 2, 3, 4), 4, 1)
+  x <- rep(rnorm(N), each = clsize)
+  cor.matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
+  CorOrdRes <- rmult.clm(clsize = clsize, intercepts = intercepts, betas = betas,
+                         xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
+  U <-  c(t(CorOrdRes$rlatent)) - c(betas)*x
+  intercepts <- c(-Inf, intercepts, Inf)
+  Ysim <- cut(U, intercepts, labels = FALSE)
+  expect_equal(c(t(CorOrdRes$Ysim)), Ysim)
+})
+
+
+
+test_that("rmult.clm constant betas",{
+  set.seed(1)
+  N <- 10
+  clsize <- 4
+  intercepts <- c(-1.5, -0.5, 0.5, 1.5)
+  betas <- 1
+  x <- rep(rnorm(N), each = clsize)
+  cor.matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
+  CorOrdRes <- rmult.clm(clsize = clsize, intercepts = intercepts, betas = betas,
+                         xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
+  U <-  c(t(CorOrdRes$rlatent)) - c(betas)*x
+  intercepts <- c(-Inf, intercepts, Inf)
+  Ysim <- cut(U, intercepts, labels = FALSE)
+  expect_equal(c(t(CorOrdRes$Ysim)), Ysim)
+})
