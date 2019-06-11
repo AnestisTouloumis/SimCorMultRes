@@ -111,3 +111,27 @@ test_that("rmult.clm constant betas",{
   Ysim <- cut(U, intercepts, labels = FALSE)
   expect_equal(c(t(CorOrdRes$Ysim)), Ysim)
 })
+
+
+test_that("rmult.acl constant betas",{
+  intercepts <- c(3, 1, 2)
+  betas <- c(1, 1)
+  N <- 10
+  clsize <- 3
+  set.seed(321)
+  x1 <- rep(rnorm(N), each = clsize)
+  x2 <- rnorm(N * clsize)
+  xdata <- data.frame(x1, x2)
+  set.seed(1)
+  cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(4))
+  CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts, betas = betas,
+                         xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+  intercepts <- rev(cumsum(rev(c(intercepts, 0))))
+  betas_bcl <- c(intercepts[1], 3, 3, intercepts[2], 2, 2,
+                 intercepts[3], 1, 1, intercepts[4], 0, 0)
+  set.seed(1)
+  CorNomRes <- rmult.bcl(clsize = clsize, ncategories = 4, betas = betas_bcl,
+                         xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+  expect_equal(c(t(CorOrdRes$Ysim)), c(t(CorNomRes$Ysim)))
+})
+
