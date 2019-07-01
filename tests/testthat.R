@@ -1,4 +1,4 @@
-library(testthat)
-library(SimCorMultRes)
+library("testthat")
+library("SimCorMultRes")
 
 test_check("SimCorMultRes")

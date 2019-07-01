@@ -129,11 +129,11 @@ create_linear_predictor <- function(betas, clsize, lpformula, xdata, rfctn,
     if (rfctn == "rmult.bcl") {
         Xmat <- apply(Xmat, 2, function(x) rep(x, each = ncategories))
         if (length(betas) != (clsize * ncategories * ncol(Xmat)))
-            stop("The length of 'betas' does not match with the provided covariates")
+            stop("The length of 'betas' does not match with the provided covariates") # nolint
     } else {
         Xmat <- matrix(Xmat[, -1], ncol = ncol(Xmat) - 1)
         if (length(betas) != (clsize) * ncol(Xmat))
-            stop("The length of 'betas' does not match with the number of covariates")
+            stop("The length of 'betas' does not match with the number of covariates") # nolint
     }
     lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat),
         byrow = TRUE) * Xmat
