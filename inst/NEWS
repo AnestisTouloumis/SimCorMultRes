@@ -1,4 +1,9 @@
+Version 1.6.4 [2019-07-03]
+ * Removed lintr dependency.
+ * Modified .travis.yml.
+
 Version 1.6.3 [2019-07-01]
+ * Added lintr depedency.
  * Added lintr unit test.
 
 Version 1.6.2 [2019-06-11]

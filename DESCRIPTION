@@ -2,7 +2,7 @@ Package: SimCorMultRes
 Type: Package
 Title: Simulates Correlated Multinomial Responses
 Description: Simulates correlated multinomial responses conditional on a marginal model specification.
-Version: 1.6.3
+Version: 1.6.4
 Depends: R(>= 2.15.0)
 Imports: 
     evd,
@@ -15,8 +15,7 @@ Suggests:
     markdown,
     multgee (>= 1.2),
     testthat,
-    covr,
-    lintr
+    covr
 Authors@R: person("Anestis", "Touloumis", role = c("aut", "cre"),
                       email = "A.Touloumis@brighton.ac.uk",
                       comment = c(ORCHID = "0000-0002-5965-1639"))
