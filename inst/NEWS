@@ -1,3 +1,6 @@
+Version 1.6.5 [2019-07-08]
+ * Added github badge.
+
 Version 1.6.4 [2019-07-03]
  * Removed lintr dependency.
  * Modified .travis.yml.
