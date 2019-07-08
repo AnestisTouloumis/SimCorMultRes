@@ -104,16 +104,16 @@
 #' x2 <- rnorm(N * clsize)
 #' xdata <- data.frame(x1, x2)
 #' cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(4))
-#' CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts, betas = betas,
-#'     xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+#' CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts,
+#' betas = betas, xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
 #' suppressPackageStartupMessages(library('multgee'))
-#' fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id, repeated = time,
-#'     LORstr = 'time.exch', link='acl')
+#' fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id,
+#' repeated = time, LORstr = 'time.exch', link='acl')
 #' round(coef(fit), 2)
 #'
 #' @export
-rmult.acl <- function(clsize = clsize, intercepts = intercepts, betas = betas,
-    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix,
+rmult.acl <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint
+    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolint
     rlatent = NULL) {
     check_cluster_size(clsize)
     intercepts <- check_intercepts(intercepts, clsize, "rmult.acl")

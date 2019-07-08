@@ -104,8 +104,8 @@
 #' betas <- matrix(c(1, 2, 3, 4), 4, 1)
 #' x <- rep(rnorm(N), each = clsize)
 #' cor.matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
-#' CorOrdRes <- rmult.clm(clsize = clsize, intercepts = intercepts, betas = betas,
-#'     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
+#' CorOrdRes <- rmult.clm(clsize = clsize, intercepts = intercepts,
+#' betas = betas, xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 #' head(CorOrdRes$simdata, n = 8)
 #'
 #' ## Same sampling scheme except that the parameter vector is time-stationary. # nolint
@@ -115,13 +115,14 @@
 #' ## Fit a GEE model (Touloumis et al., 2013) to estimate the regression
 #' ## coefficients.
 #' library(multgee)
-#' fitmod <- ordLORgee(y ~ x, id = id, repeated = time, link = 'probit', data = CorOrdRes$simdata)
+#' fitmod <- ordLORgee(y ~ x, id = id, repeated = time, link = 'probit',
+#' data = CorOrdRes$simdata)
 #' coef(fitmod)
 #'
 #' @export
-rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
+rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-    cor.matrix = cor.matrix, rlatent = NULL) {
+    cor.matrix = cor.matrix, rlatent = NULL) { # nolint
     check_cluster_size(clsize)
     intercepts <- check_intercepts(intercepts, clsize, "rmult.clm")
     betas <- check_betas(betas, clsize)
@@ -130,8 +131,8 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rmult.clm")
-    R <- nrow(lin_pred)
+    R <- nrow(lin_pred) # nolint
     rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.clm")
-    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.clm", intercepts)
+    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.clm", intercepts) # nolint
     create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.clm")
 }

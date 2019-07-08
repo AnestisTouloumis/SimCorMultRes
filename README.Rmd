@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
-`r badger::badge_github_version("AnestisTouloumis/SimCorMultRes","red")`
+`r badger::badge_github_version("AnestisTouloumis/SimCorMultRes","green")`
 [![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
 [![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) 
 [![Codecov test coverage](https://codecov.io/gh/AnestisTouloumis/SimCorMultRes/branch/master/graph/badge.svg)](https://codecov.io/gh/AnestisTouloumis/SimCorMultRes?branch=master)

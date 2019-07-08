@@ -98,12 +98,13 @@ set.seed(1)
 x1 <- rep(rnorm(N), each = clsize)
 x2 <- rnorm(N * clsize)
 xdata <- data.frame(x1, x2)
-cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(ncategories))
-CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas,
-    xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))),
+diag(ncategories))
+CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories,
+betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
 suppressPackageStartupMessages(library('multgee'))
-fit <- nomLORgee(y ~ x1 + x2, data = CorNomRes$simdata, id = id, repeated = time,
-    LORstr = 'time.exch')
+fit <- nomLORgee(y ~ x1 + x2, data = CorNomRes$simdata, id = id,
+repeated = time, LORstr = 'time.exch')
 round(coef(fit), 2)
 
 }

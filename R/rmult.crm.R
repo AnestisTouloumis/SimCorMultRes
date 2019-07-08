@@ -107,14 +107,14 @@
 #' ncategories <- 5
 #' cor.matrix <- diag(1, (ncategories - 1) * clsize) + kronecker(toeplitz(c(0,
 #'     rep(0.24, ncategories - 2))), matrix(1, clsize, clsize))
-#' CorOrdRes <- rmult.crm(clsize = clsize, intercepts = intercepts, betas = betas,
-#'     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
+#' CorOrdRes <- rmult.crm(clsize = clsize, intercepts = intercepts,
+#' betas = betas, xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 #' head(CorOrdRes$Ysim)
 #'
 #'@export
-rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
+rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-    cor.matrix = cor.matrix, rlatent = NULL) {
+    cor.matrix = cor.matrix, rlatent = NULL) { # nolint
     check_cluster_size(clsize)
     betas <- check_betas(betas, clsize)
     lpformula <- check_xformula(xformula)
@@ -122,14 +122,14 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas,
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rmult.clm")
-    R <- nrow(lin_pred)
+    R <- nrow(lin_pred) # nolint
     intercepts <- check_intercepts(intercepts, clsize, "rmult.crm", R)
     ncategories <- ncol(intercepts) / clsize + 1
     lin_pred_extended <- t(apply(lin_pred, 1,
         function(x) rep(x, each = ncategories - 1)))
     rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.crm",
         ncategories)
-    Ysim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm",
+    Ysim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm", # nolint
         intercepts, ncategories)
     create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.crm",
         ncategories)

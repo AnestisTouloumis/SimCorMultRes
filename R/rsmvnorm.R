@@ -24,12 +24,12 @@
 #' apply(SimBivariateNormal, 2, sd)
 #' cor(SimBivariateNormal)
 #' @export
-rsmvnorm <- function(R = R, cor.matrix = cor.matrix) {
+rsmvnorm <- function(R = R, cor.matrix = cor.matrix) { # nolint
     if (all.equal(R, as.integer(R)) != TRUE | R < 1)
         stop("'R' must be a positive integer")
     if (!is.numeric(cor.matrix))
         stop("'cor.matrix' must be numeric")
-    cor.matrix <- as.matrix(cor.matrix)
+    cor.matrix <- as.matrix(cor.matrix) # nolint
     if (!isSymmetric(cor.matrix))
         stop("'cor.matrix' must be a symmetric matrix")
     if (any(diag(cor.matrix) != 1))

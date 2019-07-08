@@ -71,7 +71,8 @@
 #' \eqn{e^{B}_{it}} in \cite{Touloumis (2016)}.}
 #' @importFrom evd qgumbel
 #' @importFrom methods formalArgs
-#' @importFrom stats as.formula formula model.frame model.matrix pnorm qcauchy qlogis rnorm terms toeplitz update
+#' @importFrom stats as.formula formula model.frame model.matrix pnorm qcauchy
+#' qlogis rnorm terms toeplitz update
 #' @author Anestis Touloumis
 #' @seealso \code{\link{rmult.bcl}} for simulating correlated nominal
 #' responses, \code{\link{rmult.clm}}, \code{\link{rmult.crm}} and
@@ -104,7 +105,8 @@
 #' CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
 #'     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 #' library(gee)
-#' binGEEmod <- gee(y ~ x, family = binomial('probit'), id = id, data = CorBinRes$simdata)
+#' binGEEmod <- gee(y ~ x, family = binomial('probit'), id = id,
+#' data = CorBinRes$simdata)
 #' summary(binGEEmod)$coefficients
 #'
 #' ## See Example 3.5 in the Vignette.
@@ -115,13 +117,14 @@
 #' rlatent <- rlatent1 - rlatent2
 #' CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
 #'     xformula = ~x, rlatent = rlatent)
-#' binGEEmod <- gee(y ~ x, family = binomial('logit'), id = id, data = CorBinRes$simdata)
+#' binGEEmod <- gee(y ~ x, family = binomial('logit'), id = id,
+#' data = CorBinRes$simdata)
 #' summary(binGEEmod)$coefficients
 #'
 #' @export
 rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-    cor.matrix = cor.matrix, rlatent = NULL){
+    cor.matrix = cor.matrix, rlatent = NULL){ # nolint
     check_cluster_size(clsize)
     intercepts <- check_intercepts(intercepts, clsize, "rbin")
     betas <- check_betas(betas, clsize)
@@ -130,8 +133,8 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rbin")
-    R <- nrow(lin_pred)
+    R <- nrow(lin_pred) # nolint
     rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rbin")
-    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rbin", intercepts)
+    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rbin", intercepts) # nolint
     create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rbin")
 }

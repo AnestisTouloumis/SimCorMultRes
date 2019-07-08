@@ -101,17 +101,18 @@
 #' x1 <- rep(rnorm(N), each = clsize)
 #' x2 <- rnorm(N * clsize)
 #' xdata <- data.frame(x1, x2)
-#' cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(ncategories))
-#' CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas,
-#'     xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+#' cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))),
+#' diag(ncategories))
+#' CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories,
+#' betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
 #' suppressPackageStartupMessages(library('multgee'))
-#' fit <- nomLORgee(y ~ x1 + x2, data = CorNomRes$simdata, id = id, repeated = time,
-#'     LORstr = 'time.exch')
+#' fit <- nomLORgee(y ~ x1 + x2, data = CorNomRes$simdata, id = id,
+#' repeated = time, LORstr = 'time.exch')
 #' round(coef(fit), 2)
 #'
 #' @export
-rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
-    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix,
+rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas, # nolintr
+    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolintr
     rlatent = NULL) {
     check_cluster_size(clsize)
     ncategories <- check_ncategories(ncategories)
@@ -121,10 +122,10 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rmult.bcl", ncategories = ncategories)
-    R <- nrow(lin_pred)
+    R <- nrow(lin_pred) # nolintr
     rlatent <- create_rlatent(rlatent, R, "cloglog", clsize, cor.matrix,
         "rmult.bcl", ncategories = ncategories)
-    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl",
+    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl", # nolintr
                             ncategories = ncategories)
     lpformula <- update(lpformula, ~. - 1)
     create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.bcl",

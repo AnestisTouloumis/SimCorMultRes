@@ -1,6 +1,6 @@
 test_that("norta", {
   set.seed(1)
-  R <- 100
+  R <- 100 # nolint
   latentcorrelation <- toeplitz(c(1, rep(0.8, 2)))
   commonmarginals <- rep("qlogis", 3)
   simlogistic <- rnorta(R = R, cor.matrix = latentcorrelation,
@@ -14,8 +14,8 @@ test_that("norta", {
 
 test_that("rsmvnorm", {
   set.seed(1)
-  R <- 100
-  cor.matrix <- toeplitz(c(1, 0.4))
+  R <- 100 # nolint
+  cor.matrix <- toeplitz(c(1, 0.4)) # nolint
   simbivariatenormal <- rsmvnorm(R = R, cor.matrix = cor.matrix)
   set.seed(1)
   p <- ncol(cor.matrix)

@@ -102,7 +102,8 @@ x <- rep(rnorm(N), each = clsize)
 CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 library(gee)
-binGEEmod <- gee(y ~ x, family = binomial('probit'), id = id, data = CorBinRes$simdata)
+binGEEmod <- gee(y ~ x, family = binomial('probit'), id = id,
+data = CorBinRes$simdata)
 summary(binGEEmod)$coefficients
 
 ## See Example 3.5 in the Vignette.
@@ -113,7 +114,8 @@ rlatent2 <- rmvevd(N, dep = sqrt(1 - 0.9), model = 'log', d = clsize)
 rlatent <- rlatent1 - rlatent2
 CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
     xformula = ~x, rlatent = rlatent)
-binGEEmod <- gee(y ~ x, family = binomial('logit'), id = id, data = CorBinRes$simdata)
+binGEEmod <- gee(y ~ x, family = binomial('logit'), id = id,
+data = CorBinRes$simdata)
 summary(binGEEmod)$coefficients
 
 }

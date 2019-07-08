@@ -11,7 +11,7 @@ check_ncategories <- function(ncategories) {
     ncategories
 }
 
-check_correlation_matrix <- function(cor.matrix, clsize, rfctn,
+check_correlation_matrix <- function(cor.matrix, clsize, rfctn, # nolint
     ncategories = NULL) {
     if (!is.numeric(cor.matrix))
         stop("'cor.matrix' must be numeric")
@@ -26,7 +26,7 @@ check_correlation_matrix <- function(cor.matrix, clsize, rfctn,
         if (ncol(cor.matrix) != dimcor | nrow(cor.matrix) != dimcor)
             stop("'cor.matrix' must be a ", dimcor, "x", dimcor, " matrix")
         for (i in 1:clsize) {
-            diag.index <- 1:ncateg2 + (i - 1) * ncateg2
+            diag.index <- 1:ncateg2 + (i - 1) * ncateg2 # nolint
             cor.matrix[diag.index, diag.index] <- diag(1, ncateg2)
         }
     }
@@ -52,7 +52,7 @@ check_xformula <- function(xformula) {
     lpformula
 }
 
-check_intercepts <- function(intercepts, clsize, rfctn, R = NULL) {
+check_intercepts <- function(intercepts, clsize, rfctn, R = NULL) { # nolint
     if (!is.numeric(intercepts))
         stop("'intercepts' must be numeric")
     if (any(is.infinite(intercepts)))
@@ -125,23 +125,23 @@ check_betas <- function(betas, clsize) {
 
 create_linear_predictor <- function(betas, clsize, lpformula, xdata, rfctn,
     ncategories = NULL) {
-    Xmat <- model.matrix(lpformula, data = xdata)
+    Xmat <- model.matrix(lpformula, data = xdata) # nolint
     if (rfctn == "rmult.bcl") {
-        Xmat <- apply(Xmat, 2, function(x) rep(x, each = ncategories))
+        Xmat <- apply(Xmat, 2, function(x) rep(x, each = ncategories)) # nolint
         if (length(betas) != (clsize * ncategories * ncol(Xmat)))
             stop("The length of 'betas' does not match with the provided covariates") # nolint
     } else {
-        Xmat <- matrix(Xmat[, -1], ncol = ncol(Xmat) - 1)
+        Xmat <- matrix(Xmat[, -1], ncol = ncol(Xmat) - 1) # nolint
         if (length(betas) != (clsize) * ncol(Xmat))
             stop("The length of 'betas' does not match with the number of covariates") # nolint
     }
-    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat),
+    lin.pred <- matrix(betas, nrow = nrow(Xmat), ncol = ncol(Xmat), # nolint
         byrow = TRUE) * Xmat
     if (rfctn == "rmult.bcl") {
-        lin.pred <- matrix(rowSums(lin.pred), ncol = ncategories * clsize,
+        lin.pred <- matrix(rowSums(lin.pred), ncol = ncategories * clsize, # nolint
             byrow = TRUE)
     } else {
-        lin.pred <- matrix(rowSums(lin.pred), ncol = clsize, byrow = TRUE)
+        lin.pred <- matrix(rowSums(lin.pred), ncol = clsize, byrow = TRUE) # nolint
     }
     as.matrix(lin.pred)
 }
@@ -157,11 +157,11 @@ create_distribution <- function(link) {
     distr
 }
 
-create_rlatent <- function(rlatent, R, link, clsize, cor.matrix, rfctn,
+create_rlatent <- function(rlatent, R, link, clsize, cor.matrix, rfctn, # nolint
     ncategories = NULL) {
     if (is.null(rlatent)) {
         distr <- create_distribution(link)
-        cor.matrix <- check_correlation_matrix(cor.matrix, clsize, rfctn,
+        cor.matrix <- check_correlation_matrix(cor.matrix, clsize, rfctn, # nolint
             ncategories)
         rlatent <- rnorta(R, cor.matrix, rep(distr, nrow(cor.matrix)))
         if (distr == "qgumbel" & rfctn != "rmult.bcl")
@@ -180,13 +180,13 @@ create_rlatent <- function(rlatent, R, link, clsize, cor.matrix, rfctn,
         }
         if (nrow(rlatent) != R | ncol(rlatent) != ncol_rlatent)
             stop("'rlatent' must be a ", R, "x", ncol_rlatent, " matrix")
-        cor.matrix <- NULL
+        cor.matrix <- NULL # nolint
         rlatent <- rlatent
     }
     rlatent
 }
 
-create_output <- function(Ysim, R, clsize, rlatent, lpformula, xdata, rfctn,
+create_output <- function(Ysim, R, clsize, rlatent, lpformula, xdata, rfctn, # nolint
     ncategories = NULL) {
     y <- c(t(Ysim))
     id <- rep(1:R, each = clsize)
@@ -210,33 +210,33 @@ create_output <- function(Ysim, R, clsize, rlatent, lpformula, xdata, rfctn,
 
 apply_threshold <- function(lin_pred, rlatent, clsize, rfctn, intercepts = NULL,
     ncategories = NULL) {
-    R <- nrow(lin_pred)
+    R <- nrow(lin_pred) # nolint
     if (rfctn == "rmult.clm" | rfctn == "rmult.crm") {
-        U <- rlatent - lin_pred
+        U <- rlatent - lin_pred # nolint
     } else {
-        U <- rlatent + lin_pred
+        U <- rlatent + lin_pred # nolint
     }
     if (rfctn == "rbin") {
-        Ysim <- matrix(0, R, clsize)
+        Ysim <- matrix(0, R, clsize) # nolint
         for (i in 1:clsize) Ysim[, i] <- cut(U[, i] - 2 * lin_pred[, i],
             intercepts[i, ], labels = FALSE)
-        Ysim <- 2 - Ysim
+        Ysim <- 2 - Ysim # nolint
     } else if (rfctn == "rmult.bcl") {
-        U <- matrix(as.vector(t(U)), nrow = clsize * R, ncol = ncategories,
+        U <- matrix(as.vector(t(U)), nrow = clsize * R, ncol = ncategories, # nolint
             TRUE)
-        Ysim <- apply(U, 1, which.max)
-        Ysim <- matrix(Ysim, ncol = clsize, byrow = TRUE)
+        Ysim <- apply(U, 1, which.max) # nolint
+        Ysim <- matrix(Ysim, ncol = clsize, byrow = TRUE) # nolint
     } else if (rfctn == "rmult.clm") {
-        Ysim <- matrix(0, R, clsize)
+        Ysim <- matrix(0, R, clsize) # nolint
         for (i in 1:clsize) Ysim[, i] <- cut(U[, i], intercepts[i, ],
             labels = FALSE)
     } else {
-        Ysim <- matrix(as.numeric(t(U <= intercepts)), R * clsize, ncategories -
+        Ysim <- matrix(as.numeric(t(U <= intercepts)), R * clsize, ncategories - # nolint
             1, TRUE)
         for (i in 1:(ncategories - 1)) Ysim[, i] <- ifelse(Ysim[, i] ==
             1, i, ncategories)
-        Ysim <- apply(Ysim, 1, min)
-        Ysim <- matrix(Ysim, R, clsize, byrow = TRUE)
+        Ysim <- apply(Ysim, 1, min) # nolint
+        Ysim <- matrix(Ysim, R, clsize, byrow = TRUE) # nolint
     }
     Ysim
 }
@@ -251,9 +251,9 @@ create_betas_acl2bcl <- function(intercepts = intercepts,
         seq(ncategories - 1), each = length(z)) * z))
     betas_bcl <- matrix(0, clsize, ncategories - 1 + ncol(betas_matrix_bcl))
     for (i in seq(ncategories - 1)) {
-        betas_bcl[, ( (i - 1) * (dim_betas + 1) + 1):(i * (dim_betas + 1))] <-
+        betas_bcl[, ((i - 1) * (dim_betas + 1) + 1):(i * (dim_betas + 1))] <-
           cbind(intercepts_bcl[, i],
-            betas_matrix_bcl[, ( (i - 1) * (dim_betas) + 1):(i * (dim_betas))])
+            betas_matrix_bcl[, ((i - 1) * (dim_betas) + 1):(i * (dim_betas))])
     }
     betas_bcl <- cbind(betas_bcl, matrix(0, clsize, dim_betas + 1))
     betas_bcl

@@ -3,7 +3,7 @@
 
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
-[![](https://img.shields.io/badge/devel%20version-1.6.4-red.svg)](https://github.com/AnestisTouloumis/SimCorMultRes)
+[![](https://img.shields.io/badge/devel%20version-1.6.5-green.svg)](https://github.com/AnestisTouloumis/SimCorMultRes)
 [![Travis-CI Build
 Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
 [![Project Status: Active The project has reached a stable, usable state

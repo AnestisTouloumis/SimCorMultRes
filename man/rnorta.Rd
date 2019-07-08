@@ -53,7 +53,8 @@ R <- 1000
 LatentCorrelation <- toeplitz(c(1, rep(0.8, 2)))
 LatentCorrelation
 CommonMarginals <- rep('qlogis', 3)
-SimLogistic <- rnorta(R = R, cor.matrix = LatentCorrelation, distr = CommonMarginals)
+SimLogistic <- rnorta(R = R, cor.matrix = LatentCorrelation,
+distr = CommonMarginals)
 
 ## The following lines exemplify the NORTA method.
 set.seed(1)
@@ -64,7 +65,8 @@ all(SimLogistic == qlogis(pnorm(SimNormal)))
 ## logistic and standard extreme value distribution.
 set.seed(1)
 DiffMarginals <- c('qnorm', 'qlogis', 'qgumbel')
-SimDiffMars <- rnorta(R = R, cor.matrix = LatentCorrelation, distr = DiffMarginals)
+SimDiffMars <- rnorta(R = R, cor.matrix = LatentCorrelation,
+distr = DiffMarginals)
 cor(SimDiffMars)
 colMeans(SimDiffMars)
 apply(SimDiffMars, 2, sd)
@@ -73,7 +75,8 @@ apply(SimDiffMars, 2, sd)
 set.seed(1)
 qpars <- list(c(mean = 1, sd = 9), c(location = 2, scale = 1), c(loc = 3,
     scale = 1))
-SimDiffMars2 <- rnorta(R = R, cor.matrix = LatentCorrelation, distr = DiffMarginals,
+SimDiffMars2 <- rnorta(R = R, cor.matrix = LatentCorrelation,
+distr = DiffMarginals,
     qparameters = qpars)
 cor(SimDiffMars2)
 colMeans(SimDiffMars2)

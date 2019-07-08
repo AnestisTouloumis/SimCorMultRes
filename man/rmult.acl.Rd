@@ -101,11 +101,11 @@ x1 <- rep(rnorm(N), each = clsize)
 x2 <- rnorm(N * clsize)
 xdata <- data.frame(x1, x2)
 cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(4))
-CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts, betas = betas,
-    xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts,
+betas = betas, xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
 suppressPackageStartupMessages(library('multgee'))
-fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id, repeated = time,
-    LORstr = 'time.exch', link='acl')
+fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id,
+repeated = time, LORstr = 'time.exch', link='acl')
 round(coef(fit), 2)
 
 }
