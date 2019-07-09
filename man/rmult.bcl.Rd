@@ -102,11 +102,11 @@ equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
 identity_matrix <- diag(categories_no)
 latent_correlation_matrix <- kronecker(equicorrelation_matrix, identity_matrix) # nolint
 simulated_nominal_responses <- rmult.bcl(clsize = cluster_size,
-ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
-xdata = xdata, cor.matrix = latent_correlation_matrix)
+    ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
+    xdata = xdata, cor.matrix = latent_correlation_matrix)
 suppressPackageStartupMessages(library('multgee'))
 nominal_gee_model <- nomLORgee(y ~ x1 + x2,
-data = simulated_nominal_responses$simdata, id = id, repeated = time,
+    data = simulated_nominal_responses$simdata, id = id, repeated = time,
 LORstr = 'time.exch')
 round(coef(nominal_gee_model), 2)
 
