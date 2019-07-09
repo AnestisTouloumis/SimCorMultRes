@@ -122,12 +122,13 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rmult.bcl", ncategories = ncategories)
-    R <- nrow(lin_pred) # nolintr
-    rlatent <- create_rlatent(rlatent, R, "cloglog", clsize, cor.matrix,
-        "rmult.bcl", ncategories = ncategories)
-    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl", # nolintr
+    sample_size <- nrow(lin_pred)
+    rlatent <- create_rlatent(rlatent, sample_size, "cloglog", clsize,
+                              cor.matrix, "rmult.bcl",
+                              ncategories = ncategories)
+    y_sim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl",
                             ncategories = ncategories)
     lpformula <- update(lpformula, ~. - 1)
-    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.bcl",
-        ncategories = ncategories)
+    create_output(y_sim, sample_size, clsize, rlatent, lpformula, xdata,
+                  "rmult.bcl", ncategories = ncategories)
 }

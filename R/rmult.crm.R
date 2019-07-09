@@ -122,15 +122,15 @@ rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas, #
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rmult.clm")
-    R <- nrow(lin_pred) # nolint
-    intercepts <- check_intercepts(intercepts, clsize, "rmult.crm", R)
+    sample_size <- nrow(lin_pred)
+    intercepts <- check_intercepts(intercepts, clsize, "rmult.crm", sample_size)
     ncategories <- ncol(intercepts) / clsize + 1
     lin_pred_extended <- t(apply(lin_pred, 1,
         function(x) rep(x, each = ncategories - 1)))
-    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.crm",
-        ncategories)
-    Ysim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm", # nolint
+    rlatent <- create_rlatent(rlatent, sample_size, link, clsize, cor.matrix,
+                              "rmult.crm", ncategories)
+    y_sim <- apply_threshold(lin_pred_extended, rlatent, clsize, "rmult.crm",
         intercepts, ncategories)
-    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.crm",
-        ncategories)
+    create_output(y_sim, sample_size, clsize, rlatent, lpformula, xdata,
+                  "rmult.crm", ncategories)
 }

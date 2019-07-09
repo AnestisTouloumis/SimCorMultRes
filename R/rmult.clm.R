@@ -108,7 +108,7 @@
 #' betas = betas, xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
 #' head(CorOrdRes$simdata, n = 8)
 #'
-#' ## Same sampling scheme except that the parameter vector is time-stationary. # nolint
+#' ## Same sampling scheme except that the parameter vector is time-stationary.
 #' set.seed(12345)
 #' CorOrdRes <- rmult.clm(clsize = clsize, betas = 1, xformula = ~x,
 #'     cor.matrix = cor.matrix, intercepts = intercepts, link = 'probit')
@@ -131,8 +131,10 @@ rmult.clm <- function(clsize = clsize, intercepts = intercepts, betas = betas, #
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rmult.clm")
-    R <- nrow(lin_pred) # nolint
-    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rmult.clm")
-    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.clm", intercepts) # nolint
-    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rmult.clm")
+    sample_size <- nrow(lin_pred)
+    rlatent <- create_rlatent(rlatent, sample_size, link, clsize, cor.matrix,
+                              "rmult.clm")
+    y_sim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.clm", intercepts)
+    create_output(y_sim, sample_size, clsize, rlatent, lpformula, xdata,
+                  "rmult.clm")
 }

@@ -133,8 +133,9 @@ rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
         xdata <- data.frame(na.omit(xdata))
     lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
         "rbin")
-    R <- nrow(lin_pred) # nolint
-    rlatent <- create_rlatent(rlatent, R, link, clsize, cor.matrix, "rbin")
-    Ysim <- apply_threshold(lin_pred, rlatent, clsize, "rbin", intercepts) # nolint
-    create_output(Ysim, R, clsize, rlatent, lpformula, xdata, "rbin")
+    sample_size <- nrow(lin_pred) # nolint
+    rlatent <- create_rlatent(rlatent, sample_size, link, clsize, cor.matrix,
+                              "rbin")
+    y_sim <- apply_threshold(lin_pred, rlatent, clsize, "rbin", intercepts)
+    create_output(y_sim, sample_size, clsize, rlatent, lpformula, xdata, "rbin")
 }
