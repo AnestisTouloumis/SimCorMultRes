@@ -18,7 +18,7 @@ link-citations: true
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   tidy = TRUE,
-  collapse = TRUE, 
+  collapse = TRUE,
   comment = "#>"
   )
 ```
@@ -72,29 +72,35 @@ for all $i=1,\ldots,500$.
 # parameter vector
 betas <-  c(1, 3, 2, 1.25, 3.25, 1.75, 0.75, 2.75, 2.25, 0, 0, 0)
 # sample size
-N <- 500 
+sample_size <- 500 
 # number of nominal response categories
-ncategories <- 4  
+categories_no <- 4  
 # cluster size
-clsize <- 3 
+cluster_size <- 3 
 set.seed(1) 
 # time-stationary covariate x_{i1}
-x1 <- rep(rnorm(N), each = clsize)
+x1 <- rep(rnorm(sample_size), each = cluster_size)
 # time-varying covariate x_{it2}
-x2 <- rnorm(N * clsize) 
+x2 <- rnorm(sample_size * cluster_size) 
 # create covariates dataframe 
 xdata <- data.frame(x1, x2) 
 set.seed(321)
 library(SimCorMultRes)
-# correlation matrix for the NORTA method
-cor.matrix <- kronecker(toeplitz(c(1,rep(0.95,clsize-1))),diag(ncategories)) 
+# latent correlation matrix for the NORTA method
+equicorrelation_matrix <- toeplitz(c(1, rep(0.95,cluster_size - 1)))
+identity_matrix <- diag(categories_no)
+latent_correlation_matrix <- kronecker(equicorrelation_matrix, identity_matrix) 
 # simulation of clustered nominal responses
-CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+simulated_nominal_responses <- rmult.bcl(clsize = cluster_size,
+                                         ncategories = categories_no,
+                                         betas = betas, xformula = ~ x1 + x2,
+                                         xdata = xdata,
+                                         cor.matrix = latent_correlation_matrix)
 suppressPackageStartupMessages(library("multgee"))
 # fitting a GEE model
-fit <- nomLORgee(y~x1+x2,data=CorNomRes$simdata,id=id,repeated=time,LORstr="time.exch")
+nominal_gee_model <- nomLORgee(y~x1+x2,data=simulated_nominal_responses$simdata,id=id,repeated=time,LORstr="time.exch")
 # checking regression coefficients
-round(coef(fit),2)
+round(coef(nominal_gee_model),2)
 ```
 ## Correlated ordinal responses
 Simulation of clustered ordinal responses is feasible under either a marginal cumulative link model or a marginal continuation-ratio model.
@@ -135,22 +141,22 @@ $$\left( {\begin{array}{*{20}c}
 ```{r}
 set.seed(12345)
 # sample size
-N <- 500
+sample_size <- 500
 # cluster size
-clsize <- 4
+cluster_size <- 4
 # category-specific intercepts
-intercepts <- c(-1.5, -0.5, 0.5, 1.5)
+beta_intercepts <- c(-1.5, -0.5, 0.5, 1.5)
 # time-varying regression parameters associated with covariates
-betas <- matrix(c(1, 2, 3, 4), 4, 1)
+beta_coefficients <- matrix(c(1, 2, 3, 4), 4, 1)
 # time-stationary covariate 
-x <- rep(rnorm(N), each = clsize)
-# correlation matrix for the NORTA method
-cor.matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
+x <- rep(rnorm(sample_size), each = cluster_size)
+# latent correlation matrix for the NORTA method
+latent_correlation_matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
 # simulation of ordinal responses
-CorOrdRes <- rmult.clm(clsize = clsize, intercepts = intercepts, betas = betas, 
-    xformula = ~x, cor.matrix = cor.matrix, link = "probit")
+simulated_ordinal_responses <- rmult.clm(clsize = cluster_size, intercepts = beta_intercepts,
+                       betas = beta_coefficients, xformula = ~x, cor.matrix = latent_correlation_matrix, link = "probit")
 # first eight rows of the simulated dataframe
-head(CorOrdRes$simdata, n = 8)
+head(simulated_ordinal_responses$simdata, n = 8)
 ```
 
 ### Marginal continuation-ratio model
@@ -188,25 +194,25 @@ with $N=500$, $T=4$, $(\beta_{10},\beta_{20},\beta_{30},\beta_{40},\beta)=(-1.5,
 ```{r}
 set.seed(1)
 # sample size
-N <- 500
+sample_size <- 500
 # cluster size
-clsize <- 4
+cluster_size <- 4
 # category-specific intercepts
-intercepts <- c(-1.5, -0.5, 0.5, 1.5)
+beta_intercepts <- c(-1.5, -0.5, 0.5, 1.5)
 # regression parameters associated with covariates
-betas <- 1
+beta_coefficients <- 1
 # time-varying covariate
-x <- rnorm(N * clsize)
+x <- rnorm(sample_size * cluster_size)
 # number of ordinal response categories
-ncategories <- 5
+categories_no <- 5
 # correlation matrix for the NORTA method
-cor.matrix <- diag(1, (ncategories - 1) * clsize) + kronecker(toeplitz(c(0, 
-    rep(0.24, ncategories - 2))), matrix(1, clsize, clsize))
+latent_correlation_matrix <- diag(1, (categories_no - 1) * cluster_size) + kronecker(toeplitz(c(0, 
+    rep(0.24, categories_no - 2))), matrix(1, cluster_size, cluster_size))
 # simulation of ordinal responses
-CorOrdRes <- rmult.crm(clsize = clsize, intercepts = intercepts, betas = betas, 
-    xformula = ~x, cor.matrix = cor.matrix, link = "probit")
+simulated_ordinal_responses <- rmult.crm(clsize = cluster_size, intercepts = beta_intercepts, betas = beta_coefficients, 
+    xformula = ~ x, cor.matrix = latent_correlation_matrix, link = "probit")
 # first six clusters with ordinal responses
-head(CorOrdRes$Ysim)
+head(simulated_ordinal_responses$Ysim)
 ```
 
 ### Marginal adjacent-category logit model

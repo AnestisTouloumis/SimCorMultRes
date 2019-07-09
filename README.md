@@ -83,21 +83,22 @@ The following R code illustrates how to use the core function `rbin`:
 ``` r
 ## See Example 3.5 in the Vignette.
 set.seed(123)
-N <- 5000
-clsize <- 4
-intercepts <- 0
-betas <- 0.2
-cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
-x <- rep(rnorm(N), each = clsize)
-CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, xformula = ~x, 
-    cor.matrix = cor.matrix, link = "probit")
+sample_size <- 5000
+cluster_size <- 4
+beta_intercepts <- 0
+beta_coefficients <- 0.2
+latent_correlation_mat <- toeplitz(c(1, 0.9, 0.9, 0.9))
+x <- rep(rnorm(sample_size), each = cluster_size)
+simulated_binary_responses <- rbin(clsize = cluster_size, intercepts = beta_intercepts, 
+    betas = beta_coefficients, xformula = ~x, cor.matrix = latent_correlation_mat, 
+    link = "probit")
 library(gee)
-binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$simdata)
+binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id, data = simulated_binary_responses$simdata)
 #> Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
 #> running glm to get initial regression estimate
 #> (Intercept)           x 
 #> 0.002636705 0.204827031
-summary(binGEEmod)$coefficients
+summary(binary_gee_model)$coefficients
 #>                Estimate  Naive S.E.    Naive z Robust S.E.   Robust z
 #> (Intercept) 0.002636705 0.008929290  0.2952872  0.01572132  0.1677153
 #> x           0.204827031 0.009114596 22.4724192  0.01610695 12.7166857

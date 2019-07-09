@@ -21,7 +21,7 @@ csl: biometrics.csl
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  tidy= TRUE,
+  tidy = TRUE,
   collapse = TRUE,
   comment = "#>",
   fig.path = "README-"
@@ -96,17 +96,21 @@ The following R code illustrates how to use the core function `rbin`:
 ```{r}
 ## See Example 3.5 in the Vignette.
 set.seed(123)
-N <- 5000
-clsize <- 4
-intercepts <- 0
-betas <- 0.2
-cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
-x <- rep(rnorm(N), each = clsize)
-CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas, 
-    xformula = ~x, cor.matrix = cor.matrix, link = "probit")
+sample_size <- 5000
+cluster_size <- 4
+beta_intercepts <- 0
+beta_coefficients <- 0.2
+latent_correlation_mat <- toeplitz(c(1, 0.9, 0.9, 0.9))
+x <- rep(rnorm(sample_size), each = cluster_size)
+simulated_binary_responses <- rbin(clsize = cluster_size,
+                                   intercepts = beta_intercepts,
+                                   betas = beta_coefficients, xformula = ~x,
+                                   cor.matrix = latent_correlation_mat,
+                                   link = "probit")
 library(gee)
-binGEEmod <- gee(y ~ x, family = binomial("probit"), id = id, data = CorBinRes$simdata)
-summary(binGEEmod)$coefficients
+binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id,
+                 data = simulated_binary_responses$simdata)
+summary(binary_gee_model)$coefficients
 ```
 
 Additional examples can be found in @Touloumis2016 and in the vignette of `SimCorMultRes`.

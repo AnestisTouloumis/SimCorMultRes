@@ -100,16 +100,20 @@ realization of \eqn{e^{O2}_{it1},...,e^{O2}_{itJ}}, respectively, for
 \examples{
 ## See Example 3.3 in the Vignette.
 set.seed(1)
-N <- 500
-clsize <- 4
-intercepts <- c(-1.5, -0.5, 0.5, 1.5)
-betas <- 1
-x <- rnorm(N * clsize)
-ncategories <- 5
-cor.matrix <- diag(1, (ncategories - 1) * clsize) + kronecker(toeplitz(c(0,
-    rep(0.24, ncategories - 2))), matrix(1, clsize, clsize))
-CorOrdRes <- rmult.crm(clsize = clsize, intercepts = intercepts,
-betas = betas, xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
+sample_size <- 500
+cluster_size <- 4
+beta_intercepts <- c(-1.5, -0.5, 0.5, 1.5)
+beta_coefficients <- 1
+x <- rnorm(sample_size * cluster_size)
+categories_no <- 5
+identity_matrix <- diag(1, (categories_no - 1) * cluster_size)
+equicorrelation_matrix <- toeplitz(c(0, rep(0.24, categories_no - 2)))
+ones_matrix <-  matrix(1, cluster_size, cluster_size)
+latent_correlation_matrix <- identity_matrix +
+kronecker(equicorrelation_matrix, ones_matrix)
+CorOrdRes <- rmult.crm(clsize = cluster_size, intercepts = beta_intercepts,
+betas = beta_coefficients, xformula = ~ x,
+cor.matrix = latent_correlation_matrix, link = 'probit')
 head(CorOrdRes$Ysim)
 
 }

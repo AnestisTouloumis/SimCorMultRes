@@ -95,21 +95,27 @@
 #'
 #' @examples
 #' ## See Example 3.4 in the Vignette.
-#' intercepts <- c(3, 1, 2)
-#' betas <- c(1, 1)
-#' N <- 500
-#' clsize <- 3
+#' beta_intercepts <- c(3, 1, 2)
+#' beta_coefficients <- c(1, 1)
+#' sample_size <- 500
+#' cluster_size <- 3
 #' set.seed(321)
-#' x1 <- rep(rnorm(N), each = clsize)
-#' x2 <- rnorm(N * clsize)
+#' x1 <- rep(rnorm(sample_size), each = cluster_size)
+#' x2 <- rnorm(sample_size * cluster_size)
 #' xdata <- data.frame(x1, x2)
-#' cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))), diag(4))
-#' CorOrdRes <- rmult.acl(clsize = clsize, intercepts = intercepts,
-#' betas = betas, xformula = ~ x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+#' identity_matrix <- diag(4)
+#' equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
+#' latent_correlation_matrix <- kronecker(equicorrelation_matrix,
+#' identity_matrix)
+#' simulated_ordinal_reponses <- rmult.acl(clsize = cluster_size,
+#' intercepts = beta_intercepts, betas = beta_coefficients,
+#' xformula = ~ x1 + x2, xdata = xdata,
+#' cor.matrix = latent_correlation_matrix)
 #' suppressPackageStartupMessages(library('multgee'))
-#' fit <- ordLORgee(y ~ x1 + x2, data = CorOrdRes$simdata, id = id,
-#' repeated = time, LORstr = 'time.exch', link='acl')
-#' round(coef(fit), 2)
+#' ordinal_gee_model <- ordLORgee(y ~ x1 + x2,
+#' data = simulated_ordinal_reponses$simdata, id = id, repeated = time,
+#' LORstr = 'time.exch', link='acl')
+#' round(coef(ordinal_gee_model), 2)
 #'
 #' @export
 rmult.acl <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint

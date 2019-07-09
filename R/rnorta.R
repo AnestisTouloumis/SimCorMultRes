@@ -46,38 +46,40 @@
 #' @examples
 #' ## An example with standard logistic as marginal distribution.
 #' set.seed(1)
-#' R <- 1000
-#' LatentCorrelation <- toeplitz(c(1, rep(0.8, 2)))
-#' LatentCorrelation
-#' CommonMarginals <- rep('qlogis', 3)
-#' SimLogistic <- rnorta(R = R, cor.matrix = LatentCorrelation,
-#' distr = CommonMarginals)
+#' sample_size <- 1000
+#' latent_correlation_matrix <- toeplitz(c(1, rep(0.8, 2)))
+#' latent_correlation_matrix
+#' common_marginal_distribution <- rep('qlogis', 3)
+#' simulated_logistic_responses <- rnorta(R = sample_size,
+#' cor.matrix = latent_correlation_matrix, distr = common_marginal_distribution)
 #'
 #' ## The following lines exemplify the NORTA method.
 #' set.seed(1)
-#' SimNormal <- rsmvnorm(R = R, cor.matrix = LatentCorrelation)
-#' all(SimLogistic == qlogis(pnorm(SimNormal)))
+#' simulated_normal_responses <- rsmvnorm(R = sample_size,
+#' cor.matrix = latent_correlation_matrix)
+#' all(simulated_logistic_responses == qlogis(pnorm(simulated_normal_responses))) # nolintr
 #'
 #' ## Change the marginal distributions to standard normal, standard
 #' ## logistic and standard extreme value distribution.
 #' set.seed(1)
-#' DiffMarginals <- c('qnorm', 'qlogis', 'qgumbel')
-#' SimDiffMars <- rnorta(R = R, cor.matrix = LatentCorrelation,
-#' distr = DiffMarginals)
-#' cor(SimDiffMars)
-#' colMeans(SimDiffMars)
-#' apply(SimDiffMars, 2, sd)
+#' different_marginal_distributions <- c('qnorm', 'qlogis', 'qgumbel')
+#' simulated_logistic_responses  <- rnorta(R = sample_size,
+#' cor.matrix = latent_correlation_matrix,
+#' distr = different_marginal_distributions)
+#' cor(simulated_logistic_responses)
+#' colMeans(simulated_logistic_responses)
+#' apply(simulated_logistic_responses, 2, sd)
 #'
 #' ## Same as above but using parameter values other than the default ones.
 #' set.seed(1)
 #' qpars <- list(c(mean = 1, sd = 9), c(location = 2, scale = 1), c(loc = 3,
 #'     scale = 1))
-#' SimDiffMars2 <- rnorta(R = R, cor.matrix = LatentCorrelation,
-#' distr = DiffMarginals,
-#'     qparameters = qpars)
-#' cor(SimDiffMars2)
-#' colMeans(SimDiffMars2)
-#' apply(SimDiffMars2, 2, sd)
+#' simulated_logistic_responses <- rnorta(R = sample_size,
+#' cor.matrix = latent_correlation_matrix,
+#' distr = different_marginal_distributions, qparameters = qpars)
+#' cor(simulated_logistic_responses)
+#' colMeans(simulated_logistic_responses)
+#' apply(simulated_logistic_responses, 2, sd)
 #' @export
 rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, # nolint
     qparameters = NULL) {

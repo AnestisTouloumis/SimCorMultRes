@@ -94,25 +94,28 @@
 #' @examples
 #' ## See Example 3.1 in the Vignette.
 #' betas <- c(1, 3, 2, 1.25, 3.25, 1.75, 0.75, 2.75, 2.25, 0, 0, 0)
-#' N <- 500
-#' ncategories <- 4
-#' clsize <- 3
+#' sample_size <- 500
+#' categories_no <- 4
+#' cluster_size <- 3
 #' set.seed(1)
-#' x1 <- rep(rnorm(N), each = clsize)
-#' x2 <- rnorm(N * clsize)
+#' x1 <- rep(rnorm(sample_size), each = cluster_size)
+#' x2 <- rnorm(sample_size * cluster_size)
 #' xdata <- data.frame(x1, x2)
-#' cor.matrix <- kronecker(toeplitz(c(1, rep(0.95, clsize - 1))),
-#' diag(ncategories))
-#' CorNomRes <- rmult.bcl(clsize = clsize, ncategories = ncategories,
-#' betas = betas, xformula = ~x1 + x2, xdata = xdata, cor.matrix = cor.matrix)
+#' equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
+#' identity_matrix <- diag(categories_no)
+#' latent_correlation_matrix <- kronecker(equicorrelation_matrix, identity_matrix) # nolint
+#' simulated_nominal_responses <- rmult.bcl(clsize = cluster_size,
+#' ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
+#' xdata = xdata, cor.matrix = latent_correlation_matrix)
 #' suppressPackageStartupMessages(library('multgee'))
-#' fit <- nomLORgee(y ~ x1 + x2, data = CorNomRes$simdata, id = id,
-#' repeated = time, LORstr = 'time.exch')
-#' round(coef(fit), 2)
+#' nominal_gee_model <- nomLORgee(y ~ x1 + x2,
+#' data = simulated_nominal_responses$simdata, id = id, repeated = time,
+#' LORstr = 'time.exch')
+#' round(coef(nominal_gee_model), 2)
 #'
 #' @export
-rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas, # nolintr
-    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolintr
+rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas, # nolint
+    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolint
     rlatent = NULL) {
     check_cluster_size(clsize)
     ncategories <- check_ncategories(ncategories)

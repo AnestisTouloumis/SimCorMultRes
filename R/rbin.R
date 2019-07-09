@@ -96,30 +96,34 @@
 #' @examples
 #' ## See Example 3.4 in the Vignette.
 #' set.seed(123)
-#' N <- 5000
-#' clsize <- 4
-#' intercepts <- 0
-#' betas <- 0.2
-#' cor.matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
-#' x <- rep(rnorm(N), each = clsize)
-#' CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
-#'     xformula = ~x, cor.matrix = cor.matrix, link = 'probit')
+#' sample_size <- 5000
+#' cluster_size <- 4
+#' beta_intercepts <- 0
+#' beta_coefficients <- 0.2
+#' latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
+#' x <- rep(rnorm(sample_size), each = cluster_size)
+#' simulated_binary_responses <- rbin(clsize = cluster_size,
+#' intercepts = beta_intercepts, betas = beta_coefficients,
+#' xformula = ~ x, cor.matrix = latent_correlation_matrix, link = 'probit')
 #' library(gee)
-#' binGEEmod <- gee(y ~ x, family = binomial('probit'), id = id,
-#' data = CorBinRes$simdata)
-#' summary(binGEEmod)$coefficients
+#' binary_gee_model <- gee(y ~ x, family = binomial('probit'), id = id,
+#' data = simulated_binary_responses$simdata)
+#' summary(binary_gee_model)$coefficients
 #'
 #' ## See Example 3.5 in the Vignette.
 #' set.seed(8)
 #' library(evd)
-#' rlatent1 <- rmvevd(N, dep = sqrt(1 - 0.9), model = 'log', d = clsize)
-#' rlatent2 <- rmvevd(N, dep = sqrt(1 - 0.9), model = 'log', d = clsize)
-#' rlatent <- rlatent1 - rlatent2
-#' CorBinRes <- rbin(clsize = clsize, intercepts = intercepts, betas = betas,
-#'     xformula = ~x, rlatent = rlatent)
-#' binGEEmod <- gee(y ~ x, family = binomial('logit'), id = id,
-#' data = CorBinRes$simdata)
-#' summary(binGEEmod)$coefficients
+#' rlatent1 <- rmvevd(sample_size, dep = sqrt(1 - 0.9), model = 'log',
+#' d = cluster_size)
+#' rlatent2 <- rmvevd(sample_size, dep = sqrt(1 - 0.9), model = 'log',
+#' d = cluster_size)
+#' simulated_latent_variables <- rlatent1 - rlatent2
+#' simulated_binary_responses <- rbin(clsize = cluster_size,
+#' intercepts = beta_intercepts, betas = beta_coefficients,
+#' xformula = ~ x, rlatent = simulated_latent_variables)
+#' binary_gee_model <- gee(y ~ x, family = binomial('logit'), id = id,
+#' data = simulated_binary_responses$simdata)
+#' summary(binary_gee_model)$coefficients
 #'
 #' @export
 rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,

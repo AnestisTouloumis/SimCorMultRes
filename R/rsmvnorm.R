@@ -17,12 +17,13 @@
 #' ## Simulating 10000 bivariate random vectors with correlation parameter
 #' ## equal to 0.4.
 #' set.seed(1)
-#' R <- 10000
-#' cor.matrix <- toeplitz(c(1, 0.4))
-#' SimBivariateNormal <- rsmvnorm(R = R, cor.matrix = cor.matrix)
-#' colMeans(SimBivariateNormal)
-#' apply(SimBivariateNormal, 2, sd)
-#' cor(SimBivariateNormal)
+#' sample_size <- 10000
+#' correlation_matrix <- toeplitz(c(1, 0.4))
+#' simulate_normal_responses <- rsmvnorm(R = sample_size,
+#' cor.matrix = correlation_matrix)
+#' colMeans(simulate_normal_responses)
+#' apply(simulate_normal_responses, 2, sd)
+#' cor(simulate_normal_responses)
 #' @export
 rsmvnorm <- function(R = R, cor.matrix = cor.matrix) { # nolint
     if (all.equal(R, as.integer(R)) != TRUE | R < 1)
