@@ -20,7 +20,6 @@ csl: biometrics.csl
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include=FALSE}
-library(badger)
 knitr::opts_chunk$set(
   tidy= TRUE,
   collapse = TRUE,
@@ -31,7 +30,10 @@ knitr::opts_chunk$set(
 
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
-`r badger::badge_github_version("AnestisTouloumis/SimCorMultRes","green")`
+
+
+
+[![Github version](`r paste0("https://img.shields.io/badge/GitHub%20-", as.vector(read.dcf('DESCRIPTION')[, 'Version']),"-orange.svg")`)]("commits/master")
 [![Travis-CI Build Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
 [![Project Status: Active The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) 
 [![Codecov test coverage](https://codecov.io/gh/AnestisTouloumis/SimCorMultRes/branch/master/graph/badge.svg)](https://codecov.io/gh/AnestisTouloumis/SimCorMultRes?branch=master)
