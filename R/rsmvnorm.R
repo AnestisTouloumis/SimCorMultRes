@@ -19,11 +19,11 @@
 #' set.seed(1)
 #' sample_size <- 10000
 #' correlation_matrix <- toeplitz(c(1, 0.4))
-#' simulate_normal_responses <- rsmvnorm(R = sample_size,
-#' cor.matrix = correlation_matrix)
-#' colMeans(simulate_normal_responses)
-#' apply(simulate_normal_responses, 2, sd)
-#' cor(simulate_normal_responses)
+#' simulated_normal_responses <- rsmvnorm(R = sample_size,
+#'     cor.matrix = correlation_matrix)
+#' colMeans(simulated_normal_responses)
+#' apply(simulated_normal_responses, 2, sd)
+#' cor(simulated_normal_responses)
 #' @export
 rsmvnorm <- function(R = R, cor.matrix = cor.matrix) { # nolint
     if (all.equal(R, as.integer(R)) != TRUE | R < 1)

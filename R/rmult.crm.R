@@ -109,9 +109,9 @@
 #' equicorrelation_matrix <- toeplitz(c(0, rep(0.24, categories_no - 2)))
 #' ones_matrix <-  matrix(1, cluster_size, cluster_size)
 #' latent_correlation_matrix <- identity_matrix +
-#' kronecker(equicorrelation_matrix, ones_matrix)
+#'     kronecker(equicorrelation_matrix, ones_matrix)
 #' CorOrdRes <- rmult.crm(clsize = cluster_size, intercepts = beta_intercepts,
-#' betas = beta_coefficients, xformula = ~ x,
+#'     betas = beta_coefficients, xformula = ~ x,
 #' cor.matrix = latent_correlation_matrix, link = 'probit')
 #' head(CorOrdRes$Ysim)
 #'
