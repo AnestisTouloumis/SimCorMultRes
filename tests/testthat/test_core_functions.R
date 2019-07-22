@@ -6,14 +6,14 @@ test_that("rbin constant beta_intercepts", {
   beta_coefficients <- 0.2
   latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
   x <- rep(rnorm(sample_size), each = cluster_size)
-  simulated_binary_responses <-
+  simulated_binary_dataset <-
     rbin(clsize = cluster_size, intercepts = beta_intercepts,
          betas = beta_coefficients, xformula = ~ x,
          cor.matrix = latent_correlation_matrix, link = "probit")
-  y_sim <-
-    as.numeric(c(t(simulated_binary_responses$rlatent)) <=
+  simulated_responses <-
+    as.numeric(c(t(simulated_binary_dataset$rlatent)) <=
                  beta_intercepts + beta_coefficients * x)
-  expect_equal(c(t(simulated_binary_responses$Ysim)), y_sim)
+  expect_equal(c(t(simulated_binary_dataset$Ysim)), simulated_responses)
 })
 
 test_that("rbin varying beta_intercepts", {
@@ -24,15 +24,15 @@ test_that("rbin varying beta_intercepts", {
   beta_coefficients <- 0.2
   latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
   x <- rep(rnorm(sample_size), each = cluster_size)
-  simulated_binary_responses <-
+  simulated_binary_dataset <-
     rbin(clsize = cluster_size, intercepts = beta_intercepts,
          betas = beta_coefficients, xformula = ~ x,
          cor.matrix = latent_correlation_matrix, link = "probit")
   beta_intercepts <- rep(beta_intercepts, sample_size)
-  y_sim <-
-    as.numeric(c(t(simulated_binary_responses$rlatent)) <=
+  simulated_responses <-
+    as.numeric(c(t(simulated_binary_dataset$rlatent)) <=
                  beta_intercepts + beta_coefficients * x)
-  expect_equal(c(t(simulated_binary_responses$Ysim)), y_sim)
+  expect_equal(c(t(simulated_binary_dataset$Ysim)), simulated_responses)
 })
 
 
@@ -48,7 +48,7 @@ test_that("rmult.bcl constant beta_coefficients", {
   latent_correlation_matrix <- kronecker(
     toeplitz(c(1, rep(0.95, cluster_size - 1))), diag(categories_no)
     )
-  simulated_nominal_responses <-
+  simulated_nominal_dataset <-
     rmult.bcl(clsize = cluster_size, ncategories = categories_no,
               betas = beta_coefficients, xformula = ~ x1 + x2, xdata = xdata,
               cor.matrix = latent_correlation_matrix)
@@ -56,10 +56,10 @@ test_that("rmult.bcl constant beta_coefficients", {
   xmat <- apply(xmat, 2, function(x) rep(x, each = categories_no))
   lin_pred <- matrix(beta_coefficients, nrow = nrow(xmat), ncol = ncol(xmat),
                      byrow = TRUE) * xmat
-  lin_pred <- rowSums(lin_pred) + c(t(simulated_nominal_responses$rlatent))
+  lin_pred <- rowSums(lin_pred) + c(t(simulated_nominal_dataset$rlatent))
   lin_pred <- matrix(lin_pred, sample_size * cluster_size, categories_no, TRUE)
-  y_sim <- apply(lin_pred, 1, which.max)
-  expect_equal(c(t(simulated_nominal_responses$Ysim)), y_sim)
+  simulated_responses <- apply(lin_pred, 1, which.max)
+  expect_equal(c(t(simulated_nominal_dataset$Ysim)), simulated_responses)
 })
 
 
@@ -78,7 +78,7 @@ test_that("rmult.bcl varying beta_coefficients", {
   xdata <- data.frame(x1, x2)
   latent_correlation_matrix <- kronecker(
     toeplitz(c(1, rep(0.95, cluster_size - 1))), diag(categories_no))
-  simulated_nominal_responses <- rmult.bcl(clsize = cluster_size,
+  simulated_nominal_dataset <- rmult.bcl(clsize = cluster_size,
                                            ncategories = categories_no,
                                            betas = beta_coefficients,
                                            xformula = ~ x1 + x2, xdata = xdata,
@@ -88,10 +88,10 @@ test_that("rmult.bcl varying beta_coefficients", {
   xmat <- apply(xmat, 2, function(x) rep(x, each = categories_no))
   lin_pred <- matrix(c(t(beta_coefficients)), nrow = nrow(xmat),
                      ncol = ncol(xmat), byrow = TRUE) * xmat
-  lin_pred <- rowSums(lin_pred) + c(t(simulated_nominal_responses$rlatent))
+  lin_pred <- rowSums(lin_pred) + c(t(simulated_nominal_dataset$rlatent))
   lin_pred <- matrix(lin_pred, sample_size * cluster_size, categories_no, TRUE)
-  y_sim <- apply(lin_pred, 1, which.max)
-  expect_equal(c(t(simulated_nominal_responses$Ysim)), y_sim)
+  simulated_responses <- apply(lin_pred, 1, which.max)
+  expect_equal(c(t(simulated_nominal_dataset$Ysim)), simulated_responses)
 })
 
 
@@ -104,14 +104,16 @@ test_that("rmult.clm varying beta_coefficients", {
   beta_coefficients <- matrix(c(1, 2, 3, 4), 4, 1)
   x <- rep(rnorm(sample_size), each = cluster_size)
   latent_correlation_matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
-  simulated_ordinal_responses <-
+  simulated_ordinal_dataset <-
     rmult.clm(clsize = cluster_size, intercepts = beta_intercepts,
               betas = beta_coefficients, xformula = ~ x,
               cor.matrix = latent_correlation_matrix, link = "probit")
-  u_sim <-  c(t(simulated_ordinal_responses$rlatent)) - c(beta_coefficients) * x
+  simulated_latent_responses <-
+    c(t(simulated_ordinal_dataset$rlatent)) - c(beta_coefficients) * x
   beta_intercepts <- c(-Inf, beta_intercepts, Inf)
-  y_sim <- cut(u_sim, beta_intercepts, labels = FALSE)
-  expect_equal(c(t(simulated_ordinal_responses$Ysim)), y_sim)
+  simulated_responses <- cut(simulated_latent_responses, beta_intercepts,
+                             labels = FALSE)
+  expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
 })
 
 
@@ -124,14 +126,16 @@ test_that("rmult.clm constant beta_coefficients", {
   beta_coefficients <- 1
   x <- rep(rnorm(sample_size), each = cluster_size)
   latent_correlation_matrix <- toeplitz(c(1, 0.85, 0.5, 0.15))
-  simulated_ordinal_responses <-
+  simulated_ordinal_dataset <-
     rmult.clm(clsize = cluster_size, intercepts = beta_intercepts,
               betas = beta_coefficients, xformula = ~ x,
               cor.matrix = latent_correlation_matrix, link = "probit")
-  u_sim <-  c(t(simulated_ordinal_responses$rlatent)) - c(beta_coefficients) * x
+  simulated_latent_responses <-
+    c(t(simulated_ordinal_dataset$rlatent)) - c(beta_coefficients) * x
   beta_intercepts <- c(-Inf, beta_intercepts, Inf)
-  y_sim <- cut(u_sim, beta_intercepts, labels = FALSE)
-  expect_equal(c(t(simulated_ordinal_responses$Ysim)), y_sim)
+  simulated_responses <- cut(simulated_latent_responses, beta_intercepts,
+                             labels = FALSE)
+  expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
 })
 
 
@@ -147,7 +151,7 @@ test_that("rmult.acl constant beta_coefficients", {
   set.seed(1)
   latent_correlation_matrix <-
     kronecker(toeplitz(c(1, rep(0.95, cluster_size - 1))), diag(4))
-  simulated_ordinal_responses <-
+  simulated_ordinal_dataset <-
     rmult.acl(clsize = cluster_size, intercepts = beta_intercepts,
               betas = beta_coefficients, xformula = ~ x1 + x2, xdata = xdata,
               cor.matrix = latent_correlation_matrix)
@@ -158,12 +162,12 @@ test_that("rmult.acl constant beta_coefficients", {
       beta_intercepts[3], 1, 1,
       beta_intercepts[4], 0, 0)
   set.seed(1)
-  simulated_nominal_responses <-
+  simulated_nominal_dataset <-
     rmult.bcl(clsize = cluster_size, ncategories = 4,
               betas = beta_coefficients_bcl, xformula = ~ x1 + x2,
               xdata = xdata, cor.matrix = latent_correlation_matrix)
-  expect_equal(c(t(simulated_ordinal_responses$Ysim)),
-               c(t(simulated_nominal_responses$Ysim)))
+  expect_equal(c(t(simulated_ordinal_dataset$Ysim)),
+               c(t(simulated_nominal_dataset$Ysim)))
 })
 
 
@@ -178,17 +182,19 @@ test_that("rmult.crm constant beta_coefficients", {
     diag(1, (categories_no - 1) * cluster_size) +
     kronecker(toeplitz(c(0, rep(0.24, categories_no - 2))),
               matrix(1, cluster_size, cluster_size))
-  simulated_ordinal_responses <-
+  simulated_ordinal_dataset <-
     rmult.crm(clsize = cluster_size, intercepts = beta_intercepts,
               betas = beta_coefficients, xformula = ~ x,
               cor.matrix = latent_correlation_matrix, link = "probit")
-  u_sim <- c(t(simulated_ordinal_responses$rlatent)) -
+  simulated_latent_responses <-
+    c(t(simulated_ordinal_dataset$rlatent)) -
     rep(x, each = categories_no - 1)
-  y_sim <-
-    matrix(as.numeric(t(u_sim <= beta_intercepts)), sample_size * cluster_size,
-           categories_no - 1, TRUE)
+  simulated_responses <-
+    matrix(as.numeric(t(simulated_latent_responses <= beta_intercepts)),
+           sample_size * cluster_size, categories_no - 1, TRUE)
   for (i in 1:(categories_no - 1))
-    y_sim[, i] <- ifelse(y_sim[, i] == 1, i, categories_no)
-  y_sim <- apply(y_sim, 1, min)
-  expect_equal(c(t(simulated_ordinal_responses$Ysim)), y_sim)
+    simulated_responses[, i] <-
+    ifelse(simulated_responses[, i] == 1, i, categories_no)
+  simulated_responses <- apply(simulated_responses, 1, min)
+  expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
 })

@@ -16,10 +16,10 @@ test_that("rnorta", {
 
 test_that("rsmvnorm", {
   set.seed(1)
-  sample_size <- 100 # nolint
-  correlation_matrix <- toeplitz(c(1, 0.4)) # nolint
+  sample_size <- 100
+  correlation_matrix <- toeplitz(c(1, 0.4))
   sim_bivariate_normal <- rsmvnorm(R = sample_size,
-                                 cor.matrix = correlation_matrix)
+                                   cor.matrix = correlation_matrix)
   set.seed(1)
   p <- ncol(correlation_matrix)
   raw_code <- matrix(rnorm(sample_size * p), sample_size, p) %*%
@@ -29,15 +29,13 @@ test_that("rsmvnorm", {
 
 
 test_that("rnorta sample size", {
-  R <- 0
-  expect_error(if (all.equal(R, as.integer(R)) != TRUE | R < 1)
-    stop("'R' must be a positive integer"))
-  R <- 3.4
-  expect_error(
-    if (all.equal(R, as.integer(R)) != TRUE | R < 1)
-      stop("'R' must be a positive integer"))
-  R <- -3
-  expect_error(
-    if (all.equal(R, as.integer(R)) != TRUE | R < 1)
-      stop("'R' must be a positive integer"))
+  sample_size <- 0
+  expect_true(all.equal(sample_size, as.integer(sample_size)) != TRUE |
+                sample_size < 1)
+  sample_size <- 3.4
+  expect_true(all.equal(sample_size, as.integer(sample_size)) != TRUE |
+                sample_size < 1)
+  sample_size <- -3
+  expect_true(all.equal(sample_size, as.integer(sample_size)) != TRUE |
+                sample_size < 1)
           })

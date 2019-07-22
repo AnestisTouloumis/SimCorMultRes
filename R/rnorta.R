@@ -86,9 +86,9 @@ rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, # nolint
     qparameters = NULL) {
     if (all.equal(R, as.integer(R)) != TRUE | R < 1)
         stop("'R' must be a positive integer")
-    quantilefunctions <- as.character(distr)
+    quantile_functions <- as.character(distr)
     ans <- rsmvnorm(R = R, cor.matrix = cor.matrix)
-    if (length(quantilefunctions) != ncol(cor.matrix))
+    if (length(quantile_functions) != ncol(cor.matrix))
         stop("'distr' must be a ", ncol(cor.matrix),
             "-variate vector of strings naming a valid quantile function")
     if (!is.null(qparameters)) {
@@ -99,14 +99,14 @@ rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, # nolint
     }
     ans <- pnorm(ans)
     for (i in seq_len(ncol(cor.matrix))) {
-        quantilefunction <- get(quantilefunctions[i], mode = "function")
-        if (!is.function(quantilefunction))
+        quantile_function <- get(quantile_functions[i], mode = "function")
+        if (!is.function(quantile_function))
             stop("Character string ", i, " in `distr' does not correspond
            to a valid function")
         if (!is.null(qparameters))
-            formals(quantilefunction)[pmatch(names(qparameters[[i]]),
-                formalArgs(quantilefunction))] <- qparameters[[i]]
-        ans[, i] <- quantilefunction(ans[, i])
+            formals(quantile_function)[pmatch(names(qparameters[[i]]),
+                formalArgs(quantile_function))] <- qparameters[[i]]
+        ans[, i] <- quantile_function(ans[, i])
     }
     ans
 }

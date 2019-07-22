@@ -91,7 +91,7 @@ element (\eqn{i,t}) of \code{rlatent} represents the realization of
 \eqn{e^{B}_{it}}.
 }
 \examples{
-## See Example 3.4 in the Vignette.
+## See Example 3.5 in the Vignette.
 set.seed(123)
 sample_size <- 5000
 cluster_size <- 4
@@ -99,27 +99,27 @@ beta_intercepts <- 0
 beta_coefficients <- 0.2
 latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
 x <- rep(rnorm(sample_size), each = cluster_size)
-simulated_binary_responses <- rbin(clsize = cluster_size,
+simulated_binary_dataset <- rbin(clsize = cluster_size,
     intercepts = beta_intercepts, betas = beta_coefficients,
     xformula = ~ x, cor.matrix = latent_correlation_matrix, link = 'probit')
 library(gee)
 binary_gee_model <- gee(y ~ x, family = binomial('probit'), id = id,
-data = simulated_binary_responses$simdata)
+data = simulated_binary_dataset$simdata)
 summary(binary_gee_model)$coefficients
 
-## See Example 3.5 in the Vignette.
+## See Example 3.6 in the Vignette.
 set.seed(8)
 library(evd)
-rlatent1 <- rmvevd(sample_size, dep = sqrt(1 - 0.9), model = 'log',
-d = cluster_size)
-rlatent2 <- rmvevd(sample_size, dep = sqrt(1 - 0.9), model = 'log',
-d = cluster_size)
-simulated_latent_variables <- rlatent1 - rlatent2
-simulated_binary_responses <- rbin(clsize = cluster_size,
+simulated_latent_variables1 <- rmvevd(sample_size, dep = sqrt(1 - 0.9),
+    model = 'log', d = cluster_size)
+simulated_latent_variables2 <- rmvevd(sample_size, dep = sqrt(1 - 0.9),
+    model = 'log', d = cluster_size)
+simulated_latent_variables <- simulated_latent_variables1 - simulated_latent_variables2 # nolintr
+simulated_binary_dataset <- rbin(clsize = cluster_size,
     intercepts = beta_intercepts, betas = beta_coefficients,
     xformula = ~ x, rlatent = simulated_latent_variables)
 binary_gee_model <- gee(y ~ x, family = binomial('logit'), id = id,
-    data = simulated_binary_responses$simdata)
+    data = simulated_binary_dataset$simdata)
 summary(binary_gee_model)$coefficients
 
 }

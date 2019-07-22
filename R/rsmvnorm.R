@@ -30,17 +30,18 @@ rsmvnorm <- function(R = R, cor.matrix = cor.matrix) { # nolint
         stop("'R' must be a positive integer")
     if (!is.numeric(cor.matrix))
         stop("'cor.matrix' must be numeric")
-    cor.matrix <- as.matrix(cor.matrix) # nolint
-    if (!isSymmetric(cor.matrix))
+    correlation_matrix <- as.matrix(cor.matrix) # nolint
+    if (!isSymmetric(correlation_matrix))
         stop("'cor.matrix' must be a symmetric matrix")
-    if (any(diag(cor.matrix) != 1))
+    if (any(diag(correlation_matrix) != 1))
         stop("the diagonal elements of 'cor.matrix' must be equal to one")
-    if (any(cor.matrix > 1) | any(cor.matrix < -1))
+    if (any(correlation_matrix > 1) | any(correlation_matrix < -1))
         stop("all the elements of 'cor.matrix' must be on [-1,1]")
-    if (any(eigen(cor.matrix, symmetric = TRUE, only.values = TRUE)$values <=
-        0))
+    correlation_matrix_eigen <- eigen(correlation_matrix, symmetric = TRUE,
+                                      only.values = TRUE)
+    if (any(correlation_matrix_eigen$values <= 0))
         stop("'cor.matrix' must be a positive definite matrix")
-    p <- ncol(cor.matrix)
-    ans <- matrix(rnorm(R * p), R, p) %*% chol(cor.matrix)
+    p <- ncol(correlation_matrix)
+    ans <- matrix(rnorm(R * p), R, p) %*% chol(correlation_matrix)
     ans
 }

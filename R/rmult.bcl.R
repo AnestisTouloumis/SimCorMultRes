@@ -104,12 +104,12 @@
 #' equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
 #' identity_matrix <- diag(categories_no)
 #' latent_correlation_matrix <- kronecker(equicorrelation_matrix, identity_matrix) # nolint
-#' simulated_nominal_responses <- rmult.bcl(clsize = cluster_size,
+#' simulated_nominal_dataset <- rmult.bcl(clsize = cluster_size,
 #'     ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
 #'     xdata = xdata, cor.matrix = latent_correlation_matrix)
 #' suppressPackageStartupMessages(library('multgee'))
 #' nominal_gee_model <- nomLORgee(y ~ x1 + x2,
-#'     data = simulated_nominal_responses$simdata, id = id, repeated = time,
+#'     data = simulated_nominal_dataset$simdata, id = id, repeated = time,
 #' LORstr = 'time.exch')
 #' round(coef(nominal_gee_model), 2)
 #'
@@ -118,20 +118,24 @@ rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas,
     xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolint
     rlatent = NULL) {
     check_cluster_size(clsize)
-    ncategories <- check_ncategories(ncategories)
+    categories_no <- check_ncategories(ncategories)
     betas <- check_betas(betas, clsize)
-    lpformula <- check_xformula(xformula)
-    if (!is.environment(xdata))
-        xdata <- data.frame(na.omit(xdata))
-    lin_pred <- create_linear_predictor(betas, clsize, lpformula, xdata,
-        "rmult.bcl", ncategories = ncategories)
-    sample_size <- nrow(lin_pred)
-    rlatent <- create_rlatent(rlatent, sample_size, "cloglog", clsize,
-                              cor.matrix, "rmult.bcl",
-                              ncategories = ncategories)
-    y_sim <- apply_threshold(lin_pred, rlatent, clsize, "rmult.bcl",
-                            ncategories = ncategories)
-    lpformula <- update(lpformula, ~. - 1)
-    create_output(y_sim, sample_size, clsize, rlatent, lpformula, xdata,
-                  "rmult.bcl", ncategories = ncategories)
+    linear_predictor_formula <- check_xformula(xformula)
+    if (!is.environment(xdata)) xdata <- data.frame(na.omit(xdata))
+    linear_predictor <- create_linear_predictor(betas, clsize,
+                                                linear_predictor_formula, xdata,
+                                                "rmult.bcl", categories_no)
+    sample_size <- nrow(linear_predictor)
+    simulated_latent_responses <- create_rlatent(rlatent, sample_size,
+                                                 "cloglog", clsize, cor.matrix,
+                                                 "rmult.bcl", categories_no)
+    simulated_nominal_responses <- apply_threshold(linear_predictor,
+                                                   simulated_latent_responses,
+                                                   clsize, "rmult.bcl",
+                                                   categories_no =
+                                                       categories_no)
+    linear_predictor_formula <- update(linear_predictor_formula, ~. - 1)
+    create_output(simulated_nominal_responses, sample_size, clsize,
+                  simulated_latent_responses, linear_predictor_formula, xdata,
+                  "rmult.bcl", categories_no = categories_no)
 }
