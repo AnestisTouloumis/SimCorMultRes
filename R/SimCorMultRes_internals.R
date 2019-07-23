@@ -84,8 +84,8 @@ check_intercepts <- function(intercepts, cluster_size, rfctn,
                 stop("'intercepts' must be increasing")
             categories_no <- length(intercepts) + 1
             if (rfctn == "rmult.clm") {
-                intercepts <- matrix(intercepts, cluster_size, categories_no -
-                  1, TRUE)
+                intercepts <- matrix(intercepts, cluster_size,
+                                     categories_no - 1, TRUE)
                 intercepts <- cbind(-Inf, intercepts, Inf)
             } else if (rfctn == "rmult.crm") {
                 intercepts <- matrix(intercepts, sample_size,

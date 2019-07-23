@@ -14,7 +14,8 @@ test_that("rbin constant beta_intercepts", {
     as.numeric(c(t(simulated_binary_dataset$rlatent)) <=
                  beta_intercepts + beta_coefficients * x)
   expect_equal(c(t(simulated_binary_dataset$Ysim)), simulated_responses)
-})
+  })
+
 
 test_that("rbin varying beta_intercepts", {
   set.seed(1)
@@ -33,7 +34,7 @@ test_that("rbin varying beta_intercepts", {
     as.numeric(c(t(simulated_binary_dataset$rlatent)) <=
                  beta_intercepts + beta_coefficients * x)
   expect_equal(c(t(simulated_binary_dataset$Ysim)), simulated_responses)
-})
+  })
 
 
 test_that("rmult.bcl constant beta_coefficients", {
@@ -60,7 +61,7 @@ test_that("rmult.bcl constant beta_coefficients", {
   lin_pred <- matrix(lin_pred, sample_size * cluster_size, categories_no, TRUE)
   simulated_responses <- apply(lin_pred, 1, which.max)
   expect_equal(c(t(simulated_nominal_dataset$Ysim)), simulated_responses)
-})
+  })
 
 
 test_that("rmult.bcl varying beta_coefficients", {
@@ -92,8 +93,7 @@ test_that("rmult.bcl varying beta_coefficients", {
   lin_pred <- matrix(lin_pred, sample_size * cluster_size, categories_no, TRUE)
   simulated_responses <- apply(lin_pred, 1, which.max)
   expect_equal(c(t(simulated_nominal_dataset$Ysim)), simulated_responses)
-})
-
+  })
 
 
 test_that("rmult.clm varying beta_coefficients", {
@@ -114,8 +114,7 @@ test_that("rmult.clm varying beta_coefficients", {
   simulated_responses <- cut(simulated_latent_responses, beta_intercepts,
                              labels = FALSE)
   expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
-})
-
+  })
 
 
 test_that("rmult.clm constant beta_coefficients", {
@@ -136,7 +135,7 @@ test_that("rmult.clm constant beta_coefficients", {
   simulated_responses <- cut(simulated_latent_responses, beta_intercepts,
                              labels = FALSE)
   expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
-})
+  })
 
 
 test_that("rmult.acl constant beta_coefficients", {
@@ -168,7 +167,7 @@ test_that("rmult.acl constant beta_coefficients", {
               xdata = xdata, cor.matrix = latent_correlation_matrix)
   expect_equal(c(t(simulated_ordinal_dataset$Ysim)),
                c(t(simulated_nominal_dataset$Ysim)))
-})
+  })
 
 
 test_that("rmult.crm constant beta_coefficients", {
@@ -197,4 +196,4 @@ test_that("rmult.crm constant beta_coefficients", {
     ifelse(simulated_responses[, i] == 1, i, categories_no)
   simulated_responses <- apply(simulated_responses, 1, min)
   expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
-})
+  })

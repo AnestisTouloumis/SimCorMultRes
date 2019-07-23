@@ -11,7 +11,7 @@ test_that("rnorta", {
                          cor.matrix = latent_correlation_matrix)
   raw_code <- qlogis(pnorm(sim_normal))
   expect_equal(sim_logistic, raw_code)
-})
+  })
 
 
 test_that("rsmvnorm", {
@@ -25,7 +25,7 @@ test_that("rsmvnorm", {
   raw_code <- matrix(rnorm(sample_size * p), sample_size, p) %*%
     chol(correlation_matrix)
   expect_equal(sim_bivariate_normal, raw_code)
-})
+  })
 
 
 test_that("rnorta sample size", {
@@ -38,4 +38,4 @@ test_that("rnorta sample size", {
   sample_size <- -3
   expect_true(all.equal(sample_size, as.integer(sample_size)) != TRUE |
                 sample_size < 1)
-          })
+  })
