@@ -1,6 +1,8 @@
+Version 1.6.8 [2019-07-23]
+ * Added unit tests for internal functions.
+
 Version 1.6.7 [2019-07-22]
  * Improved R code readability.
- * Added unit tests for internal functions.
 
 Version 1.6.6 [2019-07-09]
  * Minor fixed to comply with lintr.
