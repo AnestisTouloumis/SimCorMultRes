@@ -84,7 +84,7 @@ test_that("checking covariates formula", {
 })
 
 test_that("checking intercepts", {
-  cluster_size <- 2
+  cluster_size <- 5
   rfctn <- "rbin"
   intercepts <- 2
   ans <- rep(intercepts, cluster_size)
