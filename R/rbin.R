@@ -102,49 +102,62 @@
 #' beta_coefficients <- 0.2
 #' latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
 #' x <- rep(rnorm(sample_size), each = cluster_size)
-#' simulated_binary_dataset <- rbin(clsize = cluster_size,
-#'     intercepts = beta_intercepts, betas = beta_coefficients,
-#'     xformula = ~ x, cor.matrix = latent_correlation_matrix, link = 'probit')
+#' simulated_binary_dataset <- rbin(
+#'   clsize = cluster_size,
+#'   intercepts = beta_intercepts, betas = beta_coefficients,
+#'   xformula = ~x, cor.matrix = latent_correlation_matrix, link = "probit"
+#' )
 #' library(gee)
-#' binary_gee_model <- gee(y ~ x, family = binomial('probit'), id = id,
-#' data = simulated_binary_dataset$simdata)
+#' binary_gee_model <- gee(y ~ x,
+#'   family = binomial("probit"), id = id,
+#'   data = simulated_binary_dataset$simdata
+#' )
 #' summary(binary_gee_model)$coefficients
 #'
 #' ## See Example 3.6 in the Vignette.
 #' set.seed(8)
 #' library(evd)
-#' simulated_latent_variables1 <- rmvevd(sample_size, dep = sqrt(1 - 0.9),
-#'     model = 'log', d = cluster_size)
-#' simulated_latent_variables2 <- rmvevd(sample_size, dep = sqrt(1 - 0.9),
-#'     model = 'log', d = cluster_size)
+#' simulated_latent_variables1 <- rmvevd(sample_size,
+#'   dep = sqrt(1 - 0.9),
+#'   model = "log", d = cluster_size
+#' )
+#' simulated_latent_variables2 <- rmvevd(sample_size,
+#'   dep = sqrt(1 - 0.9),
+#'   model = "log", d = cluster_size
+#' )
 #' simulated_latent_variables <- simulated_latent_variables1 - simulated_latent_variables2 # nolintr
-#' simulated_binary_dataset <- rbin(clsize = cluster_size,
-#'     intercepts = beta_intercepts, betas = beta_coefficients,
-#'     xformula = ~ x, rlatent = simulated_latent_variables)
-#' binary_gee_model <- gee(y ~ x, family = binomial('logit'), id = id,
-#'     data = simulated_binary_dataset$simdata)
+#' simulated_binary_dataset <- rbin(
+#'   clsize = cluster_size,
+#'   intercepts = beta_intercepts, betas = beta_coefficients,
+#'   xformula = ~x, rlatent = simulated_latent_variables
+#' )
+#' binary_gee_model <- gee(y ~ x,
+#'   family = binomial("logit"), id = id,
+#'   data = simulated_binary_dataset$simdata
+#' )
 #' summary(binary_gee_model)$coefficients
-#'
 #' @export
 rbin <- function(clsize = clsize, intercepts = intercepts, betas = betas,
-    xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-    cor.matrix = cor.matrix, rlatent = NULL){ # nolint
-    check_cluster_size(clsize)
-    beta_intercepts <- check_intercepts(intercepts, clsize, "rbin")
-    beta_coefficients <- check_betas(betas, clsize)
-    linear_predictor_formula <- check_xformula(xformula)
-    if (!is.environment(xdata)) xdata <- data.frame(na.omit(xdata))
-    linear_predictor <- create_linear_predictor(beta_coefficients, clsize,
-                                                linear_predictor_formula, xdata,
-                                                "rbin")
-    sample_size <- nrow(linear_predictor)
-    simulated_latent_variables <- create_rlatent(rlatent, sample_size, link,
-                                                 clsize, cor.matrix, "rbin")
-    simulated_binary_responses <- apply_threshold(linear_predictor,
-                                                  simulated_latent_variables,
-                                                  clsize, "rbin",
-                                                  beta_intercepts)
-    create_output(simulated_binary_responses, sample_size, clsize,
-                  simulated_latent_variables, linear_predictor_formula, xdata,
-                  "rbin")
+                 xformula = formula(xdata), xdata = parent.frame(), link = "logit", # nolintr
+                 cor.matrix = cor.matrix, rlatent = NULL) { # nolint
+  check_cluster_size(clsize)
+  beta_intercepts <- check_intercepts(intercepts, clsize, "rbin")
+  beta_coefficients <- check_betas(betas, clsize)
+  linear_predictor_formula <- check_xformula(xformula)
+  if (!is.environment(xdata)) xdata <- data.frame(na.omit(xdata))
+  linear_predictor <- create_linear_predictor(
+    beta_coefficients, clsize, linear_predictor_formula, xdata, "rbin"
+  )
+  sample_size <- nrow(linear_predictor)
+  simulated_latent_variables <- create_rlatent(
+    rlatent, sample_size, link, clsize, cor.matrix, "rbin"
+  )
+  simulated_binary_responses <- apply_threshold(
+    linear_predictor, simulated_latent_variables, clsize, "rbin",
+    beta_intercepts
+  )
+  create_output(
+    simulated_binary_responses, sample_size, clsize, simulated_latent_variables,
+    linear_predictor_formula, xdata, "rbin"
+  )
 }

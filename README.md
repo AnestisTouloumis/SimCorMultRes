@@ -4,7 +4,7 @@
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Github
-version](https://img.shields.io/badge/GitHub%20-1.6.8-orange.svg)](%22commits/master%22)
+version](https://img.shields.io/badge/GitHub%20-1.6.9-orange.svg)](%22commits/master%22)
 [![Travis-CI Build
 Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
 [![Project Status: Active The project has reached a stable, usable state
@@ -83,7 +83,7 @@ The following R code illustrates how to use the core function `rbin`:
 ``` r
 ## See Example 3.5 in the Vignette.
 set.seed(123)
-sample_size <- 5000
+sample_size <- 100
 cluster_size <- 4
 beta_intercepts <- 0
 beta_coefficients <- 0.2
@@ -97,11 +97,11 @@ binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id, data = simu
 #> Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
 #> running glm to get initial regression estimate
 #> (Intercept)           x 
-#> 0.002636705 0.204827031
+#>   0.1315121   0.2826005
 summary(binary_gee_model)$coefficients
-#>                Estimate  Naive S.E.    Naive z Robust S.E.   Robust z
-#> (Intercept) 0.002636705 0.008929290  0.2952872  0.01572132  0.1677153
-#> x           0.204827031 0.009114596 22.4724192  0.01610695 12.7166857
+#>              Estimate Naive S.E.  Naive z Robust S.E. Robust z
+#> (Intercept) 0.1315121 0.06399465 2.055048   0.1106696 1.188331
+#> x           0.2826006 0.07191931 3.929412   0.1270285 2.224703
 ```
 
 Additional examples can be found in Touloumis (2016) and in the vignette

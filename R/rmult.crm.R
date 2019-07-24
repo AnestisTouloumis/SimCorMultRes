@@ -107,40 +107,43 @@
 #' categories_no <- 5
 #' identity_matrix <- diag(1, (categories_no - 1) * cluster_size)
 #' equicorrelation_matrix <- toeplitz(c(0, rep(0.24, categories_no - 2)))
-#' ones_matrix <-  matrix(1, cluster_size, cluster_size)
+#' ones_matrix <- matrix(1, cluster_size, cluster_size)
 #' latent_correlation_matrix <- identity_matrix +
-#'     kronecker(equicorrelation_matrix, ones_matrix)
-#' simulated_ordinal_dataset <- rmult.crm(clsize = cluster_size,
-#'     intercepts = beta_intercepts, betas = beta_coefficients, xformula = ~ x,
-#'     cor.matrix = latent_correlation_matrix, link = 'probit')
+#'   kronecker(equicorrelation_matrix, ones_matrix)
+#' simulated_ordinal_dataset <- rmult.crm(
+#'   clsize = cluster_size,
+#'   intercepts = beta_intercepts, betas = beta_coefficients, xformula = ~x,
+#'   cor.matrix = latent_correlation_matrix, link = "probit"
+#' )
 #' head(simulated_ordinal_dataset$Ysim)
-#'
-#'@export
+#' @export
 rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint
-    xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-    cor.matrix = cor.matrix, rlatent = NULL) { # nolint
-    check_cluster_size(clsize)
-    beta_coefficients <- check_betas(betas, clsize)
-    linear_predictor_formula <- check_xformula(xformula)
-    if (!is.environment(xdata)) xdata <- data.frame(na.omit(xdata))
-    linear_predictor <- create_linear_predictor(beta_coefficients, clsize,
-                                                linear_predictor_formula, xdata,
-                                                "rmult.clm")
-    sample_size <- nrow(linear_predictor)
-    beta_intercepts <- check_intercepts(intercepts, clsize, "rmult.crm",
-                                        sample_size)
-    categories_no <- ncol(beta_intercepts) / clsize + 1
-    linear_predictor_extended <- t(apply(linear_predictor, 1, function(x)
-        rep(x, each = categories_no - 1)))
-    simulated_latent_responses <- create_rlatent(rlatent, sample_size, link,
-                                                 clsize, cor.matrix,
-                                                 "rmult.crm", categories_no)
-    simulated_ordinal_responses <- apply_threshold(linear_predictor_extended,
-                                                   simulated_latent_responses,
-                                                   clsize, "rmult.crm",
-                                                   beta_intercepts,
-                                                   categories_no)
-    create_output(simulated_ordinal_responses, sample_size, clsize,
-                  simulated_latent_responses, linear_predictor_formula, xdata,
-                  "rmult.crm", categories_no)
+                      xformula = formula(xdata), xdata = parent.frame(), link = "logit", # nolintr
+                      cor.matrix = cor.matrix, rlatent = NULL) { # nolint
+  check_cluster_size(clsize)
+  beta_coefficients <- check_betas(betas, clsize)
+  linear_predictor_formula <- check_xformula(xformula)
+  if (!is.environment(xdata)) xdata <- data.frame(na.omit(xdata))
+  linear_predictor <- create_linear_predictor(
+    beta_coefficients, clsize, linear_predictor_formula, xdata, "rmult.clm"
+  )
+  sample_size <- nrow(linear_predictor)
+  beta_intercepts <- check_intercepts(
+    intercepts, clsize, "rmult.crm", sample_size
+  )
+  categories_no <- ncol(beta_intercepts) / clsize + 1
+  linear_predictor_extended <- t(apply(linear_predictor, 1, function(x)
+    rep(x, each = categories_no - 1)))
+  simulated_latent_responses <- create_rlatent(
+    rlatent, sample_size, link, clsize, cor.matrix, "rmult.crm", categories_no
+  )
+  simulated_ordinal_responses <- apply_threshold(
+    linear_predictor_extended, simulated_latent_responses, clsize, "rmult.crm",
+    beta_intercepts, categories_no
+  )
+  create_output(
+    simulated_ordinal_responses, sample_size, clsize,
+    simulated_latent_responses, linear_predictor_formula, xdata, "rmult.crm",
+    categories_no
+  )
 }

@@ -49,64 +49,85 @@
 #' sample_size <- 1000
 #' latent_correlation_matrix <- toeplitz(c(1, rep(0.8, 2)))
 #' latent_correlation_matrix
-#' common_marginal_distribution <- rep('qlogis', 3)
-#' simulated_logistic_responses <- rnorta(R = sample_size,
-#'     cor.matrix = latent_correlation_matrix,
-#'     distr = common_marginal_distribution)
+#' common_marginal_distribution <- rep("qlogis", 3)
+#' simulated_logistic_responses <- rnorta(
+#'   R = sample_size,
+#'   cor.matrix = latent_correlation_matrix,
+#'   distr = common_marginal_distribution
+#' )
 #'
 #' ## The following lines exemplify the NORTA method.
 #' set.seed(1)
-#' simulated_normal_responses <- rsmvnorm(R = sample_size,
-#'     cor.matrix = latent_correlation_matrix)
+#' simulated_normal_responses <- rsmvnorm(
+#'   R = sample_size,
+#'   cor.matrix = latent_correlation_matrix
+#' )
 #' all(simulated_logistic_responses == qlogis(pnorm(simulated_normal_responses))) # nolintr
 #'
 #' ## Change the marginal distributions to standard normal, standard
 #' ## logistic and standard extreme value distribution.
 #' set.seed(1)
-#' different_marginal_distributions <- c('qnorm', 'qlogis', 'qgumbel')
-#' simulated_logistic_responses  <- rnorta(R = sample_size,
-#'     cor.matrix = latent_correlation_matrix,
-#'     distr = different_marginal_distributions)
+#' different_marginal_distributions <- c("qnorm", "qlogis", "qgumbel")
+#' simulated_logistic_responses <- rnorta(
+#'   R = sample_size,
+#'   cor.matrix = latent_correlation_matrix,
+#'   distr = different_marginal_distributions
+#' )
 #' cor(simulated_logistic_responses)
 #' colMeans(simulated_logistic_responses)
 #' apply(simulated_logistic_responses, 2, sd)
 #'
 #' ## Same as above but using parameter values other than the default ones.
 #' set.seed(1)
-#' qpars <- list(c(mean = 1, sd = 9), c(location = 2, scale = 1),
-#'     c(loc = 3, scale = 1))
-#' simulated_logistic_responses <- rnorta(R = sample_size,
-#'     cor.matrix = latent_correlation_matrix,
-#'     distr = different_marginal_distributions, qparameters = qpars)
+#' qpars <- list(
+#'   c(mean = 1, sd = 9), c(location = 2, scale = 1),
+#'   c(loc = 3, scale = 1)
+#' )
+#' simulated_logistic_responses <- rnorta(
+#'   R = sample_size,
+#'   cor.matrix = latent_correlation_matrix,
+#'   distr = different_marginal_distributions, qparameters = qpars
+#' )
 #' cor(simulated_logistic_responses)
 #' colMeans(simulated_logistic_responses)
 #' apply(simulated_logistic_responses, 2, sd)
 #' @export
 rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, # nolint
-    qparameters = NULL) {
-    if (all.equal(R, as.integer(R)) != TRUE | R < 1)
-        stop("'R' must be a positive integer")
-    quantile_functions <- as.character(distr)
-    ans <- rsmvnorm(R = R, cor.matrix = cor.matrix)
-    if (length(quantile_functions) != ncol(cor.matrix))
-        stop("'distr' must be a ", ncol(cor.matrix),
-            "-variate vector of strings naming a valid quantile function")
-    if (!is.null(qparameters)) {
-        qparameters <- as.list(qparameters)
-        if (length(qparameters) != ncol(cor.matrix))
-            stop("'qparameters' must be provided as a list of length ",
-                ncol(cor.matrix))
+                   qparameters = NULL) {
+  if (all.equal(R, as.integer(R)) != TRUE | R < 1) {
+    stop("'R' must be a positive integer")
+  }
+  quantile_functions <- as.character(distr)
+  ans <- rsmvnorm(R = R, cor.matrix = cor.matrix)
+  if (length(quantile_functions) != ncol(cor.matrix)) {
+    stop(
+      "'distr' must be a ", ncol(cor.matrix),
+      "-variate vector of strings naming a valid quantile function"
+    )
+  }
+  if (!is.null(qparameters)) {
+    qparameters <- as.list(qparameters)
+    if (length(qparameters) != ncol(cor.matrix)) {
+      stop(
+        "'qparameters' must be provided as a list of length ",
+        ncol(cor.matrix)
+      )
     }
-    ans <- pnorm(ans)
-    for (i in seq_len(ncol(cor.matrix))) {
-        quantile_function <- get(quantile_functions[i], mode = "function")
-        if (!is.function(quantile_function))
-            stop("Character string ", i, " in `distr' does not correspond
+  }
+  ans <- pnorm(ans)
+  for (i in seq_len(ncol(cor.matrix))) {
+    quantile_function <- get(quantile_functions[i], mode = "function")
+    if (!is.function(quantile_function)) {
+      stop("Character string ", i, " in `distr' does not correspond
            to a valid function")
-        if (!is.null(qparameters))
-            formals(quantile_function)[pmatch(names(qparameters[[i]]),
-                formalArgs(quantile_function))] <- qparameters[[i]]
-        ans[, i] <- quantile_function(ans[, i])
     }
-    ans
+    if (!is.null(qparameters)) {
+      formals(quantile_function)[pmatch(
+        names(qparameters[[i]]),
+        formalArgs(quantile_function)
+      )] <- qparameters[[i]]
+    }
+    ans[, i] <- quantile_function(ans[, i])
+  }
+  ans
 }

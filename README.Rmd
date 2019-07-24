@@ -96,7 +96,7 @@ The following R code illustrates how to use the core function `rbin`:
 ```{r}
 ## See Example 3.5 in the Vignette.
 set.seed(123)
-sample_size <- 5000
+sample_size <- 100
 cluster_size <- 4
 beta_intercepts <- 0
 beta_coefficients <- 0.2

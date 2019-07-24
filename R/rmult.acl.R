@@ -105,28 +105,34 @@
 #' xdata <- data.frame(x1, x2)
 #' identity_matrix <- diag(4)
 #' equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
-#' latent_correlation_matrix <- kronecker(equicorrelation_matrix,
-#'     identity_matrix)
-#' simulated_ordinal_dataset <- rmult.acl(clsize = cluster_size,
-#'     intercepts = beta_intercepts, betas = beta_coefficients,
-#'     xformula = ~ x1 + x2, xdata = xdata,
-#'     cor.matrix = latent_correlation_matrix)
-#' suppressPackageStartupMessages(library('multgee'))
+#' latent_correlation_matrix <- kronecker(
+#'   equicorrelation_matrix,
+#'   identity_matrix
+#' )
+#' simulated_ordinal_dataset <- rmult.acl(
+#'   clsize = cluster_size,
+#'   intercepts = beta_intercepts, betas = beta_coefficients,
+#'   xformula = ~ x1 + x2, xdata = xdata,
+#'   cor.matrix = latent_correlation_matrix
+#' )
+#' suppressPackageStartupMessages(library("multgee"))
 #' ordinal_gee_model <- ordLORgee(y ~ x1 + x2,
-#'     data = simulated_ordinal_dataset$simdata, id = id, repeated = time,
-#' LORstr = 'time.exch', link='acl')
+#'   data = simulated_ordinal_dataset$simdata, id = id, repeated = time,
+#'   LORstr = "time.exch", link = "acl"
+#' )
 #' round(coef(ordinal_gee_model), 2)
-#'
 #' @export
 rmult.acl <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint
-    xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolint
-    rlatent = NULL) {
-    check_cluster_size(clsize)
-    beta_intercepts <- check_intercepts(intercepts, clsize, "rmult.acl")
-    categories_no <- ncol(beta_intercepts) + 1
-    beta_coefficients <- check_betas(betas, clsize)
-    betas_bcl <- create_betas_acl2bcl(beta_intercepts, categories_no,
-                                      beta_coefficients)
-    rmult.bcl(clsize, categories_no, betas_bcl, xformula, xdata, cor.matrix,
-              rlatent)
+                      xformula = formula(xdata), xdata = parent.frame(), cor.matrix = cor.matrix, # nolint
+                      rlatent = NULL) {
+  check_cluster_size(clsize)
+  beta_intercepts <- check_intercepts(intercepts, clsize, "rmult.acl")
+  categories_no <- ncol(beta_intercepts) + 1
+  beta_coefficients <- check_betas(betas, clsize)
+  betas_bcl <- create_betas_acl2bcl(
+    beta_intercepts, categories_no, beta_coefficients
+  )
+  rmult.bcl(
+    clsize, categories_no, betas_bcl, xformula, xdata, cor.matrix, rlatent
+  )
 }
