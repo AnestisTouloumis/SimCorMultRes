@@ -105,21 +105,16 @@
 #' xdata <- data.frame(x1, x2)
 #' identity_matrix <- diag(4)
 #' equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
-#' latent_correlation_matrix <- kronecker(
-#'   equicorrelation_matrix,
-#'   identity_matrix
-#' )
-#' simulated_ordinal_dataset <- rmult.acl(
-#'   clsize = cluster_size,
+#' latent_correlation_matrix <- kronecker(equicorrelation_matrix,
+#'   identity_matrix)
+#' simulated_ordinal_dataset <- rmult.acl(clsize = cluster_size,
 #'   intercepts = beta_intercepts, betas = beta_coefficients,
 #'   xformula = ~ x1 + x2, xdata = xdata,
-#'   cor.matrix = latent_correlation_matrix
-#' )
+#'   cor.matrix = latent_correlation_matrix)
 #' suppressPackageStartupMessages(library("multgee"))
 #' ordinal_gee_model <- ordLORgee(y ~ x1 + x2,
 #'   data = simulated_ordinal_dataset$simdata, id = id, repeated = time,
-#'   LORstr = "time.exch", link = "acl"
-#' )
+#'   LORstr = "time.exch", link = "acl")
 #' round(coef(ordinal_gee_model), 2)
 #' @export
 rmult.acl <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint

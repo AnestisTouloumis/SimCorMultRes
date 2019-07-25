@@ -108,14 +108,13 @@ x <- rnorm(sample_size * cluster_size)
 categories_no <- 5
 identity_matrix <- diag(1, (categories_no - 1) * cluster_size)
 equicorrelation_matrix <- toeplitz(c(0, rep(0.24, categories_no - 2)))
-ones_matrix <-  matrix(1, cluster_size, cluster_size)
+ones_matrix <- matrix(1, cluster_size, cluster_size)
 latent_correlation_matrix <- identity_matrix +
-    kronecker(equicorrelation_matrix, ones_matrix)
+  kronecker(equicorrelation_matrix, ones_matrix)
 simulated_ordinal_dataset <- rmult.crm(clsize = cluster_size,
-    intercepts = beta_intercepts, betas = beta_coefficients, xformula = ~ x,
-    cor.matrix = latent_correlation_matrix, link = 'probit')
+  intercepts = beta_intercepts, betas = beta_coefficients, xformula = ~x,
+  cor.matrix = latent_correlation_matrix, link = "probit")
 head(simulated_ordinal_dataset$Ysim)
-
 }
 \references{
 Cario, M. C. and Nelson, B. L. (1997) \emph{Modeling and

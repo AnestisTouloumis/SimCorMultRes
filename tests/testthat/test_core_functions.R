@@ -142,7 +142,8 @@ test_that("rmult.clm constant beta_coefficients", {
     c(t(simulated_ordinal_dataset$rlatent)) - c(beta_coefficients) * x
   beta_intercepts <- c(-Inf, beta_intercepts, Inf)
   simulated_responses <- cut(
-    simulated_latent_responses, beta_intercepts, labels = FALSE
+    simulated_latent_responses, beta_intercepts,
+    labels = FALSE
   )
   expect_equal(c(t(simulated_ordinal_dataset$Ysim)), simulated_responses)
 })

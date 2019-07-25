@@ -103,17 +103,15 @@
 #' xdata <- data.frame(x1, x2)
 #' equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
 #' identity_matrix <- diag(categories_no)
-#' latent_correlation_matrix <- kronecker(equicorrelation_matrix, identity_matrix) # nolint
-#' simulated_nominal_dataset <- rmult.bcl(
-#'   clsize = cluster_size,
+#' latent_correlation_matrix <- kronecker(equicorrelation_matrix,
+#'   identity_matrix)
+#' simulated_nominal_dataset <- rmult.bcl(clsize = cluster_size,
 #'   ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
-#'   xdata = xdata, cor.matrix = latent_correlation_matrix
-#' )
+#'   xdata = xdata, cor.matrix = latent_correlation_matrix)
 #' suppressPackageStartupMessages(library("multgee"))
 #' nominal_gee_model <- nomLORgee(y ~ x1 + x2,
 #'   data = simulated_nominal_dataset$simdata, id = id, repeated = time,
-#'   LORstr = "time.exch"
-#' )
+#'   LORstr = "time.exch")
 #' round(coef(nominal_gee_model), 2)
 #' @export
 rmult.bcl <- function(clsize = clsize, ncategories = ncategories, betas = betas, # nolint

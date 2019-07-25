@@ -100,16 +100,16 @@ x2 <- rnorm(sample_size * cluster_size)
 xdata <- data.frame(x1, x2)
 equicorrelation_matrix <- toeplitz(c(1, rep(0.95, cluster_size - 1)))
 identity_matrix <- diag(categories_no)
-latent_correlation_matrix <- kronecker(equicorrelation_matrix, identity_matrix) # nolint
+latent_correlation_matrix <- kronecker(equicorrelation_matrix,
+  identity_matrix)
 simulated_nominal_dataset <- rmult.bcl(clsize = cluster_size,
-    ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
-    xdata = xdata, cor.matrix = latent_correlation_matrix)
-suppressPackageStartupMessages(library('multgee'))
+  ncategories = categories_no, betas = betas, xformula = ~ x1 + x2,
+  xdata = xdata, cor.matrix = latent_correlation_matrix)
+suppressPackageStartupMessages(library("multgee"))
 nominal_gee_model <- nomLORgee(y ~ x1 + x2,
-    data = simulated_nominal_dataset$simdata, id = id, repeated = time,
-LORstr = 'time.exch')
+  data = simulated_nominal_dataset$simdata, id = id, repeated = time,
+  LORstr = "time.exch")
 round(coef(nominal_gee_model), 2)
-
 }
 \references{
 Cario, M. C. and Nelson, B. L. (1997) \emph{Modeling and

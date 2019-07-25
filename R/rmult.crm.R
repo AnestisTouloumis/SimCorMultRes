@@ -110,11 +110,9 @@
 #' ones_matrix <- matrix(1, cluster_size, cluster_size)
 #' latent_correlation_matrix <- identity_matrix +
 #'   kronecker(equicorrelation_matrix, ones_matrix)
-#' simulated_ordinal_dataset <- rmult.crm(
-#'   clsize = cluster_size,
+#' simulated_ordinal_dataset <- rmult.crm(clsize = cluster_size,
 #'   intercepts = beta_intercepts, betas = beta_coefficients, xformula = ~x,
-#'   cor.matrix = latent_correlation_matrix, link = "probit"
-#' )
+#'   cor.matrix = latent_correlation_matrix, link = "probit")
 #' head(simulated_ordinal_dataset$Ysim)
 #' @export
 rmult.crm <- function(clsize = clsize, intercepts = intercepts, betas = betas, # nolint

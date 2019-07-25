@@ -125,7 +125,8 @@
 #'   dep = sqrt(1 - 0.9),
 #'   model = "log", d = cluster_size
 #' )
-#' simulated_latent_variables <- simulated_latent_variables1 - simulated_latent_variables2 # nolintr
+#' simulated_latent_variables <- simulated_latent_variables1 -
+#'   simulated_latent_variables2
 #' simulated_binary_dataset <- rbin(
 #'   clsize = cluster_size,
 #'   intercepts = beta_intercepts, betas = beta_coefficients,

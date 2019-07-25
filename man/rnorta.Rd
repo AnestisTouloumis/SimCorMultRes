@@ -52,24 +52,25 @@ set.seed(1)
 sample_size <- 1000
 latent_correlation_matrix <- toeplitz(c(1, rep(0.8, 2)))
 latent_correlation_matrix
-common_marginal_distribution <- rep('qlogis', 3)
+common_marginal_distribution <- rep("qlogis", 3)
 simulated_logistic_responses <- rnorta(R = sample_size,
-    cor.matrix = latent_correlation_matrix,
-    distr = common_marginal_distribution)
+  cor.matrix = latent_correlation_matrix,
+  distr = common_marginal_distribution)
 
 ## The following lines exemplify the NORTA method.
 set.seed(1)
 simulated_normal_responses <- rsmvnorm(R = sample_size,
-    cor.matrix = latent_correlation_matrix)
-all(simulated_logistic_responses == qlogis(pnorm(simulated_normal_responses))) # nolintr
+  cor.matrix = latent_correlation_matrix)
+norta_simulated <- qlogis(pnorm(simulated_normal_responses))
+all(simulated_logistic_responses == norta_simulated)
 
 ## Change the marginal distributions to standard normal, standard
 ## logistic and standard extreme value distribution.
 set.seed(1)
-different_marginal_distributions <- c('qnorm', 'qlogis', 'qgumbel')
-simulated_logistic_responses  <- rnorta(R = sample_size,
-    cor.matrix = latent_correlation_matrix,
-    distr = different_marginal_distributions)
+different_marginal_distributions <- c("qnorm", "qlogis", "qgumbel")
+simulated_logistic_responses <- rnorta(R = sample_size,
+  cor.matrix = latent_correlation_matrix,
+  distr = different_marginal_distributions)
 cor(simulated_logistic_responses)
 colMeans(simulated_logistic_responses)
 apply(simulated_logistic_responses, 2, sd)
@@ -77,10 +78,10 @@ apply(simulated_logistic_responses, 2, sd)
 ## Same as above but using parameter values other than the default ones.
 set.seed(1)
 qpars <- list(c(mean = 1, sd = 9), c(location = 2, scale = 1),
-    c(loc = 3, scale = 1))
+  c(loc = 3, scale = 1))
 simulated_logistic_responses <- rnorta(R = sample_size,
-    cor.matrix = latent_correlation_matrix,
-    distr = different_marginal_distributions, qparameters = qpars)
+  cor.matrix = latent_correlation_matrix,
+  distr = different_marginal_distributions, qparameters = qpars)
 cor(simulated_logistic_responses)
 colMeans(simulated_logistic_responses)
 apply(simulated_logistic_responses, 2, sd)
