@@ -74,6 +74,7 @@ check_xformula <- function(xformula) {
   linear_predictor_formula
 }
 
+# nolint start
 check_intercepts <- function(intercepts, cluster_size, rfctn,
                              sample_size = NULL) {
   if (!is.numeric(intercepts)) {
@@ -141,6 +142,7 @@ check_intercepts <- function(intercepts, cluster_size, rfctn,
   }
   intercepts
 }
+# nolint end
 
 check_betas <- function(betas, cluster_size) {
   if (!(is.vector(betas) & !is.list(betas)) & !is.matrix(betas)) {
