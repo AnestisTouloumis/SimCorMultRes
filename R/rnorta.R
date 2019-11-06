@@ -105,7 +105,7 @@ rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, # nolint
       )
     }
   }
-  ans <- pnorm(ans)
+  ans <- stats::pnorm(ans)
   for (i in seq_len(ncol(cor.matrix))) {
     quantile_function <- get(quantile_functions[i], mode = "function")
     if (!is.function(quantile_function)) {
@@ -115,7 +115,7 @@ rnorta <- function(R = R, cor.matrix = cor.matrix, distr = distr, # nolint
     if (!is.null(qparameters)) {
       formals(quantile_function)[pmatch(
         names(qparameters[[i]]),
-        formalArgs(quantile_function)
+        methods::formalArgs(quantile_function)
       )] <- qparameters[[i]]
     }
     ans[, i] <- quantile_function(ans[, i])

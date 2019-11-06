@@ -4,18 +4,18 @@ Title: Simulates Correlated Multinomial Responses
 Description: Simulates correlated multinomial responses conditional on a marginal model specification.
 Version: 1.7.2
 Depends: R(>= 2.15.0)
-Imports: 
+Imports:
     evd,
     methods,
     stats
 Suggests: 
     bookdown,
+    covr,
     gee,
     knitr,
     markdown,
     multgee (>= 1.2),
-    testthat,
-    covr
+    testthat
 Authors@R:
     person(given = "Anestis",
            family = "Touloumis",

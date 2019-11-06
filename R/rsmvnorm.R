@@ -50,6 +50,6 @@ rsmvnorm <- function(R = R, cor.matrix = cor.matrix) { # nolint
     stop("'cor.matrix' must be a positive definite matrix")
   }
   p <- ncol(correlation_matrix)
-  ans <- matrix(rnorm(R * p), R, p) %*% chol(correlation_matrix)
+  ans <- matrix(stats::rnorm(R * p), R, p) %*% chol(correlation_matrix)
   ans
 }
