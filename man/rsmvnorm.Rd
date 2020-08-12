@@ -30,7 +30,7 @@ assessed via eigenvalues.
 ## equal to 0.4.
 set.seed(1)
 sample_size <- 10000
-correlation_matrix <- stats::toeplitz(c(1, 0.4))
+correlation_matrix <- toeplitz(c(1, 0.4))
 simulated_normal_responses <- rsmvnorm(R = sample_size,
   cor.matrix = correlation_matrix)
 colMeans(simulated_normal_responses)

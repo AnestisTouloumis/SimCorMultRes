@@ -5,9 +5,16 @@
 \title{Simulating Correlated Binary Responses Conditional on a Marginal Model
 Specification}
 \usage{
-rbin(clsize = clsize, intercepts = intercepts, betas = betas,
-  xformula = formula(xdata), xdata = parent.frame(), link = "logit",
-  cor.matrix = cor.matrix, rlatent = NULL)
+rbin(
+  clsize = clsize,
+  intercepts = intercepts,
+  betas = betas,
+  xformula = formula(xdata),
+  xdata = parent.frame(),
+  link = "logit",
+  cor.matrix = cor.matrix,
+  rlatent = NULL
+)
 }
 \arguments{
 \item{clsize}{integer indicating the common cluster size.}

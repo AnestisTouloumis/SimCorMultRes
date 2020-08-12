@@ -5,9 +5,15 @@
 \title{Simulating Correlated Ordinal Responses Conditional on a Marginal
 Adjacent-Category Logit Model Specification}
 \usage{
-rmult.acl(clsize = clsize, intercepts = intercepts, betas = betas,
-  xformula = formula(xdata), xdata = parent.frame(),
-  cor.matrix = cor.matrix, rlatent = NULL)
+rmult.acl(
+  clsize = clsize,
+  intercepts = intercepts,
+  betas = betas,
+  xformula = formula(xdata),
+  xdata = parent.frame(),
+  cor.matrix = cor.matrix,
+  rlatent = NULL
+)
 }
 \arguments{
 \item{clsize}{integer indicating the common cluster size.}

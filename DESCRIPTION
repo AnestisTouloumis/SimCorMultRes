@@ -27,5 +27,5 @@ URL: http://github.com/AnestisTouloumis/SimCorMultRes
 BugReports: http://github.com/AnestisTouloumis/SimCorMultRes/issues
 License: GPL-3
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Encoding: UTF-8

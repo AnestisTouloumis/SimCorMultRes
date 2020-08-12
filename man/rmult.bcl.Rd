@@ -5,9 +5,15 @@
 \title{Simulating Correlated Nominal Responses Conditional on a Marginal
 Baseline-Category Logit Model Specification}
 \usage{
-rmult.bcl(clsize = clsize, ncategories = ncategories, betas = betas,
-  xformula = formula(xdata), xdata = parent.frame(),
-  cor.matrix = cor.matrix, rlatent = NULL)
+rmult.bcl(
+  clsize = clsize,
+  ncategories = ncategories,
+  betas = betas,
+  xformula = formula(xdata),
+  xdata = parent.frame(),
+  cor.matrix = cor.matrix,
+  rlatent = NULL
+)
 }
 \arguments{
 \item{clsize}{integer indicating the common cluster size.}
