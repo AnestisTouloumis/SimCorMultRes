@@ -5,16 +5,9 @@
 \title{Simulating Correlated Ordinal Responses Conditional on a Marginal
 Continuation-Ratio Model Specification}
 \usage{
-rmult.crm(
-  clsize = clsize,
-  intercepts = intercepts,
-  betas = betas,
-  xformula = formula(xdata),
-  xdata = parent.frame(),
-  link = "logit",
-  cor.matrix = cor.matrix,
-  rlatent = NULL
-)
+rmult.crm(clsize = clsize, intercepts = intercepts, betas = betas,
+  xformula = formula(xdata), xdata = parent.frame(), link = "logit",
+  cor.matrix = cor.matrix, rlatent = NULL)
 }
 \arguments{
 \item{clsize}{integer indicating the common cluster size.}

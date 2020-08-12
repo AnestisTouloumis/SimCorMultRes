@@ -5,16 +5,9 @@
 \title{Simulating Correlated Ordinal Responses Conditional on a Marginal Cumulative
 Link Model Specification}
 \usage{
-rmult.clm(
-  clsize = clsize,
-  intercepts = intercepts,
-  betas = betas,
-  xformula = formula(xdata),
-  xdata = parent.frame(),
-  link = "logit",
-  cor.matrix = cor.matrix,
-  rlatent = NULL
-)
+rmult.clm(clsize = clsize, intercepts = intercepts, betas = betas,
+  xformula = formula(xdata), xdata = parent.frame(), link = "logit",
+  cor.matrix = cor.matrix, rlatent = NULL)
 }
 \arguments{
 \item{clsize}{integer indicating the common cluster size.}

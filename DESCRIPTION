@@ -28,4 +28,5 @@ BugReports: http://github.com/AnestisTouloumis/SimCorMultRes/issues
 License: GPL-3
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+Roxygen: list(old_usage = TRUE)
 Encoding: UTF-8

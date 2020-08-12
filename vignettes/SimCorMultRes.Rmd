@@ -99,8 +99,9 @@ simulated_nominal_dataset <- rmult.bcl(clsize = cluster_size,
 suppressPackageStartupMessages(library("multgee"))
 # fitting a GEE model
 nominal_gee_model <- nomLORgee(y ~ x1 + x2,
-                               data = simulated_nominal_dataset$simdata, id = id,
-                               repeated = time, LORstr="time.exch")
+                               data = simulated_nominal_dataset$simdata,
+                               id = id, repeated = time,
+                               LORstr = "time.exch")
 # checking regression coefficients
 round(coef(nominal_gee_model), 2)
 ```
@@ -213,7 +214,8 @@ x <- rnorm(sample_size * cluster_size)
 categories_no <- 5
 # correlation matrix for the NORTA method
 latent_correlation_matrix <- diag(1, (categories_no - 1) * cluster_size) +
-  kronecker(toeplitz(c(0, rep(0.24, categories_no - 2))), matrix(1, cluster_size, cluster_size))
+  kronecker(toeplitz(c(0, rep(0.24, categories_no - 2))),
+            matrix(1, cluster_size, cluster_size))
 # simulation of ordinal responses
 simulated_ordinal_dataset <- rmult.crm(clsize = cluster_size,
                                        intercepts = beta_intercepts,

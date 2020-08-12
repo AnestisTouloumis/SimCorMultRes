@@ -117,9 +117,9 @@ browseVignettes("SimCorMultRes")
 
 To cite R package SimCorMultRes in publications, please use:
 
-  Touloumis, A. (2016). Simulating Correlated Binary and
-  Multinomial Responses under Marginal Model Specification: The
-  SimCorMultRes Package. The R Journal 8:2, 79-91.
+  Touloumis, A. (2016). Simulating Correlated Binary and Multinomial
+  Responses under Marginal Model Specification: The SimCorMultRes
+  Package. The R Journal 8:2, 79-91.
 
 A BibTeX entry for LaTeX users is
 
