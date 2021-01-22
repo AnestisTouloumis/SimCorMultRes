@@ -4,9 +4,8 @@
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Github
-version](https://img.shields.io/badge/GitHub%20-1.7.2-orange.svg)](%22commits/master%22)
-[![Travis-CI Build
-Status](https://travis-ci.org/AnestisTouloumis/SimCorMultRes.svg?branch=master)](https://travis-ci.org/AnestisTouloumis/SimCorMultRes)
+version](https://img.shields.io/badge/GitHub%20-1.7.3-orange.svg)](%22commits/master%22)
+[![R-CMD-check](https://github.com/AnestisTouloumis/SimCorMultRes/workflows/R-CMD-check/badge.svg)](https://github.com/AnestisTouloumis/SimCorMultRes/actions)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
@@ -31,7 +30,7 @@ install.packages("SimCorMultRes")
 The source code for the release version of `SimCorMultRes` is available
 on CRAN at:
 
-  - <https://CRAN.R-project.org/package=SimCorMultRes>
+-   <https://CRAN.R-project.org/package=SimCorMultRes>
 
 Or you can install the development version of `SimCorMultRes`:
 
@@ -43,7 +42,7 @@ devtools::install_github("AnestisTouloumis/SimCorMultRes")
 The source code for the development version of `SimCorMultRes` is
 available on github at:
 
-  - <https://github.com/AnestisTouloumis/SimCorMultRes>
+-   <https://github.com/AnestisTouloumis/SimCorMultRes>
 
 To use `SimCorMultRes`, you should load the package as follows:
 
@@ -60,20 +59,20 @@ regression model for continuous random vectors as proposed by Touloumis
 
 There are five core functions:
 
-  - `rbin` to simulate correlated binary responses,
-  - `rmult.bcl` to simulate correlated nominal multinomial responses,
-  - `rmult.acl` to simulate correlated ordinal responses under a
+-   `rbin` to simulate correlated binary responses,
+-   `rmult.bcl` to simulate correlated nominal multinomial responses,
+-   `rmult.acl` to simulate correlated ordinal responses under a
     marginal adjacent-category logit model,
-  - `rmult.clm` to simulate correlated ordinal responses under a
+-   `rmult.clm` to simulate correlated ordinal responses under a
     marginal cumulative link model,
-  - `rmult.clm` to simulate correlated ordinal responses under a
+-   `rmult.clm` to simulate correlated ordinal responses under a
     marginal continuation-ratio link model.
 
 There are also two utility functions:
 
-  - `rnorta` for simulating continuous or discrete random vectors with
+-   `rnorta` for simulating continuous or discrete random vectors with
     prescribed marginal distributions using the NORTA method,
-  - `rsmvnorm` for simulating continuous random vectors from a
+-   `rsmvnorm` for simulating continuous random vectors from a
     multivariate normal distribution.
 
 ## Example
@@ -113,34 +112,32 @@ browseVignettes("SimCorMultRes")
 
 ## How to cite
 
-``` 
 
-To cite R package SimCorMultRes in publications, please use:
+    To cite R package SimCorMultRes in publications, please use:
 
-  Touloumis, A. (2016). Simulating Correlated Binary and Multinomial
-  Responses under Marginal Model Specification: The SimCorMultRes
-  Package. The R Journal 8:2, 79-91.
+      Touloumis, A. (2016). Simulating Correlated Binary and Multinomial
+      Responses under Marginal Model Specification: The SimCorMultRes
+      Package. The R Journal 8:2, 79-91.
 
-A BibTeX entry for LaTeX users is
+    A BibTeX entry for LaTeX users is
 
-  @Article{,
-    title = {Simulating Correlated Binary and Multinomial Responses under 
-         Marginal Model Specification: The SimCorMultRes Package},
-    author = {Anestis Touloumis},
-    year = {2016},
-    journal = {The R Journal},
-    volume = {8},
-    number = {2},
-    pages = {79-91},
-    url = {https://journal.r-project.org/archive/2016/RJ-2016-034/index.html},
-  }
-```
+      @Article{,
+        title = {Simulating Correlated Binary and Multinomial Responses under 
+             Marginal Model Specification: The SimCorMultRes Package},
+        author = {Anestis Touloumis},
+        year = {2016},
+        journal = {The R Journal},
+        volume = {8},
+        number = {2},
+        pages = {79-91},
+        url = {https://journal.r-project.org/archive/2016/RJ-2016-034/index.html},
+      }
 
 # References
 
-<div id="refs" class="references">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-Touloumis2016">
+<div id="ref-Touloumis2016" class="csl-entry">
 
 Touloumis, A. (2016) Simulating Correlated Binary and Multinomial
 Responses under Marginal Model Specification: The SimCorMultRes Package.

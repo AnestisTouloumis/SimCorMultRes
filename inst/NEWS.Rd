@@ -1,8 +1,9 @@
 \name{NEWS}
 \title{NEWS file for the \pkg{SimCorMultRes} package}
 
-\section{Changes in Version 1.7.2 (2019-11-02)}{
+\section{Changes in Version 1.7.3 (2021-01-22)}{
   \itemize{
+    \item{Migrating from travis-ci to github actions.}
     \item{Created NEWS.Rd.}
     \item{Fixed ORCID in DESCRIPTION.}
     }
