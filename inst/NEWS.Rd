@@ -3,6 +3,8 @@
 
 \section{Changes in Version 1.7.3 (2021-01-22)}{
   \itemize{
+    \item{Added \pkg{rmarkdown} dependency.}
+    \item{Removed \pkg{markdown} dependency.}
     \item{Migrating from travis-ci to github actions.}
     \item{Created NEWS.Rd.}
     \item{Fixed ORCID in DESCRIPTION.}

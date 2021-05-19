@@ -13,8 +13,8 @@ Suggests:
     covr,
     gee,
     knitr,
-    markdown,
     multgee (>= 1.2),
+    rmarkdown,
     testthat
 Authors@R:
     person(given = "Anestis",
