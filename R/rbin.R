@@ -54,8 +54,8 @@
 #' @param xdata optional data frame containing the variables provided in
 #' \code{xformula}.
 #' @param link character string indicating the link function in the marginal
-#' model. Options include \code{'probit'}, \code{'logit'}, \code{'cloglog'} or
-#' \code{'cauchit'}. Required when \code{rlatent = NULL}.
+#' model. Options include \code{'probit'}, \code{'logit'}, \code{'cloglog'},
+#' \code{'cauchit'} or \code{'identity'}. Required when \code{rlatent = NULL}.
 #' @param cor.matrix matrix indicating the correlation matrix of the
 #' multivariate normal distribution when the NORTA method is employed
 #' (\code{rlatent = NULL}).

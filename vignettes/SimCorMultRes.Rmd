@@ -85,7 +85,7 @@ x2 <- rnorm(sample_size * cluster_size)
 # create covariates dataframe 
 xdata <- data.frame(x1, x2) 
 set.seed(321)
-library(SimCorMultRes)
+library("SimCorMultRes")
 # latent correlation matrix for the NORTA method
 equicorrelation_matrix <- toeplitz(c(1, rep(0.95,cluster_size - 1)))
 identity_matrix <- diag(categories_no)
@@ -355,7 +355,7 @@ simulated_binary_dataset <- rbin(clsize = cluster_size,
                                  betas = beta_coefficients, xformula = ~ x,
                                  cor.matrix = latent_correlation_matrix,
                                  link = "probit")
-library(gee)
+library("gee")
 # fitting a GEE model
 binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id,
                         data = simulated_binary_dataset$simdata)
@@ -436,7 +436,6 @@ simulated_binary_dataset <- rbin(clsize = cluster_size,
                                  betas = beta_coefficients, xformula = ~x,
                                  cor.matrix = latent_correlation_matrix,
                                  link = "probit")
-library(gee)
 # simulated marginal probabilities
 colMeans(simulated_binary_dataset$Ysim)
 ```
@@ -469,6 +468,8 @@ simulated_nominal_dataset <- rmult.bcl(clsize = cluster_size,
 # simulated marginal probabilities
 apply(simulated_nominal_dataset$Ysim, 2, table) / sample_size
 ```
+
+
 # How to Cite
 ```{r, comment=""}
 citation("SimCorMultRes")

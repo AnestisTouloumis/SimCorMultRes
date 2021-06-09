@@ -26,8 +26,8 @@ but without including a response variable.}
 \code{xformula}.}
 
 \item{link}{character string indicating the link function in the marginal
-model. Options include \code{'probit'}, \code{'logit'}, \code{'cloglog'} or
-\code{'cauchit'}. Required when \code{rlatent = NULL}.}
+model. Options include \code{'probit'}, \code{'logit'}, \code{'cloglog'},
+\code{'cauchit'} or \code{'identity'}. Required when \code{rlatent = NULL}.}
 
 \item{cor.matrix}{matrix indicating the correlation matrix of the
 multivariate normal distribution when the NORTA method is employed

@@ -4,7 +4,7 @@
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Github
-version](https://img.shields.io/badge/GitHub%20-1.7.3-orange.svg)](%22commits/master%22)
+version](https://img.shields.io/badge/GitHub%20-1.7.4-orange.svg)](%22commits/master%22)
 [![R-CMD-check](https://github.com/AnestisTouloumis/SimCorMultRes/workflows/R-CMD-check/badge.svg)](https://github.com/AnestisTouloumis/SimCorMultRes/actions)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
@@ -88,8 +88,8 @@ beta_intercepts <- 0
 beta_coefficients <- 0.2
 latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
 x <- rep(rnorm(sample_size), each = cluster_size)
-simulated_binary_responses <- rbin(clsize = cluster_size, intercepts = beta_intercepts, 
-    betas = beta_coefficients, xformula = ~x, cor.matrix = latent_correlation_matrix, 
+simulated_binary_responses <- rbin(clsize = cluster_size, intercepts = beta_intercepts,
+    betas = beta_coefficients, xformula = ~x, cor.matrix = latent_correlation_matrix,
     link = "probit")
 library(gee)
 binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id, data = simulated_binary_responses$simdata)

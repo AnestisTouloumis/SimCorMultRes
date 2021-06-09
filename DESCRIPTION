@@ -2,7 +2,7 @@ Package: SimCorMultRes
 Type: Package
 Title: Simulates Correlated Multinomial Responses
 Description: Simulates correlated multinomial responses conditional on a marginal model specification.
-Version: 1.7.3
+Version: 1.7.4
 Depends: R(>= 2.15.0)
 Imports:
     evd,
@@ -23,8 +23,8 @@ Authors@R:
            email = "A.Touloumis@brighton.ac.uk",
            comment = c(ORCID = "0000-0002-5965-1639")
            )
-URL: http://github.com/AnestisTouloumis/SimCorMultRes
-BugReports: http://github.com/AnestisTouloumis/SimCorMultRes/issues
+URL: https://github.com/AnestisTouloumis/SimCorMultRes
+BugReports: https://github.com/AnestisTouloumis/SimCorMultRes/issues
 License: GPL-3
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

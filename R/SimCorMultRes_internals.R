@@ -201,13 +201,14 @@ create_distribution <- function(link) {
   if (length(link) != 1) {
     stop("The length of 'link' must be one")
   }
-  links <- c("probit", "logit", "cloglog", "cauchit")
+  links <- c("probit", "logit", "cloglog", "cauchit", "identity")
   if (!is.element(link, links)) {
-    stop("'link' must be 'probit','logit','cloglog' and/or 'cauchit'")
+    stop("'link' must be 'probit', 'logit', 'cloglog', 'cauchit' and/or
+         'identity'")
   }
   distr <- switch(
     link, probit = "qnorm", logit = "qlogis", cloglog = "qgumbel",
-    cauchit = "qcauchy"
+    cauchit = "qcauchy", identity = "qunif"
   )
   distr
 }
@@ -276,7 +277,8 @@ create_output <- function(simulated_responses, sample_size, cluster_size,
   sim_model_frame <- stats::model.frame(
     formula = linear_predictor_formula, data = xdata
   )
-  simdata <- data.frame(y, sim_model_frame, id, time)
+  simdata <- data.frame(y, get_all_vars(formula = linear_predictor_formula,
+                                        data = xdata), id, time)
   list(
     Ysim = simulated_responses, simdata = simdata,
     rlatent = simulated_latent_variables
