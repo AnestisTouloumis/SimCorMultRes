@@ -4,7 +4,7 @@
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Github
-version](https://img.shields.io/badge/GitHub%20-1.7.4-orange.svg)](%22commits/master%22)
+version](https://img.shields.io/badge/GitHub%20-1.8.0-orange.svg)](%22commits/master%22)
 [![R-CMD-check](https://github.com/AnestisTouloumis/SimCorMultRes/workflows/R-CMD-check/badge.svg)](https://github.com/AnestisTouloumis/SimCorMultRes/actions)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively

@@ -1,10 +1,10 @@
 \name{NEWS}
 \title{NEWS file for the \pkg{SimCorMultRes} package}
 
-\section{Changes in Version 1.7.4 (2021-06-08)}{
+\section{Changes in Version 1.8.0 (2021-06-10)}{
   \itemize{
     \item{Corrected naming of variables in formula.}
-    \item{Added \code{identity} link to the function \code{rbin}.}
+    \item{Added \code{identity} link in \code{rbin}.}
     \item{Added \pkg{rmarkdown} dependency.}
     \item{Removed \pkg{markdown} dependency.}
     \item{Migrating from travis-ci to github actions.}
