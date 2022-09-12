@@ -4,7 +4,7 @@
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Github
-version](https://img.shields.io/badge/GitHub%20-1.8.0-orange.svg)](%22commits/master%22)
+version](https://img.shields.io/badge/GitHub%20-1.8.1-orange.svg)](%22commits/master%22)
 [![R-CMD-check](https://github.com/AnestisTouloumis/SimCorMultRes/workflows/R-CMD-check/badge.svg)](https://github.com/AnestisTouloumis/SimCorMultRes/actions)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
@@ -47,26 +47,31 @@ available on github at:
 To use `SimCorMultRes`, you should load the package as follows:
 
 ``` r
-library(SimCorMultRes)
+library("SimCorMultRes")
 ```
 
 ## Usage and functions
 
-This package provides functions to simulate correlated binary, ordinal
-and nominal responses, which are drawn as realizations of a latent
+This package provides five core functions to simulate correlated binary
+(`rbin`), nominal (`rmult.bcl`) and ordinal (`rmult.acl`, `rmult.clm`
+and `rmult.crm`) responses, which are drawn as realizations of a latent
 regression model for continuous random vectors as proposed by Touloumis
-(2016).
+(2016):
 
-There are five core functions:
-
--   `rbin` to simulate correlated binary responses,
--   `rmult.bcl` to simulate correlated nominal multinomial responses,
+-   `rbin` to simulate correlated binary responses under a marginal
+    model with logit, probit, cloglog and cauchit link function,
+-   `rmult.bcl` to simulate correlated nominal multinomial responses
+    under a marginal baseline-category logit model,
 -   `rmult.acl` to simulate correlated ordinal responses under a
     marginal adjacent-category logit model,
 -   `rmult.clm` to simulate correlated ordinal responses under a
     marginal cumulative link model,
--   `rmult.clm` to simulate correlated ordinal responses under a
+-   `rmult.crm` to simulate correlated ordinal responses under a
     marginal continuation-ratio link model.
+
+All five functions, assume that you provide either the correlation
+matrix of the multivariate normal distribution in NORTA (via
+`cor.matrix`) or the latent responses (via the `rlatent`).
 
 There are also two utility functions:
 
@@ -82,12 +87,19 @@ The following R code illustrates how to use the core function `rbin`:
 ``` r
 ## See Example 3.5 in the Vignette.
 set.seed(123)
+## define number of random vectors
 sample_size <- 100
+## define size of each random vector
 cluster_size <- 4
+## define intercept of the binary probit regression model
 beta_intercepts <- 0
+## define coefficients of the explanatory variables
 beta_coefficients <- 0.2
-latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
+## provide explanatory variables
 x <- rep(rnorm(sample_size), each = cluster_size)
+## define correlation matrix for the multivariate normal distribution in NORTA
+latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
+## use rbin function to create the desired dataset
 simulated_binary_responses <- rbin(clsize = cluster_size, intercepts = beta_intercepts,
     betas = beta_coefficients, xformula = ~x, cor.matrix = latent_correlation_matrix,
     link = "probit")
@@ -139,8 +151,9 @@ browseVignettes("SimCorMultRes")
 
 <div id="ref-Touloumis2016" class="csl-entry">
 
-Touloumis, A. (2016) Simulating Correlated Binary and Multinomial
-Responses under Marginal Model Specification: The SimCorMultRes Package.
+Touloumis, A. (2016) [Simulating Correlated Binary and Multinomial
+Responses under Marginal Model Specification: The SimCorMultRes
+Package](https://journal.r-project.org/archive/2016/RJ-2016-034/index.html).
 *The R Journal*, **8**, 79–91.
 
 </div>

@@ -4,7 +4,8 @@
 \alias{rnorta}
 \title{Simulating Random Vectors using the NORTA Method}
 \usage{
-rnorta(R = R, cor.matrix = cor.matrix, distr = distr, qparameters = NULL)
+rnorta(R = R, cor.matrix = cor.matrix, distr = distr,
+  qparameters = NULL)
 }
 \arguments{
 \item{R}{integer indicating the sample size.}

@@ -51,7 +51,7 @@ and where the random variables $\{e^{NO}_{itj}:i=1,\ldots,N \text{,  } t=1,\ldot
 1. $e^{NO}_{itj_1}$ and $e^{NO}_{itj_2}$ are independent random variables provided that $j_1\neq j_2$.
 
 For each subject $i$, the association structure among the clustered nominal responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the joint distribution and correlation matrix of $\{e^{NO}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$. If the random variables $\{e^{NO}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$.
-\newline{}
+
 
 ```{example, Example1, name="Simulation of clustered nominal responses using the NORTA method"}
 Suppose the aim is to simulate nominal responses from the marginal baseline-category logit model
@@ -126,7 +126,8 @@ and where $\{e^{O1}_{it}:i=1,\ldots,N \text{ and } t=1,\ldots,T\}$ are random va
 1. $e^{O1}_{i_1t_1}$ and $e^{O1}_{i_2t_2}$ are independent random variables provided that $i_1 \neq i_2$. 
 
 For each subject $i$, the association structure among the clustered ordinal responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the pairwise bivariate distributions and correlation matrix of $\{e^{O1}_{it}:t=1,\ldots,T\}$. If the random variables $\{e^{O1}_{it}:t=1,\ldots,T\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$.
-\newline{} 
+
+
 ```{example, name="Simulation of clustered ordinal responses conditional on a marginal cumulative probit model with time-varying regression parameters"}
 Suppose the goal is to simulate correlated ordinal responses from the marginal cumulative probit model
 \begin{equation*}
@@ -183,7 +184,8 @@ and where $\{e^{O2}_{itj}:i=1,\ldots,N \text{ , } t=1,\ldots,T \text{ and } j=1,
 1. $e^{O2}_{itj_1}$ and $e^{O2}_{itj_2}$ are independent random variables provided that $j_1\neq j_2$.
  
 For each subject $i$, the association structure among the clustered ordinal responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the joint distribution and correlation matrix of $\{e^{O2}_{itj}:j=1,\ldots,J \text{ and } t=1,\ldots,T\}$. If the random variables $\{e^{O2}_{itj}:j=1,\ldots,J \text{ and } t=1,\ldots,T\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$. 
-\newline{}
+
+
 ```{example,name="Simulation of clustered ordinal responses conditional on a marginal continuation-ratio probit model"}
 Suppose simulation of clustered ordinal responses under the marginal continuation-ratio probit model
 \begin{equation*}
@@ -246,7 +248,6 @@ and where the random variables $\{e^{O3}_{itj}:i=1,\ldots,N \text{,  } t=1,\ldot
 1. $e^{O3}_{itj_1}$ and $e^{O3}_{itj_2}$ are independent random variables provided that $j_1\neq j_2$.
 
 For each subject $i$, the association structure among the clustered ordinal responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the joint distribution and correlation matrix of $\{e^{O3}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$. If the random variables $\{e^{O3}_{itj}:t=1,\ldots,T \text{ and } j=1,\ldots,J\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$.
-\newline{} 
 
 ```{example, Example4, name="Simulation of clustered ordinal responses conditional on a marginal adjacent-category logit model using the NORTA method"}
 Suppose the aim is to simulate ordinal responses from the marginal adjacent-category logit model
@@ -318,7 +319,8 @@ and where $\{e^{B}_{it}:i=1,\ldots,N \text{ and } t=1,\ldots,T\}$ are random var
 1. $e^{B}_{i_1t_1}$ and $e^{B}_{i_2t_2}$ are independent random variables provided that $i_1 \neq i_2$.
 
 For each subject $i$, the association structure among the clustered binary responses $\{Y_{it}:t=1,\ldots,T\}$ depends on the pairwise bivariate distributions and correlation matrix of $\{e^{B}_{it}:t=1,\ldots,T\}$. If the random variables $\{e^{B}_{it}:t=1,\ldots,T\}$ are independent then so are $\{Y_{it}:t=1,\ldots,T\}$.
-\newline{}
+
+
 ```{example, label=BinaryProbit, name="Simulation of clustered binary responses conditional on a marginal probit model using NORTA method"}
 Suppose the goal is to simulate clustered binary responses from the marginal probit model 
 $$\Pr(Y_{it}=1 |\mathbf{x}_{it})=\Phi(0.2x_i)$$
@@ -362,7 +364,8 @@ binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id,
 # checking the estimated coefficients
 summary(binary_gee_model)$coefficients
 ```
-\textbf{ }
+
+
 ```{example, label=BinaryLogit, name="Simulation of clustered binary responses under a conditional marginal logit model without utilizing the NORTA method"} 
 Consider now simulation of correlated binary responses from the marginal logit model 
 \begin{equation*}
@@ -440,7 +443,6 @@ simulated_binary_dataset <- rbin(clsize = cluster_size,
 colMeans(simulated_binary_dataset$Ysim)
 ```
 
-\textbf{ }
 ```{example, Example2NoCovariates, name="Simulation of clustered nominal responses without covariates"}
 Suppose the aim is to simulate $N=5000$ clustered nominal responses with
 $\Pr(Y_{t}=1)=0.1$, $\Pr(Y_{t}=2)=0.2$, $\Pr(Y_{t}=3)=0.3$ and $\Pr(Y_{t}=4)=0.4$, for all $i$ and $t=1,\ldots,3$. For the sake of simplicity, we assume that the clustered responses are independent. 
