@@ -4,8 +4,8 @@
 \section{Changes in Version 1.8.1 (2022-09-13)}{
   \subsection{MINOR CHANGES}{
   \itemize{
-    \item{Improved README.Rmd.}
-    \item{Added `R` journal paper as vignette.}
+    \item{Improved README.}
+    \item{Added R journal paper as vignette.}
     }
     }
     }
