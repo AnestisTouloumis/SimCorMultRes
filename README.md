@@ -103,7 +103,7 @@ latent_correlation_matrix <- toeplitz(c(1, 0.9, 0.9, 0.9))
 simulated_binary_responses <- rbin(clsize = cluster_size, intercepts = beta_intercepts,
     betas = beta_coefficients, xformula = ~x, cor.matrix = latent_correlation_matrix,
     link = "probit")
-library(gee)
+library("gee")
 binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id, data = simulated_binary_responses$simdata)
 #> Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
 #> running glm to get initial regression estimate
@@ -116,7 +116,8 @@ summary(binary_gee_model)$coefficients
 ```
 
 Additional examples can be found in Touloumis (2016) and in the vignette
-of `SimCorMultRes`.
+of `SimCorMultRes`. To access these two documents, run the following
+command:
 
 ``` r
 browseVignettes("SimCorMultRes")

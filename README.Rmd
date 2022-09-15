@@ -113,21 +113,21 @@ simulated_binary_responses <- rbin(clsize = cluster_size,
                                    betas = beta_coefficients, xformula = ~  x,
                                    cor.matrix = latent_correlation_matrix,
                                    link = "probit")
-library(gee)
+library("gee")
 binary_gee_model <- gee(y ~ x, family = binomial("probit"), id = id,
                         data = simulated_binary_responses$simdata)
 summary(binary_gee_model)$coefficients
 ```
 
-Additional examples can be found in @Touloumis2016 and in the vignette of `SimCorMultRes`.
+Additional examples can be found in @Touloumis2016 and in the vignette of `SimCorMultRes`. To access these two documents, run the following command:
 
-```{r, eval=FALSE}
+```{r eval=FALSE}
 browseVignettes("SimCorMultRes")
 ```
 
 ## How to cite
 
-```{r,echo=FALSE,comment=""}
+```{r echo=FALSE, comment=""}
 citation("SimCorMultRes")
 ```
 

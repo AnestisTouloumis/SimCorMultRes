@@ -15,7 +15,7 @@ biblio-style: "apalike"
 link-citations: true
 ---
 
-```{r, echo = FALSE}
+```{r echo = FALSE}
 knitr::opts_chunk$set(
   tidy = TRUE,
   collapse = TRUE,
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction 
-The R package `SimCorMultRes` is suitable for simulation of correlated binary responses (exactly two response categories) and of correlated nominal or ordinal multinomial responses (three or more response categories) conditional on a regression model specification for the marginal probabilities of the response categories. This vignette briefly describes the simulation methods proposed by @Touloumis2016 and illustrates the use of the core functions of `SimCorMultRes`. A more detailed description of `SimCorMultRes` can be found in @Touloumis2016. 
+The R package `SimCorMultRes` is suitable for simulation of correlated binary responses (exactly two response categories) and of correlated nominal or ordinal multinomial responses (three or more response categories) conditional on a regression model specification for the marginal probabilities of the response categories. A more detailed description of `SimCorMultRes` can be found in @Touloumis2016. This vignette briefly describes the simulation methods proposed by @Touloumis2016, introduces how to simulate ordinal responses under a marginal adjacent-category logit model and illustrates the use of the core functions of `SimCorMultRes`. 
 
 # Areas of Applications
 This package was created to facilitate the task of carrying out simulation studies and evaluating the performance of statistical methods for estimating the regression parameters in a marginal model with clustered binary and multinomial responses. Examples of such statistical methods include maximum likelihood methods, copula approaches, quasi-least squares approaches, generalized quasi-likelihood methods and generalized estimating equations (GEE) approaches among others [see references in @Touloumis2016]. 
@@ -68,7 +68,7 @@ where $N=500$, $T=3$, $(\beta_{10},\beta_{11},\beta_{12},\beta_{20},\beta_{21},\
 for all $i=1,\ldots,500$.
 ```
 
-```{r, tidy=TRUE}
+```{r}
 # parameter vector
 betas <-  c(1, 3, 2, 1.25, 3.25, 1.75, 0.75, 2.75, 2.25, 0, 0, 0)
 # sample size
@@ -264,7 +264,7 @@ where $N=500$, $T=3$, $(\beta_{10},\beta_{20},\beta_{30})=(3, 2, 1)$, $(\beta_{1
 for all $i=1,\ldots,500$.
 ```
 
-```{r, tidy=TRUE}
+```{r}
 # intercepts
 beta_intercepts <- c(3, 2, 1)
 # parameter vector
@@ -381,7 +381,7 @@ It follows that $e_{it}^{B}\sim F$ for all $i$ and $t$ and $\textrm{corr}(\mathb
 ```{r}
 set.seed(8)
 # simulation of epsilon variables
-library(evd)
+library("evd")
 simulated_latent_variables1 <- rmvevd(sample_size, dep = sqrt(1 - 0.9),
                                       model = "log", d = cluster_size)
 simulated_latent_variables2 <- rmvevd(sample_size, dep = sqrt(1 - 0.9),
@@ -413,7 +413,6 @@ To achieve simulation of clustered binary, ordinal and nominal responses under n
 
 5. Run the core function to obtain realizations of the simulated clustered responses.
 
-\textbf{ }
 
 ```{example, label=no-covariate, name="Simulation of clustered binary responses without covariates"}
 Suppose the goal is to simulate $5000$ clustered binary responses with $\Pr(Y_{t}=1)=0.8$ for all $t=1,\ldots,4$. For simplicity, assume that the clustered binary responses are independent.
@@ -448,7 +447,7 @@ Suppose the aim is to simulate $N=5000$ clustered nominal responses with
 $\Pr(Y_{t}=1)=0.1$, $\Pr(Y_{t}=2)=0.2$, $\Pr(Y_{t}=3)=0.3$ and $\Pr(Y_{t}=4)=0.4$, for all $i$ and $t=1,\ldots,3$. For the sake of simplicity, we assume that the clustered responses are independent. 
 ```
 
-```{r, tidy=TRUE}
+```{r}
 # sample size
 sample_size <- 5000
 # cluster size
@@ -473,7 +472,7 @@ apply(simulated_nominal_dataset$Ysim, 2, table) / sample_size
 
 
 # How to Cite
-```{r, comment=""}
+```{r comment=""}
 citation("SimCorMultRes")
 ```
 
