@@ -5,7 +5,6 @@
 \alias{simulation}
 \title{Bivariate NORTA Generated Correlation}
 \format{
-## `simulation`
 A data frame with 100 rows and 4 columns:
 \describe{
   \item{rho}{numeric indicating the value of the correlation parameter.}
@@ -24,16 +23,13 @@ simulation
 Simulated dataset to understand
 }
 \examples{
-simulation |>
-  plot(rho - normal ~ rho, data = _, type = "l", col = "blue",
-       ylim = c(0, 0.016),
-       ylab = "Difference between true and simulated correlation values",
-       xlab = "Correlation parameter")
-simulation |>
- points(rho - logistic ~ rho, data = _, type = "l", col = "red")
-simulation |>
-  points(rho - gumbel ~ rho, data = _, type = "l", col = "grey")
+plot(rho - normal ~ rho, data = simulation, type = "l", col = "blue",
+    ylim = c(0, 0.016),
+    ylab = expression(rho - bar(rho)[sim]),
+    xlab = expression(rho))
+points(rho - logistic ~ rho, data = simulation, type = "l", col = "red")
+points(rho - gumbel ~ rho, data = simulation, type = "l", col = "grey")
 legend("topright", legend = c("Normal", "Logistic", "Gumbel"),
-       col = c("blue", "red", "grey"), pch = "l" )
+      col = c("blue", "red", "grey"), pch = "l" )
 }
 \keyword{datasets}

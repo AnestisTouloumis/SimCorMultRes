@@ -471,6 +471,41 @@ apply(simulated_nominal_dataset$Ysim, 2, table) / sample_size
 ```
 
 
+## Notes on NORTA
+
+The NORTA method, as implemented in `SimCorMultRes`, does not require specification of the correlation matrix of the latent variable. Instead the user defines the correlation matrix of the multivariate normal distribution, say $\mathbf R$, that appears in the intermediate step of the NORTA method. 
+
+When the marginal distribution of the correlated responses is the logistic distribution, @Touloumis2016 argued that $\mathbf R$ is expected to approximate well the true but unknown correlation matrix of the correlated responses. 
+
+A simulation study was carried out assess the validity of this claim. For a fixed sample size $N$ and a correlation parameter $\rho$, $N$ independent bivariate random vectors $\mathbf y_{1}, \ldots, \mathbf y_{N}$ from a bivariate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix 
+\[
+\mathbf R = \begin{bmatrix}
+1 & \rho\\
+\rho & 1
+\end{bmatrix}
+\]
+were drawn. The sample correlation was used to estimate $\rho$. Next, the NORTA method was applied to obtain bivariate random vectors $\mathbf z_{1}, \ldots, \mathbf z_{N}$ so that their marginal distribution is a logistic distribution. Their correlation parameter, say $\rho_{z}$, was estimated using the sample correlation based on $\mathbf z_{1}, \ldots, \mathbf z_{N}$. Then, the NORTA method was applied to obtain bivariate random vectors $\mathbf w_{1}, \ldots, \mathbf w_{N}$ so that their marginal distribution is the gumbel distribution. Their correlation parameter, say $\rho_{w}$, was estimated using the sample correlation based on $\mathbf w_{1}, \ldots, \mathbf w_{N}$. This procedure was replicated $10,000,000$ times. The three correlation parameters $\rho$, $\rho_z$ and $\rho_w$ were estimated using the corresponding Monte Carlo counterparts $\widehat{\rho}$, $\widehat{\rho}_z$ and $\widehat{\rho}_w$, respectively. To reduce the sample variability, we set $N=10,000$. Finally, we considered $\rho= 0, 0.01,0.02,\ldots, 0.99$.
+
+The dataframe `simulation` contains the simulation results. As expected, $\widehat{\rho}$ is a good estimator of $\rho$ regardless of the strength of the correlation parameter. For the logistic case, the average difference between $\rho$ and $\widehat{\rho}_z$ is `r rho = simulation$rho; logistic = simulation$logistic; round(mean(rho - logistic), 4)`, taking the maximum value of `r round(max(rho - logistic), 4)` at $\rho = `r rho[which.max(rho - logistic)]`$. These imply that $\rho$ is a good approximation of $\rho_{z}$ (at least in 2 decimal points).  For the gumbel case, the average difference between $\rho$ and $\widehat{\rho}_w$ is `r gumbel = simulation$gumbel; round(mean(rho - gumbel), 4)`, taking the maximum value of `r round(max(rho - gumbel), 4)` at $\rho = `r rho[which.max(rho - gumbel)]`$. Now $\rho$ appears again to approximate $\rho_{w}$ but it less accurate than that of the logistic case. 
+
+
+```{r echo = FALSE, fig.cap= "Difference between the correlation parameters of the bivariate normal distribution and of the latent variables for three different marginal distributions."}
+plot(rho - normal ~ rho, data = simulation, type = "l", col = "blue",
+    ylim = c(0, 0.016),
+    ylab = expression(rho - hat(rho)),
+    xlab = expression(rho))
+points(rho - logistic ~ rho, data = simulation, type = "l", col = "red",
+       lty = 2)
+points(rho - gumbel ~ rho, data = simulation, type = "l", col = "grey",
+       lty = 3)
+legend("topright", legend = c("Normal", "Logistic", "Gumbel"),
+      col = c("blue", "red", "grey"), lwd = 1, lty = c(1, 2, 3))
+title(main = paste("Difference between true and simulated correlation"))
+```
+
+Overall, it appears that there is little accuracy loss by not specifying the correlation matrix of the correlated latent responses when their marginal distribution is either the logistic distribution or the Gumbel distribution. This covers all the thresholds implemented in `SimCorMultRes`.
+
+
 # How to Cite
 ```{r comment=""}
 citation("SimCorMultRes")
