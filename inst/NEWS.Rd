@@ -1,13 +1,14 @@
 \name{NEWS}
 \title{NEWS file for the \pkg{SimCorMultRes} package}
 
-\section{Changes in Version 1.8.2 (2022-09-27)}{
+\section{Changes in Version 1.8.3 (2023-02-23)}{
   \subsection{MINOR CHANGES}{
   \itemize{
     \item{Added R journal paper as vignette.}
     \item{Improved README.}
     \item{Improved vignette.}
     \item{Reinstated code coverage using \pkg{covr}.}
+    \item{Updated GitHub Actions.}
     }
     }
     }
@@ -21,7 +22,7 @@
     \item{Removed \pkg{markdown} dependency.}
     \item{Created NEWS.Rd.}
     \item{Fixed ORCID in DESCRIPTION.}
-    \item{Migrating from travis-ci to github actions.}
+    \item{Migrating from Travis-CI to GitHub Actions.}
     }
     }
     }
