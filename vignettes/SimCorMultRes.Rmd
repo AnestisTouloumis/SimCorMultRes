@@ -471,21 +471,23 @@ apply(simulated_nominal_dataset$Ysim, 2, table) / sample_size
 ```
 
 
-## Notes on NORTA
+## A note on NORTA implementation
 
-In `SimCorMultRes`, the user specifies the correlation matrix of the multivariate normal distribution, denoted by $\mathbf R$, that is used in the intermediate step of the NORTA method. This is justified by the observation that when all the marginal distributions of the correlated latent variables are logistic, $\mathbf R$ is expected to approximate well their true but unknown correlation matrix [@Touloumis2016].
+In `SimCorMultRes`, the user specifies the correlation matrix of the multivariate normal distribution (denoted by $\mathbf R$) used in the intermediate step of the NORTA method and not the correlation matrix of the latent variables. The motivation is that when all the marginal distributions of the correlated latent variables are logistic, then the correlation matrix $\mathbf R$ and that of the latent variables will be close [@Touloumis2016]. This approximation is also used in `SimCorMultRes` regardless of the marginal distribution of the latent variables. 
 
 
-To evaluate the validity of approximation study, a simulation study was conducted. For a fixed sample size $N$ and a correlation parameter $\rho$, $N$ independent bivariate random vectors $\{\mathbf y_{i}: i = 1, \ldots, N \}$ from a bivariate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix 
+To evaluate the validity of this approximation for the marginal distributions employed in `SimCorMultRes`, a simulation study was conducted. For a fixed sample size $N$ and a correlation parameter $\rho$, $N$ independent bivariate random vectors $\{\mathbf y_{i}: i = 1, \ldots, N \}$ from a bivariate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix 
 \[
 \mathbf R = \begin{bmatrix}
 1 & \rho\\
 \rho & 1
 \end{bmatrix}
 \]
-were drawn. The sample correlation was used to estimate $\rho$. Next, the NORTA method was applied to obtain bivariate random vectors $\{\mathbf z_{i}: i = 1, \ldots, N \}$ so that their marginal distribution is a logistic distribution. Their correlation parameter, say $\rho_{z}$, was estimated using the corresponding sample correlation. Then, the NORTA method was applied to obtain bivariate random vectors $\{\mathbf w_{i}: i = 1, \ldots, N \}$ so that their marginal distribution is the Gumbel distribution. Their correlation parameter, say $\rho_{w}$, was estimated using their sample correlation. This procedure was replicated $10,000,000$ times. The three correlation parameters $\rho$, $\rho_z$ and $\rho_w$ were estimated using the corresponding Monte Carlo estimates $\widehat{\rho}$, $\widehat{\rho}_z$ and $\widehat{\rho}_w$, respectively. To reduce the sample variability, we set $N=10,000$. Finally, we considered $\rho= 0, 0.01,0.02,\ldots, 0.99$.
+were drawn. The sample correlation was used to estimate $\rho$. Next, the NORTA method was applied to obtain bivariate random vectors $\{\mathbf z_{i}: i = 1, \ldots, N \}$ so that their marginal distribution is the logistic distribution. Their correlation parameter, say $\rho_{z}$, was estimated using the corresponding sample correlation. Then, the NORTA method was applied to obtain bivariate random vectors $\{\mathbf w_{i}: i = 1, \ldots, N \}$ so that their marginal distribution is the Gumbel distribution. Their correlation parameter, say $\rho_{w}$, was estimated using their sample correlation. 
 
-The dataframe `simulation` contains the true correlation parameter $\rho$ and the Monte Carlo estimates $\widehat{\rho}$, $\widehat{\rho}_z$ and $\widehat{\rho}_w$ of the simulation study. As expected, $\widehat{\rho} \approx \rho$ regardless of the strength of the correlation parameter. For the logistic case, the average difference between $\rho$ and $\widehat{\rho}_z$ is `r rho = simulation$rho; logistic = simulation$logistic; round(mean(rho - logistic), 4)`, taking the maximum value of `r round(max(rho - logistic), 4)` at $\rho = `r rho[which.max(rho - logistic)]`$. Thus, $\rho$ appears to approximate $\rho_{z}$ 2 decimal points.  For the Gumbel case, the average difference between $\rho$ and $\widehat{\rho}_w$ is `r gumbel = simulation$gumbel; round(mean(rho - gumbel), 4)`, taking the maximum value of `r round(max(rho - gumbel), 4)` at $\rho = `r rho[which.max(rho - gumbel)]`$. Again, $\rho$ appears to approximate $\rho_{w}$ but there is some accuracy loss compared to $\rho_{z}$. 
+For a fixed value of $\rho$, this procedure was replicated $10,000,000$ times to reduce the simulation error and with $N=10,000$ to reduce the sampling error. The three correlation parameters $\rho$, $\rho_z$ and $\rho_w$ were estimated using their corresponding Monte Carlo counterparts, denoted by $\widehat{\rho}$, $\widehat{\rho}_z$ and $\widehat{\rho}_w$, respectively. We let $\rho \in \{ 0, 0.01,0.02,\ldots, 0.99\}$.
+
+The dataframe `simulation` contains the true correlation parameter $\rho$ (`rho`) and the Monte Carlo estimates $\widehat{\rho}$ (`normal`), $\widehat{\rho}_z$ (`logistic`) and $\widehat{\rho}_w$ (`gumbel`) from the simulation study described above. As expected, $\widehat{\rho} \approx \rho$ regardless of the strength of the correlation parameter. For the case of logistic marginal distributions, the average difference between $\rho$ and $\widehat{\rho}_z$ is `r rho = simulation$rho; logistic = simulation$logistic; round(mean(rho - logistic), 4)`, taking the maximum value of `r round(max(rho - logistic), 4)` at $\rho = `r rho[which.max(rho - logistic)]`$. Therefore $\rho$ appears to approximate $\rho_{z}$ to 2 decimal points. For the case of Gumbel marginal distributions, the average difference between $\rho$ and $\widehat{\rho}_w$ is `r gumbel = simulation$gumbel; round(mean(rho - gumbel), 4)`, taking the maximum value of `r round(max(rho - gumbel), 4)` at $\rho = `r rho[which.max(rho - gumbel)]`$. Although $\rho$ appears to approximate well $\rho_{w}$, there is some accuracy loss compared to $\rho_{z}$. The plot below shows the differences between the true correlation coefficient of the bivariate normal distribution and the simulated correlations for $\rho$, $\rho_z$ or $\rho_w$.
 
 
 ```{r echo = FALSE, fig.cap= "Difference between the correlation parameters of the bivariate normal distribution and of the latent variables for three different marginal distributions."}
@@ -502,7 +504,7 @@ legend("topright", legend = c("Normal", "Logistic", "Gumbel"),
 title(main = paste("Difference between true and simulated correlation"))
 ```
 
-Overall, it appears that there is little accuracy loss by not specifying the correlation matrix of the correlated latent responses when their marginal distribution is either the logistic distribution or the Gumbel distribution. This covers all the thresholds implemented in `SimCorMultRes`.
+Overall, there is little accuracy loss by specifying the correlation matrix of the multivariate normal distribution in the intermediate step of the NORTA distribution instead of the correlation matrix of correlated latent responses regardless of whether their marginal distributions are either logistic or Gumbel distributions. Users can treat the correlation matrix passed on to the core functions of `SimCorMultRes` as the correlation matrix of the latent variables. 
 
 
 # How to Cite

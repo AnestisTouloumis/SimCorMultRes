@@ -1,13 +1,14 @@
 \name{NEWS}
 \title{NEWS file for the \pkg{SimCorMultRes} package}
 
-\section{Changes in Version 1.8.3 (2023-02-23)}{
+\section{Changes in Version 1.9.0 (2023-06-06)}{
   \subsection{MINOR CHANGES}{
   \itemize{
     \item{Added R journal paper as vignette.}
     \item{Improved README.}
     \item{Improved vignette.}
     \item{Reinstated code coverage using \pkg{covr}.}
+    \item{Updated CITATION style.}
     \item{Updated GitHub Actions.}
     }
     }
