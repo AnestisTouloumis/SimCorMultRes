@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{NEWS file for the \pkg{SimCorMultRes} package}
 
-\section{Changes in Version 1.9.0 (2023-06-06)}{
+\section{Changes in Version 1.9.0 (2023-06-28)}{
   \subsection{MINOR CHANGES}{
   \itemize{
     \item{Added R journal paper as vignette.}

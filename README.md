@@ -4,7 +4,7 @@
 # SimCorMultRes: Simulates Correlated Multinomial Responses
 
 [![Github
-version](https://img.shields.io/badge/GitHub%20-1.8.4-orange.svg)](%22commits/master%22)
+version](https://img.shields.io/badge/GitHub%20-1.9.0-orange.svg)](%22commits/master%22)
 [![R-CMD-check](https://github.com/AnestisTouloumis/SimCorMultRes/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AnestisTouloumis/SimCorMultRes/actions/workflows/R-CMD-check.yaml)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
@@ -131,23 +131,25 @@ browseVignettes("SimCorMultRes")
 
 ## How to cite
 
-    To cite R package SimCorMultRes in publications, please use:
+    To cite SimCorMultRes in publications use:
 
-      Touloumis, A. (2016). Simulating Correlated Binary and Multinomial
+      Touloumis A (2016). "Simulating Correlated Binary and Multinomial
       Responses under Marginal Model Specification: The SimCorMultRes
-      Package. The R Journal 8:2, 79-91.
+      Package." _The R Journal_, *8*(2), -12. R package version 1.9.0,
+      <https://journal.r-project.org/archive/2016/RJ-2016-034/index.html>.
 
     A BibTeX entry for LaTeX users is
 
       @Article{,
-        title = {Simulating Correlated Binary and Multinomial Responses under 
+        title = {Simulating Correlated Binary and Multinomial Responses under
              Marginal Model Specification: The SimCorMultRes Package},
         author = {Anestis Touloumis},
         year = {2016},
         journal = {The R Journal},
         volume = {8},
         number = {2},
-        pages = {79-91},
+        note = {R package version 1.9.0},
+        pages = {-12},
         url = {https://journal.r-project.org/archive/2016/RJ-2016-034/index.html},
       }
 

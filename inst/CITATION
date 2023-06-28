@@ -1,14 +1,15 @@
 note <- sprintf("R package version %s", meta$Version)
 
 bibentry(bibtype = "Article",
+         header = "To cite SimCorMultRes in publications use:",
          title = "Simulating Correlated Binary and Multinomial Responses under
          Marginal Model Specification: The SimCorMultRes Package",
          author = as.person("Anestis Touloumis"),
          year = 2016,
          journal= "The R Journal",
-         volume=8,
-         number=2,
+         volume= 8,
+         number= 2,
          note = note,
-         pages={"79-91"},
+         pages= {79-91},
          url = "https://journal.r-project.org/archive/2016/RJ-2016-034/index.html"
          )
