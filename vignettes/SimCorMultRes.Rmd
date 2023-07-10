@@ -471,12 +471,12 @@ apply(simulated_nominal_dataset$Ysim, 2, table) / sample_size
 ```
 
 
-## A note on NORTA implementation
+## A note on the correlation matrix
 
-In `SimCorMultRes`, the user specifies the correlation matrix of the multivariate normal distribution (denoted by $\mathbf R$) used in the intermediate step of the NORTA method and not the correlation matrix of the latent variables. The motivation is that when all the marginal distributions of the correlated latent variables are logistic, then the correlation matrix $\mathbf R$ and that of the latent variables will be close [@Touloumis2016]. This approximation is also used in `SimCorMultRes` regardless of the marginal distribution of the latent variables. 
+In `SimCorMultRes`, the user provides the correlation matrix (denoted as $\mathbf{R}$) for the multivariate normal distribution used in the intermediate step of the NORTA method, rather than the correlation matrix of the latent responses used in the corresponding threshold approach. This choice is motivated by the observation that when all the marginal distributions of the correlated latent responses follow a logistic distribution, the correlation matrix $\mathbf{R}$ and the correlation matrix of the latent responses are expected to be similar, as noted by Touloumis (2016). Therefore, in `SimCorMultRes`, this approximation is employed irrespective of the marginal distribution of the latent `responses`.
 
 
-To evaluate the validity of this approximation for the marginal distributions employed in `SimCorMultRes`, a simulation study was conducted. For a fixed sample size $N$ and a correlation parameter $\rho$, $N$ independent bivariate random vectors $\{\mathbf y_{i}: i = 1, \ldots, N \}$ from a bivariate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix 
+To evaluate the validity of this approximation for the threshold approaches employed in `SimCorMultRes`, a simulation study was conducted. For a fixed sample size $N$ and a correlation parameter $\rho$, $N$ independent bivariate random vectors $\{\mathbf y_{i}: i = 1, \ldots, N \}$ from a bivariate normal distribution with mean vector the zero vector and covariance matrix the correlation matrix 
 \[
 \mathbf R = \begin{bmatrix}
 1 & \rho\\
