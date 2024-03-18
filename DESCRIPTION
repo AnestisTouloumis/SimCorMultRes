@@ -2,7 +2,7 @@ Package: SimCorMultRes
 Type: Package
 Title: Simulates Correlated Multinomial Responses
 Description: Simulates correlated multinomial responses conditional on a marginal model specification.
-Version: 1.9.0
+Version: 1.9.1
 Depends: R(>= 2.15.0)
 Imports:
     evd,
@@ -30,7 +30,7 @@ License: GPL-3
 VignetteBuilder: 
     knitr,
     R.rsp
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(old_usage = TRUE)
 Encoding: UTF-8
 LazyData: true

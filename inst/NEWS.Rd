@@ -1,6 +1,16 @@
 \name{NEWS}
 \title{NEWS file for the \pkg{SimCorMultRes} package}
 
+
+\section{Changes in Version 1.9.1 (2024-03-18)}{
+  \subsection{MINOR CHANGES}{
+  \itemize{
+    \item{Updated documentation.}
+    }
+    }
+    }
+
+
 \section{Changes in Version 1.9.0 (2023-07-10)}{
   \subsection{MINOR CHANGES}{
   \itemize{

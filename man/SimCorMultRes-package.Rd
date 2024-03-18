@@ -66,9 +66,17 @@ responses using a local odds ratios parameterization. \emph{Biometrics}
 Tutz, G. (1991) Sequential models in categorical regression.
 \emph{Computational Statistics & Data Analysis} \bold{11}, 275--295.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/AnestisTouloumis/SimCorMultRes}
+  \item Report bugs at \url{https://github.com/AnestisTouloumis/SimCorMultRes/issues}
+}
+
+}
 \author{
 Anestis Touloumis
 
 Maintainer: Anestis Touloumis \email{A.Touloumis@brighton.ac.uk}
 }
-\keyword{package}
+\keyword{internal}

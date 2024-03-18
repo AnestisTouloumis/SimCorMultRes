@@ -30,7 +30,6 @@
 #'
 #' @name SimCorMultRes-package
 #' @aliases SimCorMultRes-package SimCorMultRes
-#' @docType package
 #' @author Anestis Touloumis
 #'
 #' Maintainer: Anestis Touloumis \email{A.Touloumis@@brighton.ac.uk}
@@ -67,5 +66,5 @@
 #' @importFrom methods formalArgs
 #' @importFrom stats as.formula formula get_all_vars model.frame model.matrix
 #' na.omit pnorm qcauchy qlogis qunif rnorm terms toeplitz update
-#' @keywords package
-NULL
+#' @keywords internal
+"_PACKAGE"
